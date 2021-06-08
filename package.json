@@ -1,0 +1,62 @@
+{
+  "name": "nosql-quiz-backend",
+  "version": "1.0.0",
+  "description": "Backend Quiz NoSQL",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon --watch . --ext ts --exec \"mocha -r ts-node/register ./src/test/*.test.ts\"",
+    "devstart": "tsc-watch --onSuccess \"node ./dist/app.js\"",
+    "build": "tsc",
+    "start": "node ./dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gruppe-NoSQL/nosql-quiz-backend.git"
+  },
+  "author": "CORE Development",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gruppe-NoSQL/nosql-quiz-backend/issues"
+  },
+  "homepage": "",
+  "dependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/compression": "^1.7.0",
+    "@types/connect-timeout": "0.0.34",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/ejs": "^3.0.2",
+    "@types/inversify": "^2.0.33",
+    "@types/jest": "^26.0.23",
+    "@types/mongoose": "^5.7.36",
+    "@types/morgan": "^1.9.0",
+    "@types/node": "^13.11.1",
+    "axios": "^0.19.2",
+    "bluebird": "^3.7.2",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "connect-timeout": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jest": "^27.0.4",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.9",
+    "morgan": "^1.10.0",
+    "readline": "^1.3.0",
+    "ts-jest": "^27.0.3",
+    "ts-node": "^8.8.2",
+    "tsc-watch": "^4.2.3",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/express": "^4.17.6",
+    "@types/mocha": "^7.0.2",
+    "@types/supertest": "^2.0.8",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2"
+  }
+}
