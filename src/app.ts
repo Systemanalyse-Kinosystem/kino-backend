@@ -21,12 +21,13 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(compression());
 app.use(cors());
 app.use(morgan('dev'));
+
+//API - router
+app.use('/api/v1', apiRouter);
+
 app.use('/', (req: express.Request, res: express.Response) => {  
     res.send("Hello World");
 });
-
-//API - router
-app.use('/api', apiRouter);
 
 //listen on port 3001
 app.listen(3001, () => console.log("Server started on Port: 3001"));
