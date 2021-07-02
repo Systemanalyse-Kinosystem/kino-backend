@@ -26,7 +26,9 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Create env File
-        run: echo "PORT=${{ secrets.PORT }}" > .env
+        run: | 
+          echo "PORT=${{ secrets.PORT }}" > .env
+          echo $"\nDATABASE_URL=mongodb+srv://${{ secrets.DATABASE_UNAME }}:${{ secrets.DATABASE_PASSWORD }}@kinoticketreservierungs.6zh8n.mongodb.net/data?retryWrites=true&w=majority" >> .env
       - name: Set Environment Variables
         run: |
           IMG=backend
