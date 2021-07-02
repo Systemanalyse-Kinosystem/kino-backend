@@ -26,7 +26,7 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Create env File
-        run: echo "PORT=3001" > .env
+        run: echo "PORT=${{ secrets.PORT }}" > .env
       - name: Set Environment Variables
         run: |
           IMG=backend
