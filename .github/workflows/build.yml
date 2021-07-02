@@ -8,8 +8,6 @@ jobs:
     permissions:
       packages: write
       contents: read
-    env:
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +16,7 @@ jobs:
           touch .env
           echo PORT=${{ secrets.PORT }} >> .env
           echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          cat .env
+          chmod 777 .env
           ls
       - uses: actions/setup-node@v1
         with:

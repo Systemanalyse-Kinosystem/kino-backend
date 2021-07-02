@@ -13,8 +13,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(process.env);
-
 //setup app
 const app = express();
 
