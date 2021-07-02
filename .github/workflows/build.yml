@@ -13,9 +13,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Make envfile
         run: |
-          touch .env
-          echo "PORT=${{ secrets.PORT }}" >> .env
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          touch ~/.env
+          echo "PORT=${{ secrets.PORT }}" >> ~/.env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ~/.env
           chmod 777 .env
           pwd
           ls
