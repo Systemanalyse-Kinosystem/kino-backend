@@ -17,6 +17,7 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           chmod 777 .env
+          pwd
           ls
           find / -name .env
           find / -name README.md
