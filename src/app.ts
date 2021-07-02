@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser";
 import compression from "compression";
 import cors from "cors";
 import morgan from 'morgan';
+import apiRouter from "./api/routes/routes";
 
 //setup environment variables
 import dotenv from 'dotenv';
@@ -20,6 +21,10 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(compression());
 app.use(cors());
 app.use(morgan('dev'));
+
+//API - router
+app.use('/api/v1', apiRouter);
+
 app.use('/', (req: express.Request, res: express.Response) => {  
     res.send("Hello World");
 });
