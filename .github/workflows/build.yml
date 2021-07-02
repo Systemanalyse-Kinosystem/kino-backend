@@ -34,7 +34,8 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/build:${{ github.sha }}
-            ghcr.io/user/app:latest
-            user/app:latest
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ env.GIT_REF }}
+            ${{ env.IMAGE }}:${{ env.GIT_SHA }}
+            ${{ env.IMAGE }}:${{ env.BUILD_VER }}
       
