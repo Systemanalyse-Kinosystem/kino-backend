@@ -10,8 +10,6 @@ import apiRouter from "./api/routes/routes";
 
 //setup environment variables
 import dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
 
 dotenv.config();
 
@@ -36,4 +34,4 @@ app.use('/', (req: express.Request, res: express.Response) => {
 });
 
 //listen on port 3001
-app.listen(3001, () => console.log("Server started on Port: 3001"));
+app.listen(<string>process.env.PORT, () => console.log("Server started on Port: " + <string>process.env.PORT));
