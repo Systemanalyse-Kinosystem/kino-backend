@@ -23,6 +23,18 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
+      - name: Set Environment Variables
+        run: |
+          IMG=backend
+          echo "::set-env name=BUILD_VER::1.0.$GITHUB_RUN_NUMBER"
+          echo "::set-env name=IMG::${IMG}"
+          echo "::set-env name=IMAGE::ghcr.io/${{ github.repository_owner }}/${IMG}"
+          echo "::set-env name=BUILD_DATE::$(date +'%Y-%m-%d %H:%M:%S')"
+          echo "::set-env name=GIT_SHA::$(echo ${{ github.sha }} | cut -c1-7)"
+          echo "::set-env name=GIT_REF::$(git symbolic-ref -q --short HEAD || git describe --tags --exact-match)"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       - name: Log in to GitHub Docker Registry
         uses: docker/login-action@v1
         with:
