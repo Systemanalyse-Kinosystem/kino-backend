@@ -14,11 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1
-        with:
-          PORT: ${{ secrets.PORT }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          file_name: .env
+        run: |
+          touch .env
+          echo PORT=${{ secrets.PORT }} >> .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
       - uses: actions/setup-node@v1
         with:
           node-version: 12
