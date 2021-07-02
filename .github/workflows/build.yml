@@ -28,7 +28,7 @@ jobs:
       - name: Create env File
         run: | 
           echo "PORT=${{ secrets.PORT }}" > .env
-          echo $"\nDATABASE_URL=mongodb+srv://${{ secrets.DATABASE_UNAME }}:${{ secrets.DATABASE_PASSWORD }}@kinoticketreservierungs.6zh8n.mongodb.net/data?retryWrites=true&w=majority" >> .env
+          echo "\nDATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
       - name: Set Environment Variables
         run: |
           IMG=backend
