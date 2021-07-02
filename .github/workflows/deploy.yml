@@ -1,0 +1,16 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: ["build"]
+    branches: [main]
+    types:
+      - completed
+
+jobs:
+  deploy-image:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: deploy
+        run: echo "Hello World"

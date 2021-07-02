@@ -3,7 +3,7 @@ name: build
 on: [push, pull_request]
 
 jobs:
-  test:
+  setup:
     runs-on: ubuntu-18.04
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
