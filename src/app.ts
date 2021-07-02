@@ -14,13 +14,12 @@ import fs from 'fs';
 import path from 'path';
 
 dotenv.config();
-let env: any = dotenv.parse(fs.readFileSync(path.join(__dirname, '../process.env')));
 
 //setup app
 const app = express();
 
 //setup database connection
-mongoose.connect(env.DATABASE_URL, { useNewUrlParser: true });
+mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true });
 
 //setup app config
 app.use(bodyParser.json({ limit: '50mb' }));
