@@ -8,16 +8,17 @@ jobs:
     permissions:
       packages: write
       contents: read
-    env:
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
     steps:
       - uses: actions/checkout@v2
       - name: Make envfile
         run: |
-          touch .env
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+          touch ~/.env
+          echo "PORT=${{ secrets.PORT }}" >> ~/.env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ~/.env
+          chmod 777 ~/.env
+          pwd
+          ls
       - uses: actions/setup-node@v1
         with:
           node-version: 12
