@@ -13,8 +13,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: delete gitignore
-
       - name: Make envfile
         run: |
           touch .env
