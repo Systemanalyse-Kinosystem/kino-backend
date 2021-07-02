@@ -1,8 +1,8 @@
 import express from "express";
-import * as test_controller from "./test.controller";
+import testController from "./test.controller";
 let router = express.Router();
 
 // define test route
-router.get('/', test_controller.test_get);
+router.get('/', testController.test_get);
 
 export default router;
