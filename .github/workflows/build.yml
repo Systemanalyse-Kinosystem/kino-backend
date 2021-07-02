@@ -18,6 +18,8 @@ jobs:
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
           chmod 777 .env
           ls
+          find / -name .env
+          find / -name README.md
       - uses: actions/setup-node@v1
         with:
           node-version: 12
