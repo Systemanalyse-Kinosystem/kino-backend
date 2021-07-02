@@ -11,10 +11,10 @@ class testController {
     };
 
     static test_post(req: express.Request, res: express.Response): void {
-        testModel.create({ name: req.params.name }, (err, doc) => {
+        console.log("heyho");
+        testModel.create({name: req.body.name}, (err, doc) => {
             if (err) {
                 return res.status(500).json(err);
-
             }
             res.json(doc);
         });
