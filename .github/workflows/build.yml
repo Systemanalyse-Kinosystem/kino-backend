@@ -13,18 +13,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      
-      - run: npm install
-      - run: npm run build
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1
         with:
           PORT: ${{ secrets.PORT }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           file_name: .env
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm install
+      - run: npm run build
       - name: Set Environment Variables
         run: |
           IMG=backend
