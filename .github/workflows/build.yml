@@ -19,8 +19,6 @@ jobs:
           chmod 777 .env
           pwd
           ls
-          find / -name .env
-          find / -name README.md
       - uses: actions/setup-node@v1
         with:
           node-version: 12
