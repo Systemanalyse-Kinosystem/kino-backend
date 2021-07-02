@@ -16,7 +16,7 @@ jobs:
           touch ~/.env
           echo "PORT=${{ secrets.PORT }}" >> ~/.env
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> ~/.env
-          chmod 777 .env
+          chmod 777 ~/.env
           pwd
           ls
       - uses: actions/setup-node@v1
