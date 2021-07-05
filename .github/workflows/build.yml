@@ -17,7 +17,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           PORT: ${{ secrets.PORT }}
         with:
-          variableName: PORTS,DATABASE_URL
+          variableNames: PORTS,DATABASE_URL
       - uses: actions/setup-node@v1
         with:
           node-version: 12
