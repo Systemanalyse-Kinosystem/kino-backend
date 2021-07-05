@@ -35,3 +35,5 @@ app.use('/', (req: express.Request, res: express.Response) => {
 
 //listen on port 3001
 app.listen(<string>process.env.PORT, () => console.log("Server started on Port: " + <string>process.env.PORT));
+
+export default app;
