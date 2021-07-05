@@ -16,10 +16,10 @@ jobs:
           PORT: ${{ secrets.SSH_PORT }}
           script: |
             # Stop running container
-            docker stop ${{ github.repository }}
+            docker stop backend
 
             # Remove old container
-            docker rm ${{ github.repository }}
+            docker rm backend
 
             # Login to Github Container Registry
             docker login https://ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.CR_PAT }}
@@ -28,11 +28,5 @@ jobs:
             docker pull ghcr.io/${{ github.repository_owner }}/backend:latest
 
             # Run Container
-            docker run -d \
-            --restart always \
-            --env PORT=${{ secrets.PORT }} \
-            --env DATABASE_URL=${{ secrets.DATABASE_URL }} \
-            -p 9000:3001 \
-            --name $(echo $${{ github.repository }}) \
-            ghcr.io/${{ github.repository }}/backend:latest
+            docker run -d --restart always --env PORT=${{ secrets.PORT }} --env DATABASE_URL=${{ secrets.DATABASE_URL }} -p 9000:3001 --name "backend" ghcr.io/${{ github.repository }}/backend:latest
       
