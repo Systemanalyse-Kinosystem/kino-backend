@@ -5,9 +5,6 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      PORT: ${{ secrets.PORT }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     permissions:
       packages: write
       contents: read
@@ -15,9 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Creating .env file
-        uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
-        with:
-          variableNames: PORT,DATABASE_URL
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
+          echo "IMG=${{ secrets.PORT }}" >> $GITHUB_ENV
       - uses: actions/setup-node@v1
         with:
           node-version: 12
