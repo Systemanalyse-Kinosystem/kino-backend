@@ -11,13 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Creating .env file
-        uses: fmunirdev/envvar-to-dotenv-action@v0.1.0
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PORT: ${{ secrets.PORT }}
-        with:
-          variableNames: PORTS,DATABASE_URL
       - uses: actions/setup-node@v1
         with:
           node-version: 12
@@ -43,6 +36,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build container image
         uses: docker/build-push-action@v2
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PORT: ${{ secrets.PORT }}
         with:
           push: true
           tags: |
