@@ -28,5 +28,5 @@ jobs:
             docker pull ghcr.io/${{ github.repository_owner }}/backend:latest
 
             # Run Container
-            docker run -d --restart always --env PORT=${{ secrets.PORT }} --env DATABASE_URL=${{ secrets.DATABASE_URL }} -p 9000:${{ secrets.PORT }} --name "backend" ghcr.io/${{ github.repository_owner }}/backend:latest
+            docker run -p 9000:${{ secrets.PORT }} -d --restart always --env PORT=${{ secrets.PORT }} --env DATABASE_URL=${{ secrets.DATABASE_URL }} --name "backend" ghcr.io/${{ github.repository_owner }}/backend:latest
       
