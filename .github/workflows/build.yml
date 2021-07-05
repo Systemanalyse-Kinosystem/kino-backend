@@ -25,7 +25,7 @@ jobs:
             docker login https://ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.CR_PAT }}
 
             # Pull the Docker Image 
-            docker pull ghcr.io/${{ github.GITHUB_WORKSPACE }}/backend:latest
+            docker pull ghcr.io/${{ github.repository_owner }}/backend:latest
 
             # Run Container
             docker run -d \
