@@ -34,14 +34,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: iamsauravsharma/create-dotenv@v1.2.0
-        with:
-            file-name: '.env'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PORT: ${{ secrets.PORT }}
-      - name: Test
-        run: ls
       - name: Build container image
         uses: docker/build-push-action@v2
         with:
