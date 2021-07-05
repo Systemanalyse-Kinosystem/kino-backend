@@ -12,9 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Creating .env file
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
-          echo "IMG=${{ secrets.PORT }}" >> $GITHUB_ENV
+        uses: fmunirdev/envvar-to-dotenv-action@v0.1.0
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PORT: ${{ secrets.PORT }}
+        with:
+          variableName: PORTS,DATABASE_URL
       - uses: actions/setup-node@v1
         with:
           node-version: 12
