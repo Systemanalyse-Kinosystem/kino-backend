@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PORT: ${{ secrets.PORT }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     permissions:
       packages: write
       contents: read
@@ -12,12 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Creating .env file
-        uses: fmunirdev/envvar-to-dotenv-action@v0.1.0
-        env:
-          PORT: ${{ secrets.PORT }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        uses: CallePuzzle/envvar-to-dotenv-action@0.1.0
         with:
-          variableName: PORT,DATABASE_URL
+          variableNames: PORT,DATABASE_URL
       - uses: actions/setup-node@v1
         with:
           node-version: 12
