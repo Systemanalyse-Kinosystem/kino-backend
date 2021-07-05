@@ -16,16 +16,16 @@ jobs:
           PORT: ${{ secrets.SSH_PORT }}
           script: |
             # Stop running container
-            docker stop ${{ github.repository_owner }}
+            docker stop ${{ github.repository }}
 
             # Remove old container
-            docker rm ${{ github.repository_owner }}
+            docker rm ${{ github.repository }}
 
             # Login to Github Container Registry
             docker login https://ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.CR_PAT }}
 
             # Pull the Docker Image 
-            docker pull ghcr.io/${{ github.repository }}/backend:latest
+            docker pull ghcr.io/${{ github.GITHUB_WORKSPACE }}/backend:latest
 
             # Run Container
             docker run -d \
