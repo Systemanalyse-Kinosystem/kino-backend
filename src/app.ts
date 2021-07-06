@@ -30,7 +30,7 @@ app.use(morgan('dev'));
 app.use('/api/v1', apiRouter);
 
 app.use('/', (req: express.Request, res: express.Response) => {
-    res.send("Hello World");
+    res.send("Hello World from CI/CD");
 });
 
 //listen on port 3001
