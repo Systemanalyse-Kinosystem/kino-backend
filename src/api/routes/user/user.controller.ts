@@ -59,7 +59,7 @@ export default class testController {
     }
 
     private static createToken(user: IUser): ITokenData {
-        const expiresIn = 1; 
+        const expiresIn = 60 * 60; 
         const secret = <string>process.env.JWT_SECRET;
         const dataStoredInToken: IDataStoredInToken = {
           _id: user._id,
