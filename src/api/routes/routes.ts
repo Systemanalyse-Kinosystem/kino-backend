@@ -1,5 +1,5 @@
 import express from "express";
-import userRouter from "./test/user.router";
+import userRouter from "./user/user.router";
 let router = express.Router();
 
 // define test route

@@ -7,4 +7,6 @@ const schema = new Schema<IUser>({
   password: {type: String, required: true}
 });
 
+
+
 export default model<IUser>('User', schema);
