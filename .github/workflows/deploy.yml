@@ -28,4 +28,12 @@ jobs:
             # Pull the Docker Image 
             docker pull ghcr.io/${{ github.repository_owner }}/backend:latest
             # Run Container
-            docker run -p 9000:${{ secrets.PORT }} --name "backend" -d --restart always --env PORT=${{ secrets.PORT }} --env DATABASE_URL="${{ secrets.DATABASE_URL }}" ghcr.io/${{ github.repository_owner }}/backend:latest
+            docker run -p 9000:${{ secrets.PORT }} --name "backend" -d \
+            --restart always --env PORT=${{ secrets.PORT }} \
+            --env DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+            --label 'traefik.enable=true' \
+            --label 'traefik.frontend.rule=Host:api.kino.fynn-weyrich.de' \
+            --label 'traefik.docker.network=web' \
+            --label 'treafik.port=9000' \
+            --network 'web' \
+            ghcr.io/${{ github.repository_owner }}/backend:latest
