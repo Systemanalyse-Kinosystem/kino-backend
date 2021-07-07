@@ -48,9 +48,9 @@ export default class userController {
         User.findOneAndDelete({
             _id: req.params.id,
             role: 'user'
-        }, {}, (err: Error) => {
+        }, {}, (err: Error, user: IUser | null) => {
             if (err) { return res.status(500).json(err) }
-            res.status(204).send();
+            res.status(204).json({});
         });
     }
 
@@ -65,7 +65,7 @@ export default class userController {
             },
             req.body,
             { new: true },
-            (err: Error, user: any) => {
+            (err: Error, user: IUser | null) => {
                 if (err) { return res.status(500).json(err) }
                 if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
                 res.json(user);
