@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../../models/user.model";
 import IUser from "../../interfaces/user.interface";
 import bcrypt from "bcrypt";
+import { CallbackError } from "mongoose";
 
 export default class userController {
 
@@ -48,7 +49,7 @@ export default class userController {
         User.findOneAndDelete({
             _id: req.params.id,
             role: 'user'
-        }, {}, (err: Error, user: IUser | null) => {
+        }, {}, (err: Error | null, user: IUser | null) => {
             if (err) { return res.status(500).json(err) }
             res.status(204).json({});
         });
