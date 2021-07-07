@@ -9,7 +9,7 @@ export default class userController {
     static async getUserList(req: Request, res: Response) {
         User.find({ role: 'user' }, (err, user) => {
             if (err) { return res.status(500).json(err) }
-            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
+            if (!user) { return res.status(500).json({ err: "An CallbackError occurred" }); }
             res.json(user);
         })
     };
@@ -20,22 +20,22 @@ export default class userController {
             role: 'user'
         }, (err, user) => {
             if (err) { return res.status(500).json(err) }
-            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
+            if (!user) { return res.status(500).json({ err: "An CallbackError occurred" }); }
             res.json(user);
         })
     };
 
     static async createUser(req: Request, res: Response) {
 
-        User.findOne({ email: req.body.email }, async (err: Error, user: IUser) => {
-            if (err) { return res.status(401).json({ err: "An Error occurred" }); }
-            //if user already exists, send error 
-            if (user) { return res.status(401).json({ err: "An Error occurred" }); }
+        User.findOne({ email: req.body.email }, async (err: CallbackError, user: IUser) => {
+            if (err) { return res.status(401).json({ err: "An CallbackError occurred" }); }
+            //if user already exists, send CallbackError 
+            if (user) { return res.status(401).json({ err: "An CallbackError occurred" }); }
 
             req.body.password = await bcrypt.hash(req.body.password, 10);
             req.body.role = 'user';
 
-            User.create(req.body, (err: Error, user: IUser) => {
+            User.create(req.body, (err: CallbackError, user: IUser) => {
                 if (err) {
                     return res.status(500).json(err);
                 }
@@ -49,7 +49,7 @@ export default class userController {
         User.findOneAndDelete({
             _id: req.params.id,
             role: 'user'
-        }, {}, (err: Error | null, user: IUser | null) => {
+        }, {}, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return res.status(500).json(err) }
             res.status(204).json({});
         });
@@ -66,9 +66,9 @@ export default class userController {
             },
             req.body,
             { new: true },
-            (err: Error, user: IUser | null) => {
+            (err: CallbackError, user: IUser | null) => {
                 if (err) { return res.status(500).json(err) }
-                if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
+                if (!user) { return res.status(500).json({ err: "An CallbackError occurred" }); }
                 res.json(user);
             })
     }
