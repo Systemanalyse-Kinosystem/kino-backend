@@ -9,7 +9,6 @@ class authenticationMiddleware {
             const secret = <string>process.env.JWT_SECRET;
             try {
                 const verificationResponse = <IDataStoredInToken>jwt.verify(req.headers.auth, secret);
-                console.log(verificationResponse);
                 const user = await User.findOne({
                     _id: verificationResponse._id,
                     role: { '$in': roles }

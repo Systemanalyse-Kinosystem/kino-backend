@@ -6,7 +6,7 @@ import { IDataStoredInToken, ITokenData, IRequestWithUser } from "../../interfac
 import jwt from "jsonwebtoken";
 import { CallbackError } from "mongoose";
 
-export default class testController {
+export default class AuthenticationController {
     static async login(req: Request, res: Response) {
         userModel.findOne({ email: req.body.email }, async (err: CallbackError, user: IUser) => {
             if (err) { return res.status(401).json({ err: "An CallbackError occurred" }); }
@@ -15,7 +15,8 @@ export default class testController {
                 user.password = "";
                 res.json({
                     email: user.email,
-                    token: testController.createToken(user)
+                    token: AuthenticationController
+                .createToken(user)
                 });
 
             }
@@ -23,7 +24,7 @@ export default class testController {
     }
 
     private static createToken(user: IUser): ITokenData {
-        const expiresIn = 60 * 60;
+        const expiresIn = 60 * 60 * 4;
         const secret = <string>process.env.JWT_SECRET;
         const dataStoredInToken: IDataStoredInToken = {
             _id: user._id
