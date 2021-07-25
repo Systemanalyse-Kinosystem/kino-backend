@@ -21,6 +21,4 @@ const schema = new Schema<ICinema>({
     timestamps: {createdAt: 'createdAt'}
   });
 
-
-
 export default model<ICinema>('Cinema', schema);

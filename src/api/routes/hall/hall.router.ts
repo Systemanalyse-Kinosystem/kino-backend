@@ -10,6 +10,6 @@ router.get('/:id', authenticationMiddleware.getAuthenticationMiddleware(['sysadm
 router.post('/', cinemaController.createCinema);
 router.put('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin']), cinemaController.updateCinemaById);
 router.delete('/:id', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), cinemaController.deleteCinemaById);
-//router.delete('/', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), cinemaController.deleteCinemas);
+router.delete('/', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), cinemaController.deleteCinemas);
 
 export default router;

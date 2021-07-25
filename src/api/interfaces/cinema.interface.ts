@@ -6,6 +6,7 @@ interface ICinema extends Document {
     updatedAt: string;
     name: string;
     adminMail: string;
+    halls: [string];
     adress: {
         street: string;
         postalCode: number;
