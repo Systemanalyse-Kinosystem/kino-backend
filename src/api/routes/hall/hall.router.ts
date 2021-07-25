@@ -1,15 +1,15 @@
 import express from "express";
-import cinemaController from "./cinema.controller";
+import hallController from "./hall.controller";
 import authenticationMiddleware from "../../middlewares/auth.middlewares";
 
 let router = express.Router();
 
 // define test route
-router.get('/', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), cinemaController.getCinemaList );
-router.get('/:id', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), cinemaController.getCinemaById);
-router.post('/', cinemaController.createCinema);
-router.put('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin']), cinemaController.updateCinemaById);
-router.delete('/:id', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), cinemaController.deleteCinemaById);
-router.delete('/', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), cinemaController.deleteCinemas);
+router.get('/', authenticationMiddleware.getAuthenticationMiddleware(['user','admin']), hallController.getHallList );
+router.get('/:id', authenticationMiddleware.getAuthenticationMiddleware(['user','admin']), hallController.getHallById);
+router.post('/', authenticationMiddleware.getAuthenticationMiddleware(['user','admin']), hallController.createHall);
+router.put('/:id', authenticationMiddleware.getAuthenticationMiddleware(['user','admin']), hallController.updateHallById);
+router.delete('/:id', authenticationMiddleware.getAuthenticationMiddleware(['user','admin']), hallController.deleteHallById);
+//router.delete('/', authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']), hallController.deleteHalls);
 
 export default router;
