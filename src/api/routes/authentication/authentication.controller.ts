@@ -8,15 +8,14 @@ import { CallbackError } from "mongoose";
 
 export default class AuthenticationController {
     static async login(req: Request, res: Response) {
-        userModel.findOne({ email: req.body.email }, async (err: CallbackError, user: IUser) => {
-            if (err) { return res.status(401).json({ err: "An CallbackError occurred" }); }
-            if (!user) { return res.status(500).json({ err: "An CallbackError occurred" }); }
+        userModel.findOne({ email: req.body.email }, async (err: CallbackError | null, user: IUser | null) => {
+            if (err) { return res.status(401).json({ err: "An Error occurred" }); }
+            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             if (await bcrypt.compare(req.body.password, user.password)) {
                 user.password = "";
                 res.json({
                     email: user.email,
-                    token: AuthenticationController
-                .createToken(user)
+                    token: AuthenticationController.createToken(user)
                 });
 
             }
@@ -37,18 +36,17 @@ export default class AuthenticationController {
 
     static registerCustomer(req: Request, res: Response) {
 
-        userModel.findOne({ email: req.body.email }, async (err: CallbackError, user: IUser) => {
-            if (err) { return res.status(401).json({ err: "An CallbackError occurred" }); }
-            //if user already exists, send CallbackError 
-            if (user) { return res.status(401).json({ err: "An CallbackError occurred" }); }
+        userModel.findOne({ email: req.body.email }, async (err: CallbackError | null, user: IUser | null) => {
+            //check if user with this email already exists
+            if (err || user) { return res.status(401).json({ err: "An CallbackError occurred" }); }
 
             req.body.password = await bcrypt.hash(req.body.password, 10);
 
             userModel.create({
                 ...req.body,
                 role: 'customer'
-            }, (err: CallbackError, user: IUser) => {
-                if (err) {
+            }, (err: CallbackError | null, user: IUser | null) => {
+                if (err || !user) {
                     return res.status(500).json(err);
                 }
                 user.password = "";
