@@ -10,32 +10,28 @@ import { createNoSubstitutionTemplateLiteral } from "typescript";
 export default class cinemaController {
 
     static async getCinemaList(req: Request, res: Response) {
-        Cinema.find((err: CallbackError, cinema: ICinema | null) => {
-            if (err) { return res.status(500).json(err) }
-            if (!cinema) { return res.status(500).json({ err: "An Error occured" }); }
+        Cinema.find((err: CallbackError | null, cinema: ICinema | null) => {
+            if (!cinema || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(cinema);
         })
     };
 
     static getCinemaById(req: Request, res: Response) {
-        Cinema.findById(req.params.id, (err: CallbackError, cinema: ICinema | null) => {
-            if (err) { return res.status(500).json(err) }
-            if (!cinema) { return res.status(500).json({ err: "An Error occured" }); }
+        Cinema.findById(req.params.id, (err: CallbackError | null, cinema: ICinema | null) => {
+            if (!cinema || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(cinema);
         })
     };
 
     static async createCinema(req: Request, res: Response) {
           
-        User.findOne({ email: req.body.adminMail }, async (err: CallbackError, user: IUser) => {
-            if (err) { return res.status(401).json({ err: "An Error occured" }); }
-            //if user already exists, send CallbackError 
-            if (user) { return res.status(401).json({ err: "An Error occured" }); }
+        User.findOne({ email: req.body.adminMail }, async (err: CallbackError | null, user: IUser | null) => {
+            if (err || user) { return res.status(401).json({ err: "An Error occured" }); }
 
             let password = await bcrypt.hash('test1234', 10);
 
-            Cinema.create(req.body, (err: CallbackError, cinema: ICinema) => {
-                if (err) {
+            Cinema.create(req.body, (err: CallbackError | null, cinema: ICinema | null) => {
+                if (err || !cinema) {
                     return res.status(500).json(err);
                 }
                 User.create({
@@ -44,8 +40,8 @@ export default class cinemaController {
                     password: password,
                     role: 'admin',
                     cinema: cinema._id
-                }, (err: CallbackError, user: IUser) => {
-                    if (err) {
+                }, (err: CallbackError | null, user: IUser | null) => {
+                    if (err || !user) {
                         return res.status(500).json(err);
                     }
                     res.status(201).json({
@@ -84,9 +80,8 @@ export default class cinemaController {
             },
             req.body,
             { new: true },
-            (err: CallbackError, cinema: ICinema | null) => {
-                if (err) { return res.status(500).json(err) }
-                if (!cinema) { return res.status(500).json({ err: "An Error occured" }); }
+            (err: CallbackError | null, cinema: ICinema | null) => {
+                if (!cinema || err) { return res.status(500).json({ err: "An Error occured" }); }
                 res.json(cinema);
             })
     }

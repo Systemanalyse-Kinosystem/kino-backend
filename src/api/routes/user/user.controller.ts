@@ -10,9 +10,10 @@ export default class userController {
         User.find({
             role: 'user',
             cinema: (<IRequestWithUser>req).user.cinema
-        }, (err, user) => {
+        }, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return res.status(500).json(err) }
             if (!user) { return res.status(500).json({ err: "An Error occured" }); }
+            user.password = "";
             res.json(user);
         })
     };
@@ -22,26 +23,25 @@ export default class userController {
             _id: req.params.id,
             role: 'user',
             cinema: (<IRequestWithUser>req).user.cinema
-        }, (err, user) => {
-            if (err) { return res.status(500).json(err) }
-            if (!user) { return res.status(500).json({ err: "An Error occured" }); }
+        }, (err: CallbackError | null, user: IUser | null) => {
+            if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
+            user.password = "";
             res.json(user);
         })
     };
 
     static async createUser(req: Request, res: Response) {
 
-        User.findOne({ email: req.body.email }, async (err: CallbackError, user: IUser) => {
-            if (err) { return res.status(401).json({ err: "An Error occured" }); }
-            //if user already exists, send CallbackError 
-            if (user) { return res.status(401).json({ err: "An Error occured" }); }
+        User.findOne({ email: req.body.email }, async (err: CallbackError | null, user: IUser | null) => {
+            //check if user already exists
+            if (err || user) { return res.status(401).json({ err: "An Error occured" }); }
 
             req.body.password = await bcrypt.hash(req.body.password, 10);
             req.body.role = 'user';
             req.body.cinema = (<IRequestWithUser>req).user.cinema;
 
-            User.create(req.body, (err: CallbackError, user: IUser) => {
-                if (err) {
+            User.create(req.body, (err: CallbackError | null, user: IUser | null) => {
+                if (err || !user) {
                     return res.status(500).json(err);
                 }
                 user.password = "";
@@ -73,9 +73,8 @@ export default class userController {
             },
             req.body,
             { new: true },
-            (err: CallbackError, user: IUser | null) => {
-                if (err) { return res.status(500).json(err) }
-                if (!user) { return res.status(500).json({ err: "An Error occured" }); }
+            (err: CallbackError | null, user: IUser | null) => {
+                if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
                 res.json(user);
             })
     }

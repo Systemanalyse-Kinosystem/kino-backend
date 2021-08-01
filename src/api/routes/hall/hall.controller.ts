@@ -9,9 +9,8 @@ export default class hallController {
     static getHallList(req: Request, res: Response) {
         Hall.find({
             cinema: (<IRequestWithUser>req).user.cinema
-        }, (err: CallbackError, hall: IHall | null) => {
-            if (err) { return res.status(500).json(err) }
-            if (!hall) { return res.status(500).json({ err: "An Error occured" }); }
+        }, (err: CallbackError | null, hall: IHall | null) => {
+            if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(hall);
         })
     };
@@ -20,9 +19,8 @@ export default class hallController {
         Hall.findOne({
             _id: req.params.id,
             cinema: (<IRequestWithUser>req).user.cinema
-        }, (err: CallbackError, hall: IHall | null) => {
-            if (err) { return res.status(500).json(err) }
-            if (!hall) { return res.status(500).json({ err: "An Error occured" }); }
+        }, (err: CallbackError | null, hall: IHall | null) => {
+            if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(hall);
         })
     };
@@ -31,8 +29,8 @@ export default class hallController {
         Hall.create({
             ...req.body,
             cinema: (<IRequestWithUser>req).user.cinema
-        }, (err: CallbackError, hall: IHall) => {
-            if (err) {
+        }, (err: CallbackError | null, hall: IHall | null) => {
+            if (err || !hall) {
                 return res.status(500).json(err);
             }
             res.json(hall);
@@ -64,9 +62,8 @@ export default class hallController {
             },
             req.body,
             { new: true },
-            (err: CallbackError, hall: IHall | null) => {
-                if (err) { return res.status(500).json(err) }
-                if (!hall) { return res.status(500).json({ err: "An Error occured" }); }
+            (err: CallbackError | null, hall: IHall | null) => {
+                if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
                 res.json(hall);
             })
     }
