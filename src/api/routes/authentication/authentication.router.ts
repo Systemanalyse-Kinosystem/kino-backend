@@ -4,5 +4,7 @@ import authenticationController from "./../authentication/authentication.control
 let router = express.Router();
 
 router.post('/login', authenticationController.login);
+//aktivieren, wenn die Customer Routes bestehen
+//router.get('/register', authenticationController.registerCustomer)
 
 export default router;
