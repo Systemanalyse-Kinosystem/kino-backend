@@ -1,7 +1,7 @@
 import express from "express";
 import authenticationRouter from "../routes/authentication/authentication.router";
 import userRouter from "./user/user.router";
-import cinemaRouter from "./cinema/cinema.router";
+import cinemaRouter from "./z_old_cinema/cinema.router";
 import hallRouter from "./hall/hall.router";
 let router = express.Router();
 
