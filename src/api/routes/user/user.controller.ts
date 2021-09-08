@@ -7,10 +7,7 @@ import { IRequestWithUser } from "../../interfaces/jwt.interface";
 
 export default class userController {
     static async getUserList(req: Request, res: Response) {
-        User.find({
-            role: 'user',
-            cinema: (<IRequestWithUser>req).user.cinema
-        }, (err: CallbackError | null, user: IUser | null) => {
+        User.find({role: 'user'}, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return res.status(500).json(err) }
             if (!user) { return res.status(500).json({ err: "An Error occured" }); }
             user.password = "";
@@ -21,8 +18,7 @@ export default class userController {
     static getUserById(req: Request, res: Response) {
         User.find({
             _id: req.params.id,
-            role: 'user',
-            cinema: (<IRequestWithUser>req).user.cinema
+            role: 'user'
         }, (err: CallbackError | null, user: IUser | null) => {
             if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
             user.password = "";
@@ -38,7 +34,6 @@ export default class userController {
 
             req.body.password = await bcrypt.hash(req.body.password, 10);
             req.body.role = 'user';
-            req.body.cinema = (<IRequestWithUser>req).user.cinema;
 
             User.create(req.body, (err: CallbackError | null, user: IUser | null) => {
                 if (err || !user) {
@@ -53,8 +48,7 @@ export default class userController {
     static async deleteUserById(req: Request, res: Response) {
         User.findOneAndDelete({
             _id: req.params.id,
-            role: 'user',
-            cinema: (<IRequestWithUser>req).user.cinema
+            role: 'user'
         }, {}, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return res.status(500).json(err) }
             res.status(204).json({});
@@ -69,7 +63,6 @@ export default class userController {
             {
                 _id: req.params.id,
                 role: 'user',
-                cinema: (<IRequestWithUser>req).user.cinema
             },
             req.body,
             { new: true },

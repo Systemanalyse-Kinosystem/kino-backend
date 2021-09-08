@@ -7,29 +7,21 @@ import { CallbackError } from "mongoose";
 export default class hallController {
 
     static getHallList(req: Request, res: Response) {
-        Hall.find({
-            cinema: (<IRequestWithUser>req).user.cinema
-        }, (err: CallbackError | null, hall: IHall | null) => {
+        Hall.find({}, (err: CallbackError | null, hall: IHall | null) => {
             if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(hall);
         })
     };
 
     static getHallById(req: Request, res: Response) {
-        Hall.findOne({
-            _id: req.params.id,
-            cinema: (<IRequestWithUser>req).user.cinema
-        }, (err: CallbackError | null, hall: IHall | null) => {
+        Hall.findOne({_id: req.params.id}, (err: CallbackError | null, hall: IHall | null) => {
             if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(hall);
         })
     };
 
     static createHall(req: Request, res: Response) {
-        Hall.create({
-            ...req.body,
-            cinema: (<IRequestWithUser>req).user.cinema
-        }, (err: CallbackError | null, hall: IHall | null) => {
+        Hall.create(req.body, (err: CallbackError | null, hall: IHall | null) => {
             if (err || !hall) {
                 return res.status(500).json(err);
             }
@@ -38,10 +30,7 @@ export default class hallController {
     }
 
     static async deleteHallById(req: Request, res: Response) {
-        Hall.findOneAndDelete({
-            _id: req.params.id,
-            cinema: (<IRequestWithUser>req).user.cinema
-        }, {}, (err: CallbackError | null, hall: IHall | null) => {
+        Hall.findOneAndDelete({_id: req.params.id}, {}, (err: CallbackError | null, hall: IHall | null) => {
             if (err) { return res.status(500).json(err) }
             res.status(204).json({});
         });
@@ -55,11 +44,7 @@ export default class hallController {
     }
 
     static async updateHallById(req: Request, res: Response) {
-        Hall.findOneAndUpdate(
-            {
-                _id: req.params.id,
-                cinema: (<IRequestWithUser>req).user.cinema
-            },
+        Hall.findOneAndUpdate({_id: req.params.id},
             req.body,
             { new: true },
             (err: CallbackError | null, hall: IHall | null) => {

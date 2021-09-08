@@ -55,9 +55,7 @@ export default class cinemaController {
     }
 
     static async deleteCinemaById(req: Request, res: Response) {
-        Cinema.findOneAndDelete({
-            _id: req.params.id
-        }, {}, (err: CallbackError | null, cinema: ICinema | null) => {
+        Cinema.findOneAndDelete({_id: req.params.id}, {}, (err: CallbackError | null, cinema: ICinema | null) => {
             if (err) { return res.status(500).json(err) }
             res.status(204).json({});
         });
@@ -74,10 +72,7 @@ export default class cinemaController {
         if (req.body.password) {
             req.body.password = await bcrypt.hash(req.body.password, 10);
         }
-        Cinema.findOneAndUpdate(
-            {
-                _id: req.params.id
-            },
+        Cinema.findOneAndUpdate({_id: req.params.id},
             req.body,
             { new: true },
             (err: CallbackError | null, cinema: ICinema | null) => {

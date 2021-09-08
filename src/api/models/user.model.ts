@@ -5,7 +5,6 @@ const schema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  cinema: {type: Schema.Types.ObjectId, ref:'Cinema'},
   role: {
     type: String,
     enum: ['customer', 'admin', 'user', 'sysadmin'],
