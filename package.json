@@ -1,7 +1,7 @@
 {
-  "name": "nosql-quiz-backend",
+  "name": "systemanalyse-kinosystem",
   "version": "1.0.0",
-  "description": "Backend Quiz NoSQL",
+  "description": "Kinoticketreservierungssystem für Systemanalyse und Entwurf",
   "main": "app.js",
   "scripts": {
     "test": "mocha -r ts-node/register ./src/test/*.test.ts --exit",
@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gruppe-NoSQL/nosql-quiz-backend.git"
+    "url": "git+https://github.com/systemanalyse-kinosystem/kino-backend.git"
   },
-  "author": "CORE Development",
+  "author": "WI20SEA - Robin, Fynn",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Gruppe-NoSQL/nosql-quiz-backend/issues"
+    "url": "https://github.com/systemanalyse-kinosystem/kino-backend/issues"
   },
   "homepage": "",
   "dependencies": {
