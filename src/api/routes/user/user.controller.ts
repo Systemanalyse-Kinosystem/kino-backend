@@ -15,8 +15,19 @@ export default class userController {
     };
 
     static getUserById(req: Request, res: Response) {
+        
         User.find({
             _id: req.params.id,
+            role: 'user'
+        }, (err: CallbackError | null, user: IUser | null) => {
+            if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
+            res.json(user);
+        })
+    };
+
+    static getLoggedInUser(req: Request, res: Response) {
+        User.findOne({
+            _id: (<IRequestWithUser>req).user.id,
             role: 'user'
         }, (err: CallbackError | null, user: IUser | null) => {
             if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
@@ -59,6 +70,23 @@ export default class userController {
         User.findOneAndUpdate(
             {
                 _id: req.params.id,
+                role: 'user',
+            },
+            req.body,
+            { new: true },
+            (err: CallbackError | null, user: IUser | null) => {
+                if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
+                res.json(user);
+            })
+    }
+
+    static async updateLoggedInUser(req: Request, res: Response) {
+        if (req.body.password) {
+            req.body.password = await bcrypt.hash(req.body.password, 10);
+        }
+        User.findOneAndUpdate(
+            {
+                _id: (<IRequestWithUser>req).user.id,
                 role: 'user',
             },
             req.body,

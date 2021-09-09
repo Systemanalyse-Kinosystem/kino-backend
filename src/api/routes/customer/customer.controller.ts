@@ -23,7 +23,6 @@ export default class customerController {
     };
 
     static getLoggedInCustomer(req: Request, res: Response) {
-
         User.findOne({ role: 'customer', _id: (<IRequestWithUser>req).user.id }, (err: CallbackError | null, user: IUser | null) => {
             if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
@@ -66,6 +65,13 @@ export default class customerController {
 
     static updateCustomerById(req: Request, res: Response) {
         User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
+            if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
+            res.json(user);
+        });
+    }
+
+    static updateLoggedInCustomer(req: Request, res: Response) {
+        User.findOneAndUpdate({ _id:  (<IRequestWithUser>req).user.id  }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
             if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
         });
