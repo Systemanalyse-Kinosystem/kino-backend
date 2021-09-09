@@ -7,7 +7,8 @@ let router = express.Router();
 router.get('/me', authenticationMiddleware.getAuthenticationMiddleware(['customer']), customerController.getLoggedInCustomer);
 router.get('/', authenticationMiddleware.getAuthenticationMiddleware(['admin']), customerController.getCustomerList);
 router.get('/', authenticationMiddleware.getAuthenticationMiddleware(['admin', 'customer']), customerController.getCustomerById);
-//router.post('/', authenticationMiddleware.getAuthenticationMiddleware(['user', 'admin']), customerController.createCustomer);
+//router.post('/', authenticationMiddleware.getAuthenticationMiddleware(['user', 'admin']), customerController.createCustomer); 
+//see /register in authentication module
 router.put('/:id', authenticationMiddleware.getAuthenticationMiddleware(['customer', 'admin']), customerController.updateCustomerById);
 router.delete('/:id', authenticationMiddleware.getAuthenticationMiddleware(['customer', 'admin']), customerController.deleteCustomerById);
 router.delete('/', authenticationMiddleware.getAuthenticationMiddleware(['admin']), customerController.deleteCustomers);

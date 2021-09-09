@@ -30,6 +30,7 @@ export default class customerController {
         })
     }
 
+    /* see /register in authentication module
     static createCustomer(req: Request, res: Response) {
         User.findOne({ email: req.body.email, role: 'customer' }, async (err: CallbackError | null, user: IUser | null) => {
             //check if user already exists
@@ -47,6 +48,7 @@ export default class customerController {
             });
         });
     }
+    */
 
     static deleteCustomerById(req: Request, res: Response) {
         User.findOneAndDelete({
