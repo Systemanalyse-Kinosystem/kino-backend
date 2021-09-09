@@ -7,10 +7,9 @@ import { IRequestWithUser } from "../../interfaces/jwt.interface";
 
 export default class userController {
     static async getUserList(req: Request, res: Response) {
-        User.find({role: 'user'}, (err: CallbackError | null, user: IUser | null) => {
+        User.find({ role: 'user' }, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return res.status(500).json(err) }
             if (!user) { return res.status(500).json({ err: "An Error occured" }); }
-            user.password = "";
             res.json(user);
         })
     };
@@ -21,14 +20,13 @@ export default class userController {
             role: 'user'
         }, (err: CallbackError | null, user: IUser | null) => {
             if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
-            user.password = "";
             res.json(user);
         })
     };
 
     static async createUser(req: Request, res: Response) {
 
-        User.findOne({ email: req.body.email }, async (err: CallbackError | null, user: IUser | null) => {
+        User.findOne({ email: req.body.email, role: 'user' }, async (err: CallbackError | null, user: IUser | null) => {
             //check if user already exists
             if (err || user) { return res.status(401).json({ err: "An Error occured" }); }
 
@@ -39,7 +37,6 @@ export default class userController {
                 if (err || !user) {
                     return res.status(500).json(err);
                 }
-                user.password = "";
                 res.status(201).json(user);
             });
         });

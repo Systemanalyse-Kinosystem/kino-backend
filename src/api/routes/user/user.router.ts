@@ -5,7 +5,7 @@ import authenticationMiddleware from "../../middlewares/auth.middlewares";
 let router = express.Router();
 
 // define test route
-router.get('/', authenticationMiddleware.getAuthenticationMiddleware(['user', 'admin']), userController.getUserList );
+router.get('/', authenticationMiddleware.getAuthenticationMiddleware(['user', 'admin']), userController.getUserList);
 router.get('/:id', authenticationMiddleware.getAuthenticationMiddleware(['user', 'admin']), userController.getUserById);
 router.post('/', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.createUser);
 router.put('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin', 'user']), userController.updateUserById);
