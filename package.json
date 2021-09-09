@@ -4,7 +4,7 @@
   "description": "Kinoticketreservierungssystem für Systemanalyse und Entwurf",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=html --all --reporter=text mocha -r ts-node/register ./src/test/*.test.ts --exit",
+    "test": "nyc --reporter=html --temp-dir=./nyc_output --all --reporter=text mocha -r ts-node/register ./src/test/*.test.ts --exit",
     "devstart": "tsc-watch --onSuccess \"node ./dist/app.js\"",
     "build": "tsc",
     "start": "node ./dist/app.js"
