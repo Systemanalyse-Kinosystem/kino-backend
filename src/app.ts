@@ -30,10 +30,10 @@ app.use(morgan('dev'));
 app.use('/api/v1', apiRouter);
 
 app.use('/', (req: express.Request, res: express.Response) => {
-    res.send("Hello World from CI/CD");
+    res.send("Hello World from CI");
 });
 
-//listen on port 3001
+//listen
 app.listen(<string>process.env.PORT, () => console.log("Server started on Port: " + <string>process.env.PORT));
 
 export default app;
