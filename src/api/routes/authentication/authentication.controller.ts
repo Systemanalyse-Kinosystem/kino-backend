@@ -4,6 +4,7 @@ import IUser from "../../interfaces/user.interface";
 import bcrypt from "bcrypt";
 import { IDataStoredInToken, ITokenData, IRequestWithUser } from "../../interfaces/jwt.interface";
 import jwt from "jsonwebtoken";
+import utils from "../../utils/utils"
 import { CallbackError } from "mongoose";
 
 export default class AuthenticationController {
@@ -14,23 +15,11 @@ export default class AuthenticationController {
             if (await bcrypt.compare(req.body.password, user.password)) {
                 res.json({
                     email: user.email,
-                    token: AuthenticationController.createToken(user)
+                    token: utils.createToken(user)
                 });
 
             }
         }).select("+password");
-    }
-
-    private static createToken(user: IUser): ITokenData {
-        const expiresIn = 60 * 60 * 4;
-        const secret = <string>process.env.JWT_SECRET;
-        const dataStoredInToken: IDataStoredInToken = {
-            _id: user._id
-        };
-        return {
-            expiresIn,
-            token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
-        };
     }
 
     static registerCustomer(req: Request, res: Response) {
