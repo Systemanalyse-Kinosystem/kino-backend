@@ -6,32 +6,35 @@ let userToken: string;
 let userID: string;
 let adminToken: string;
 
-before((done) => {
-  request(app)
-    .post('/api/v1/login')
-    .send({
-      email: "user",
-      password: "test1234",
-    })
-    .end((err: Error, response: request.Response) => {
-      if (err) { return done(err) }
-      userToken = response.body.token.token;
-      request(app)
-        .post('/api/v1/login')
-        .send({
-          email: "admin",
-          password: "test1234",
-        })
-        .end((err: Error, response: request.Response) => {
-          if (err) { return done(err) }
-          adminToken = response.body.token.token;
-          done();
-        });
-    });
-})
+
 
 
 describe('User Lifecycle', function () {
+
+  before((done) => {
+    request(app)
+      .post('/api/v1/login')
+      .send({
+        email: "user",
+        password: "test1234",
+      })
+      .end((err: Error, response: request.Response) => {
+        if (err) { return done(err) }
+        userToken = response.body.token.token;
+        request(app)
+          .post('/api/v1/login')
+          .send({
+            email: "admin",
+            password: "test1234",
+          })
+          .end((err: Error, response: request.Response) => {
+            if (err) { return done(err) }
+            adminToken = response.body.token.token;
+            done();
+          });
+      });
+  })
+  
   it('creates a user', function (done) {
     request(app)
       .post('/api/v1/user')
