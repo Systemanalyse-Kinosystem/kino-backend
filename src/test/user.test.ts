@@ -1,0 +1,125 @@
+import request from "supertest";
+import app from "../app";
+import axios from 'axios'
+
+let userToken: string;
+let userID: string;
+let adminToken: string;
+
+before((done) => {
+  request(app)
+    .post('/api/v1/login')
+    .send({
+      email: "test",
+      password: "test1234",
+    })
+    .end((err: Error, response: request.Response) => {
+      userToken = response.body.token.token;
+      done();
+    });
+
+  request(app)
+    .post('/api/v1/login')
+    .send({
+      email: "admin",
+      password: "test1234",
+    })
+    .end((err: Error, response: request.Response) => {
+      adminToken = response.body.token.token;
+      done();
+    });
+})
+
+
+
+describe('POST /user', function () {
+  it('creates a user', function (done) {
+    request(app)
+      .get('/api/v1/register')
+      .set('Authorization', userToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { done(err); }
+        return done();
+      })
+  });
+});
+
+describe('GET /user', function () {
+  it('returns a list of users', function (done) {
+    request(app)
+      .get('/api/v1/register')
+      .set('Authorization', userToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { done(err); }
+        return done();
+      })
+  });
+});
+
+describe('GET /user/:id', function () {
+  it('returns a single user', function (done) {
+    request(app)
+      .get('/api/v1/register')
+      .set('Authorization', userToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { done(err); }
+        return done();
+      })
+  });
+});
+
+describe('GET /user/me', function () {
+  it('returns the logged in user', function (done) {
+    request(app)
+      .get('/api/v1/register')
+      .set('Authorization', userToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { done(err); }
+        return done();
+      })
+  });
+});
+
+
+describe('PUT /user/:id', function () {
+  it('updates a user', function (done) {
+    request(app)
+      .get('/api/v1/register')
+      .set('Authorization', userToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { done(err); }
+        return done();
+      })
+  });
+});
+
+describe('PUT /user/me', function () {
+  it('updates the logged in user', function (done) {
+    request(app)
+      .get('/api/v1/register')
+      .set('Authorization', userToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { done(err); }
+        return done();
+      })
+  });
+});
+
+describe('DELETE /user/:id', function () {
+  it('deletes a user', function (done) {
+    request(app)
+      .get('/api/v1/register')
+      .set('Authorization', userToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { done(err); }
+        return done();
+      })
+  });
+});

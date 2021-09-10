@@ -45,12 +45,12 @@ export default class userController {
 
     static async createUser(req: Request, res: Response) {
 
-        User.findOne({ email: req.body.email, role: 'user' }, async (err: CallbackError | null, user: IUser | null) => {
+        User.findOne({ email: req.body.email, role: 'admin' }, async (err: CallbackError | null, user: IUser | null) => {
             //check if user already exists
             if (err || user) { return res.status(401).json({ err: "An Error occured" }); }
 
             req.body.password = await bcrypt.hash(req.body.password, 10);
-            req.body.role = 'user';
+            req.body.role = 'admin';
 
             User.create(req.body, (err: CallbackError | null, user: IUser | null) => {
                 if (err || !user) {
