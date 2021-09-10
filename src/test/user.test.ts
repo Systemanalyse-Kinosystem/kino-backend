@@ -14,6 +14,7 @@ before((done) => {
       password: "test1234",
     })
     .end((err: Error, response: request.Response) => {
+      if(err) {return done(err)}
       userToken = response.body.token.token;
     });
 
@@ -24,6 +25,7 @@ before((done) => {
       password: "test1234",
     })
     .end((err: Error, response: request.Response) => {
+      if(err) {return done(err)}
       adminToken = response.body.token.token;
       done();
     });
