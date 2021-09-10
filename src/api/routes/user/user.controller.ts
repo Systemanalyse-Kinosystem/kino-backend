@@ -7,7 +7,16 @@ import { IRequestWithUser } from "../../interfaces/jwt.interface";
 
 export default class userController {
     static async getUserList(req: Request, res: Response) {
-        User.find({ role: 'user' }, (err: CallbackError | null, user: IUser | null) => {
+        //build sortOptions and seachOptions
+        let sortOptions: any = {};
+        sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
+        let searchOptions = req.query.search ? {$text: { $search: <string>req.query.search }} : {};
+
+        User.find({ role: 'user', ...searchOptions },null, {
+            skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
+            limit: parseInt(<string>req.query.perPage),
+            sort: sortOptions
+        },(err: CallbackError | null, user: IUser[] | null) => {
             if (err) { return res.status(500).json(err) }
             if (!user) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(user);
@@ -15,7 +24,6 @@ export default class userController {
     };
 
     static getUserById(req: Request, res: Response) {
-        
         User.find({
             _id: req.params.id,
             role: 'user'

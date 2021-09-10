@@ -4,8 +4,7 @@ import IHall from "../interfaces/hall.interface";
 const schema = new Schema<IHall>({
   //add autoIncrement
   number: { type: Number, required: true, unique: true},
-  capacity: { type: Number, required: true},
-  cinema: {type: Schema.Types.ObjectId, ref:'Cinema'}
+  capacity: { type: Number, required: true}
 },
 {
     toObject: {
@@ -17,5 +16,9 @@ const schema = new Schema<IHall>({
     timestamps: {createdAt: 'createdAt'}
   });
 
+//add textIndex for full text search
+schema.index({
+
+})
 
 export default model<IHall>('Hall', schema);

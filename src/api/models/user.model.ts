@@ -22,5 +22,10 @@ const schema = new Schema<IUser>({
   });
 
 
+//add textIndex for full text search
+schema.index({
+  name: 'text',
+  email: 'text'
+})
 
 export default model<IUser>('User', schema);
