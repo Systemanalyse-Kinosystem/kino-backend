@@ -17,12 +17,9 @@ dotenv.config();
 const app = express();
 
 //setup database connection
- mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true }).then(() => {
-
- });
+ mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true }).catch(err => console.log(err))
 
  
-
 //setup app config
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
