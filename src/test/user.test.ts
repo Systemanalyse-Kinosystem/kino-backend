@@ -10,7 +10,7 @@ let adminToken: string;
 
 
 describe('User Lifecycle', function () {
-
+  this.timeout(10000)
   before((done) => {
     request(app)
       .post('/api/v1/login')
@@ -34,7 +34,7 @@ describe('User Lifecycle', function () {
           });
       });
   })
-  
+
   it('creates a user', function (done) {
     request(app)
       .post('/api/v1/user')
