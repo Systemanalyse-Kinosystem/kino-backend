@@ -11,15 +11,6 @@ let adminToken: string;
 
 describe('User Lifecycle', function () {
 this.timeout(15000)
-  it('responds without errors in User Lifecycle', function (done) {
-    request(app)
-      .get('/')
-      .expect(200)
-      .end((err: Error, res: request.Response): void => {
-        if (err) return done(err);
-        return done();
-      })
-  });
 
   it('logs in admin', function (done) {
     request(app)
