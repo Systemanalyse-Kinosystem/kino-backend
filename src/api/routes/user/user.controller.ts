@@ -11,7 +11,6 @@ export default class userController {
         let sortOptions: any = {};
         sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
         let searchOptions = req.query.search ? {$text: { $search: <string>req.query.search }} : {};
-
         User.find({ role: 'user', ...searchOptions },null, {
             skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
             limit: parseInt(<string>req.query.perPage),
@@ -44,14 +43,11 @@ export default class userController {
     };
 
     static async createUser(req: Request, res: Response) {
-
         User.findOne({ email: req.body.email, role: 'user' }, async (err: CallbackError | null, user: IUser | null) => {
             //check if user already exists
             if (err || user) { return res.status(500).json({ err: "An Error occured" }); }
-
             req.body.password = await bcrypt.hash(req.body.password, 10);
             req.body.role = 'user';
-
             User.create(req.body, (err: CallbackError | null, user: IUser | null) => {
                 if (err || !user) {
                     return res.status(500).json(err);
@@ -93,11 +89,7 @@ export default class userController {
         if (req.body.password) {
             req.body.password = await bcrypt.hash(req.body.password, 10);
         }
-        User.findOneAndUpdate(
-            {
-                _id: (<IRequestWithUser>req).user.id,
-                role: 'user',
-            },
+        User.findOneAndUpdate({_id: (<IRequestWithUser>req).user.id, role: 'user'},
             req.body,
             { new: true },
             (err: CallbackError | null, user: IUser | null) => {
@@ -105,5 +97,4 @@ export default class userController {
                 res.json(user);
             })
     }
-
 }

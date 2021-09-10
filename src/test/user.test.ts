@@ -10,9 +10,9 @@ let adminToken: string;
 
 
 describe('User Lifecycle', function () {
-this.timeout(15000)
+  this.timeout(5000)
+  before((done) => {
 
-  it('logs in admin', function (done) {
     request(app)
       .post('/api/v1/login')
       .send({
@@ -23,11 +23,9 @@ this.timeout(15000)
       .end((err: Error, response: request.Response): void => {
         if (err) { return done(err) }
         adminToken = response.body.token.token;
-        return done();
       });
-  })
 
-  it('logs in user', function (done) {
+
     request(app)
       .post('/api/v1/login')
       .send({
@@ -35,12 +33,13 @@ this.timeout(15000)
         password: "test1234",
       })
       .expect(200)
-      .end((err: Error, response: request.Response):void => {
+      .end((err: Error, response: request.Response): void => {
         if (err) { return done(err) }
         userToken = response.body.token.token;
         return done();
       });
   })
+
 
   it('creates a user', function (done) {
     request(app)
@@ -63,6 +62,85 @@ this.timeout(15000)
       })
 
   });
+
+  it('returns a list of users', function (done) {
+    request(app)
+      .get('/api/v1/user')
+      .set('auth', adminToken)
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) { return done(err); }
+        return done();
+      })
+  });
+
+  it('returns a single user', function (done) {
+    request(app)
+      .get('/api/v1/user/' + userID)
+      .set('auth', adminToken)
+      .expect(200)
+      .expect(res => {
+        res.body.name = "Supertest-User",
+          res.body.email = "supertest-user@kinosystem.de"
+      })
+      .end((err: Error, res: request.Response): void => {
+        if (err) { return done(err); }
+        return done();
+      })
+  });
+
+  it('returns the logged in user', function (done) {
+    request(app)
+      .get('/api/v1/user/me')
+      .set('auth', userToken)
+      .expect(200)
+      .expect(res => {
+        res.body.name = "Supertest-User",
+          res.body.email = "supertest-user@kinosystem.de"
+      })
+      .end((err: Error, res: request.Response): void => {
+        if (err) { return done(err); }
+        return done();
+      })
+  });
+
+  it('updates a user', function (done) {
+    request(app)
+      .put('/api/v1/user/' + userID)
+      .set('auth', adminToken)
+      .send({
+        name: "Supertest-User renamed"
+      })
+      .expect(200)
+      .expect(res => {
+        res.body.name = "Supertest-User renamed",
+          res.body.email = "supertest-user@kinosystem.de"
+      })
+      .end((err: Error, res: request.Response): void => {
+        if (err) { return done(err); }
+        return done();
+      })
+  });
+
+  it('updates the logged in user', function (done) {
+    request(app)
+      .put('/api/v1/user/me')
+      .set('auth', userToken)
+      .send({
+        name: "Supertest-User renamed again"
+      })
+      .expect(200)
+      .expect(res => {
+        res.body.name = "Supertest-User renamed again",
+          res.body.email = "supertest-user@kinosystem.de"
+      })
+      .end((err: Error, res: request.Response): void => {
+        if (err) { return done(err); }
+        return done();
+      })
+  });
+
+
   it('deletes a user', (done) => {
     request(app)
       .delete('/api/v1/user/' + userID)
@@ -74,83 +152,10 @@ this.timeout(15000)
       })
   })
 });
-/*
-describe('GET /user', function () {
-  it('returns a list of users', function (done) {
-    request(app)
-      .get('/api/v1/register')
-      .set('Authorization', userToken)
-      .expect(200)
-      .end((err: Error, res: request.Response): void => {
-        if (err) { done(err); }
-        return done();
-      })
-  });
-});
-
-describe('GET /user/:id', function () {
-  it('returns a single user', function (done) {
-    request(app)
-      .get('/api/v1/register')
-      .set('Authorization', userToken)
-      .expect(200)
-      .end((err: Error, res: request.Response): void => {
-        if (err) { done(err); }
-        return done();
-      })
-  });
-});
-
-describe('GET /user/me', function () {
-  it('returns the logged in user', function (done) {
-    request(app)
-      .get('/api/v1/register')
-      .set('Authorization', userToken)
-      .expect(200)
-      .end((err: Error, res: request.Response): void => {
-        if (err) { done(err); }
-        return done();
-      })
-  });
-});
 
 
-describe('PUT /user/:id', function () {
-  it('updates a user', function (done) {
-    request(app)
-      .get('/api/v1/register')
-      .set('Authorization', userToken)
-      .expect(200)
-      .end((err: Error, res: request.Response): void => {
-        if (err) { done(err); }
-        return done();
-      })
-  });
-});
 
-describe('PUT /user/me', function () {
-  it('updates the logged in user', function (done) {
-    request(app)
-      .get('/api/v1/register')
-      .set('Authorization', userToken)
-      .expect(200)
-      .end((err: Error, res: request.Response): void => {
-        if (err) { done(err); }
-        return done();
-      })
-  });
-});
-*/
-/*
-after((done) => {
-    request(app)
-      .delete('/api/v1/user/' + userID)
-      .set('auth', adminToken)
-      .expect(204)
-      .end((err: Error, res: request.Response): void => {
-        if (err) { return done(err); }
-        return done();
-      })
-});
-*/
+
+
+
 

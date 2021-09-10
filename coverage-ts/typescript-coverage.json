@@ -1,0 +1,611 @@
+{
+  "fileCounts": {},
+  "anys": [
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 11,
+      "character": 34,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 11,
+      "character": 39,
+      "text": "email",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 14,
+      "character": 41,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 14,
+      "character": 46,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 26,
+      "character": 34,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 26,
+      "character": 39,
+      "text": "email",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 30,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 30,
+      "character": 21,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 30,
+      "character": 54,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 30,
+      "character": 59,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\authentication\\authentication.controller.ts",
+      "line": 33,
+      "character": 23,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 10,
+      "character": 12,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 11,
+      "character": 8,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 16,
+      "character": 12,
+      "text": "sort",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 16,
+      "character": 18,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 45,
+      "character": 34,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 45,
+      "character": 39,
+      "text": "email",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 48,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 48,
+      "character": 21,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 48,
+      "character": 54,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 48,
+      "character": 59,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 49,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 49,
+      "character": 21,
+      "text": "role",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 50,
+      "character": 28,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 71,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 71,
+      "character": 21,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 72,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 72,
+      "character": 21,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 72,
+      "character": 54,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 72,
+      "character": 59,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 79,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 88,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 88,
+      "character": 21,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 89,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 89,
+      "character": 21,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 89,
+      "character": 54,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 89,
+      "character": 59,
+      "text": "password",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\user\\user.controller.ts",
+      "line": 92,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 7,
+      "character": 22,
+      "text": "req",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 10,
+      "character": 76,
+      "text": "req",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 10,
+      "character": 80,
+      "text": "headers",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 10,
+      "character": 88,
+      "text": "auth",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 16,
+      "character": 20,
+      "text": "req",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 16,
+      "character": 24,
+      "text": "user",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 22,
+      "character": 37,
+      "text": "error",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\middlewares\\auth.middlewares.ts",
+      "line": 21,
+      "character": 21,
+      "text": "error",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\hall\\hall.controller.ts",
+      "line": 10,
+      "character": 16,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\hall\\hall.controller.ts",
+      "line": 11,
+      "character": 12,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\hall\\hall.controller.ts",
+      "line": 17,
+      "character": 16,
+      "text": "sort",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\hall\\hall.controller.ts",
+      "line": 17,
+      "character": 22,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\hall\\hall.controller.ts",
+      "line": 33,
+      "character": 24,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\hall\\hall.controller.ts",
+      "line": 57,
+      "character": 16,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\customer\\customer.controller.ts",
+      "line": 11,
+      "character": 16,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\customer\\customer.controller.ts",
+      "line": 12,
+      "character": 12,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\customer\\customer.controller.ts",
+      "line": 18,
+      "character": 16,
+      "text": "sort",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\customer\\customer.controller.ts",
+      "line": 18,
+      "character": 22,
+      "text": "sortOptions",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\customer\\customer.controller.ts",
+      "line": 75,
+      "character": 58,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\api\\routes\\customer\\customer.controller.ts",
+      "line": 82,
+      "character": 78,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 24,
+      "character": 30,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 24,
+      "character": 35,
+      "text": "token",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 24,
+      "character": 41,
+      "text": "token",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 37,
+      "character": 29,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 37,
+      "character": 34,
+      "text": "token",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 37,
+      "character": 40,
+      "text": "token",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 54,
+      "character": 12,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 54,
+      "character": 17,
+      "text": "name",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 55,
+      "character": 14,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 55,
+      "character": 19,
+      "text": "email",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 58,
+      "character": 21,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 58,
+      "character": 26,
+      "text": "id",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 82,
+      "character": 12,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 82,
+      "character": 17,
+      "text": "name",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 83,
+      "character": 14,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 83,
+      "character": 19,
+      "text": "email",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 97,
+      "character": 12,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 97,
+      "character": 17,
+      "text": "name",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 98,
+      "character": 14,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 98,
+      "character": 19,
+      "text": "email",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 115,
+      "character": 12,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 115,
+      "character": 17,
+      "text": "name",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 116,
+      "character": 14,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 116,
+      "character": 19,
+      "text": "email",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 133,
+      "character": 12,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 133,
+      "character": 17,
+      "text": "name",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 134,
+      "character": 14,
+      "text": "body",
+      "kind": 1
+    },
+    {
+      "file": "src\\test\\user.test.ts",
+      "line": 134,
+      "character": 19,
+      "text": "email",
+      "kind": 1
+    }
+  ],
+  "percentage": 94.03192227619708,
+  "total": 1441,
+  "covered": 1355,
+  "uncovered": 86
+}
