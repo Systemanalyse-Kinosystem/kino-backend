@@ -17,13 +17,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: npm install
-      - name: Create env file
-        run: |
-          touch .env
-          echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
-          echo PORT=${{ secrets.PORT }} >> .env
-          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
-          cat .env
+      - run: npm install       
       - name: testing
         run: npm run test
+        env: 
+          PORT: ${{ secrets.PORT }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
