@@ -14,20 +14,19 @@ before((done) => {
       password: "test1234",
     })
     .end((err: Error, response: request.Response) => {
-      if(err) {return done(err)}
+      if (err) { return done(err) }
       userToken = response.body.token.token;
-    });
-
-  request(app)
-    .post('/api/v1/login')
-    .send({
-      email: "admin",
-      password: "test1234",
-    })
-    .end((err: Error, response: request.Response) => {
-      if(err) {return done(err)}
-      adminToken = response.body.token.token;
-      done();
+      request(app)
+        .post('/api/v1/login')
+        .send({
+          email: "admin",
+          password: "test1234",
+        })
+        .end((err: Error, response: request.Response) => {
+          if (err) { return done(err) }
+          adminToken = response.body.token.token;
+          done();
+        });
     });
 })
 
@@ -45,24 +44,25 @@ describe('User Lifecycle', function () {
       .expect(201)
       .expect(res => {
         res.body.name = "Supertest-User",
-        res.body.email = "supertest-user@kinosystem.de"
+          res.body.email = "supertest-user@kinosystem.de"
       })
       .end((err: Error, res: request.Response): void => {
         userID = res.body.id;
         if (err) { return done(err); }
         return done();
       })
+
   });
-  it('deletes a user', function (done) {
+  it('deletes a user', (done) => {
     request(app)
       .delete('/api/v1/user/' + userID)
       .set('auth', adminToken)
       .expect(204)
       .end((err: Error, res: request.Response): void => {
-        if (err) { done(err); }
+        if (err) { return done(err); }
         return done();
       })
-  });
+  })
 });
 /*
 describe('GET /user', function () {
@@ -130,17 +130,17 @@ describe('PUT /user/me', function () {
       })
   });
 });
-
-describe('DELETE /user/:id', function () {
-  it('deletes a user', function (done) {
+*/
+/*
+after((done) => {
     request(app)
       .delete('/api/v1/user/' + userID)
       .set('auth', adminToken)
       .expect(204)
       .end((err: Error, res: request.Response): void => {
-        if (err) { done(err); }
+        if (err) { return done(err); }
         return done();
       })
-  });
 });
 */
+
