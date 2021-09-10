@@ -20,6 +20,7 @@ describe('User Lifecycle', function () {
       })
       .end((err: Error, response: request.Response) => {
         if (err) { return done(err) }
+        return done(err);
         userToken = response.body.token.token;
         request(app)
           .post('/api/v1/login')
@@ -30,7 +31,7 @@ describe('User Lifecycle', function () {
           .end((err: Error, response: request.Response) => {
             if (err) { return done(err) }
             adminToken = response.body.token.token;
-            done();
+            return done();
           });
       });
   })
