@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../app";
+import app from "./../app";
 import axios from 'axios'
 
 let userToken: string;
@@ -11,32 +11,44 @@ let adminToken: string;
 
 describe('User Lifecycle', function () {
 
-  it('logs in user', function(done) {
+  it('responds without errors in User Lifecycle', function (done) {
     request(app)
-    .post('/api/v1/login')
-    .send({
-      email: "admin",
-      password: "test1234",
-    })
-    .end((err: Error, response: request.Response) => {
-      if (err) { return done(err) }
-      adminToken = response.body.token.token;
-      return done();
-    });
+      .get('/')
+      .expect(200)
+      .end((err: Error, res: request.Response): void => {
+        if (err) return done(err);
+        return done();
+      })
+  });
+
+  it('logs in user', function (done) {
+    request(app)
+      .post('/api/v1/login')
+      .send({
+        email: "admin",
+        password: "test1234",
+      })
+      .expect(200)
+      .end((err: Error, response: request.Response) => {
+        if (err) { return done(err) }
+        adminToken = response.body.token.token;
+        return done();
+      });
   })
 
-  it('logs in admin', function(done) {
+  it('logs in admin', function (done) {
     request(app)
-    .post('/api/v1/login')
-    .send({
-      email: "user",
-      password: "test1234",
-    })
-    .end((err: Error, response: request.Response) => {
-      if (err) { return done(err) }
-      userToken = response.body.token.token;
-      return done();
-    });
+      .post('/api/v1/login')
+      .send({
+        email: "user",
+        password: "test1234",
+      })
+      .expect(200)
+      .end((err: Error, response: request.Response) => {
+        if (err) { return done(err) }
+        userToken = response.body.token.token;
+        return done();
+      });
   })
 
   it('creates a user', function (done) {
