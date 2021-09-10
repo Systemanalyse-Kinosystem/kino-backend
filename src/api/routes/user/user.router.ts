@@ -8,7 +8,7 @@ let router = express.Router();
 router.get('/me', authenticationMiddleware.getAuthenticationMiddleware(['user']), userController.getLoggedInUser);
 router.get('/', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.getUserList);
 router.get('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin', 'user']), userController.getUserById);
-router.post('/', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.createUser);
+router.post('/', authenticationMiddleware.getAuthenticationMiddleware(['admin', 'user']), userController.createUser);
 router.put('/me', authenticationMiddleware.getAuthenticationMiddleware(['user']), userController.updateLoggedInUser);
 router.put('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.updateUserById);
 router.delete('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.deleteUserById);

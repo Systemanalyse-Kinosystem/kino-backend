@@ -10,12 +10,11 @@ before((done) => {
   request(app)
     .post('/api/v1/login')
     .send({
-      email: "test",
+      email: "user",
       password: "test1234",
     })
     .end((err: Error, response: request.Response) => {
       userToken = response.body.token.token;
-      done();
     });
 
   request(app)
@@ -31,20 +30,39 @@ before((done) => {
 })
 
 
-
-describe('POST /user', function () {
+describe('User Lifecycle', function () {
   it('creates a user', function (done) {
     request(app)
-      .get('/api/v1/register')
-      .set('Authorization', userToken)
-      .expect(200)
+      .post('/api/v1/user')
+      .set('auth', adminToken)
+      .send({
+        name: "Supertest-User",
+        email: "supertest-user@kinosystem.de",
+        password: "test1234"
+      })
+      .expect(201)
+      .expect(res => {
+        res.body.name = "Supertest-User",
+        res.body.email = "supertest-user@kinosystem.de"
+      })
+      .end((err: Error, res: request.Response): void => {
+        userID = res.body.id;
+        if (err) { return done(err); }
+        return done();
+      })
+  });
+  it('deletes a user', function (done) {
+    request(app)
+      .delete('/api/v1/user/' + userID)
+      .set('auth', adminToken)
+      .expect(204)
       .end((err: Error, res: request.Response): void => {
         if (err) { done(err); }
         return done();
       })
   });
 });
-
+/*
 describe('GET /user', function () {
   it('returns a list of users', function (done) {
     request(app)
@@ -114,12 +132,13 @@ describe('PUT /user/me', function () {
 describe('DELETE /user/:id', function () {
   it('deletes a user', function (done) {
     request(app)
-      .get('/api/v1/register')
-      .set('Authorization', userToken)
-      .expect(200)
+      .delete('/api/v1/user/' + userID)
+      .set('auth', adminToken)
+      .expect(204)
       .end((err: Error, res: request.Response): void => {
         if (err) { done(err); }
         return done();
       })
   });
 });
+*/
