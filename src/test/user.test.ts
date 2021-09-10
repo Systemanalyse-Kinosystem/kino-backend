@@ -10,7 +10,7 @@ let adminToken: string;
 
 
 describe('User Lifecycle', function () {
-
+this.timeout(15000)
   it('responds without errors in User Lifecycle', function (done) {
     request(app)
       .get('/')
@@ -23,7 +23,7 @@ describe('User Lifecycle', function () {
 
   it('logs in admin', function (done) {
     request(app)
-      .post('/api/v1/logi')
+      .post('/api/v1/login')
       .send({
         email: "admin",
         password: "test1234",
