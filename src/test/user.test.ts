@@ -21,22 +21,22 @@ describe('User Lifecycle', function () {
       })
   });
 
-  it('logs in user', function (done) {
+  it('logs in admin', function (done) {
     request(app)
-      .post('/api/v1/login')
+      .post('/api/v1/logi')
       .send({
         email: "admin",
         password: "test1234",
       })
       .expect(200)
-      .end((err: Error, response: request.Response) => {
+      .end((err: Error, response: request.Response): void => {
         if (err) { return done(err) }
         adminToken = response.body.token.token;
         return done();
       });
   })
 
-  it('logs in admin', function (done) {
+  it('logs in user', function (done) {
     request(app)
       .post('/api/v1/login')
       .send({
@@ -44,7 +44,7 @@ describe('User Lifecycle', function () {
         password: "test1234",
       })
       .expect(200)
-      .end((err: Error, response: request.Response) => {
+      .end((err: Error, response: request.Response):void => {
         if (err) { return done(err) }
         userToken = response.body.token.token;
         return done();
