@@ -1,48 +1,48 @@
-import request from "supertest";
 import app from "./../app";
-import axios from 'axios'
+import testUtils from "./testUtils";
+import chai from "chai"
+import chaiHttp from "chai-http";
+
+chai.use(chaiHttp)
+let should = chai.should()
 
 let userToken: string;
 let userID: string;
 let adminToken: string;
 
-
-
-
 describe('User Lifecycle', function () {
   this.timeout(5000)
-  before((done) => {
+  before('Login Admin, Login User',(done) => {
 
-    request(app)
+    chai.request(app)
       .post('/api/v1/login')
+      .set('content-type', 'application/json')
       .send({
         email: "admin",
         password: "test1234",
       })
-      .expect(200)
-      .end((err: Error, response: request.Response): void => {
+      .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err) }
-        adminToken = response.body.token.token;
+        res.should.have.status(200)
+        adminToken = res.body.token.token;
       });
 
-
-    request(app)
+    chai.request(app)
       .post('/api/v1/login')
       .send({
         email: "user",
         password: "test1234",
       })
-      .expect(200)
-      .end((err: Error, response: request.Response): void => {
+      .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err) }
-        userToken = response.body.token.token;
+        res.should.have.status(200)
+        userToken = res.body.token.token;
         return done();
       });
   })
 
-
   it('creates a user', function (done) {
-    request(app)
+    chai.request(app)
       .post('/api/v1/user')
       .set('auth', adminToken)
       .send({
@@ -50,105 +50,83 @@ describe('User Lifecycle', function () {
         email: "supertest-user@kinosystem.de",
         password: "test1234"
       })
-      .expect(201)
-      .expect(res => {
-        res.body.name = "Supertest-User",
-          res.body.email = "supertest-user@kinosystem.de"
-      })
-      .end((err: Error, res: request.Response): void => {
+      .end((err: Error, res: ChaiHttp.Response): void => {
+        if (err) { return done(err) }
+        res.should.have.status(201)
+        res.body.should.be.a('object')
+        res.body.should.have.property('name').equal('Supertest-User')
+        res.body.should.have.property('email').equal('supertest-user@kinosystem.de')
         userID = res.body.id;
-        if (err) { return done(err); }
-        return done();
+        done();
       })
 
   });
 
-  it('returns a list of users', function (done) {
-    request(app)
-      .get('/api/v1/user')
-      .set('auth', adminToken)
-      .expect(200)
-      .end((err: Error, res: request.Response): void => {
-        if (err) { return done(err); }
-        return done();
-      })
+  //like this, because if the testUtils function is passed directly, 
+  //it gets evaluated when adminToken is still undefined
+  //get the function and call it with (done)
+  it('returns a list of users', (done) => {
+    testUtils.getDocumentListTest('/user', adminToken)(done)
   });
 
-  it('returns a single user', function (done) {
-    request(app)
-      .get('/api/v1/user/' + userID)
-      .set('auth', adminToken)
-      .expect(200)
-      .expect(res => {
-        res.body.name = "Supertest-User",
-          res.body.email = "supertest-user@kinosystem.de"
-      })
-      .end((err: Error, res: request.Response): void => {
-        if (err) { return done(err); }
-        return done();
-      })
-  });
+  it('returns a single user', (done) => {
+    testUtils.getDocumentSingleTest('/user', adminToken, userID)(done)
+  })
 
   it('returns the logged in user', function (done) {
-    request(app)
+    chai.request(app)
       .get('/api/v1/user/me')
       .set('auth', userToken)
-      .expect(200)
-      .expect(res => {
-        res.body.name = "Supertest-User",
-          res.body.email = "supertest-user@kinosystem.de"
-      })
-      .end((err: Error, res: request.Response): void => {
-        if (err) { return done(err); }
+      .end((err: Error, res: ChaiHttp.Response): void => {
+        if (err) { return done(err) }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
         return done();
       })
   });
 
   it('updates a user', function (done) {
-    request(app)
+    chai.request(app)
       .put('/api/v1/user/' + userID)
       .set('auth', adminToken)
       .send({
         name: "Supertest-User renamed"
       })
-      .expect(200)
-      .expect(res => {
-        res.body.name = "Supertest-User renamed",
-          res.body.email = "supertest-user@kinosystem.de"
-      })
-      .end((err: Error, res: request.Response): void => {
+      .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err); }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('name').equal('Supertest-User renamed')
         return done();
       })
   });
 
   it('updates the logged in user', function (done) {
-    request(app)
+    chai.request(app)
       .put('/api/v1/user/me')
       .set('auth', userToken)
       .send({
-        name: "Supertest-User renamed again"
+        name: "Test-User"
       })
-      .expect(200)
-      .expect(res => {
-        res.body.name = "Supertest-User renamed again",
-          res.body.email = "supertest-user@kinosystem.de"
-      })
-      .end((err: Error, res: request.Response): void => {
+      .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err); }
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.should.have.property('name').equal('Test-User')
         return done();
       })
   });
 
 
   it('deletes a user', (done) => {
-    request(app)
+    chai.request(app)
       .delete('/api/v1/user/' + userID)
       .set('auth', adminToken)
-      .expect(204)
-      .end((err: Error, res: request.Response): void => {
+      .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err); }
-        return done();
+        res.should.have.status(204)
+        done();
+        //get document from database and check that it is deleted
       })
   })
 });

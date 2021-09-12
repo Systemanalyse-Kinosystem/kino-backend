@@ -23,7 +23,7 @@ export default class userController {
     };
 
     static getUserById(req: Request, res: Response) {
-        User.find({
+        User.findOne({
             _id: req.params.id,
             role: 'user'
         }, (err: CallbackError | null, user: IUser | null) => {
