@@ -12,5 +12,6 @@ router.post('/', authenticationMiddleware.getAuthenticationMiddleware(['admin', 
 router.put('/me', authenticationMiddleware.getAuthenticationMiddleware(['user']), userController.updateLoggedInUser);
 router.put('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.updateUserById);
 router.delete('/:id', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.deleteUserById);
+router.delete('/', authenticationMiddleware.getAuthenticationMiddleware(['admin']), userController.deleteUsers);
 
 export default router;

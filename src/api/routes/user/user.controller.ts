@@ -85,6 +85,13 @@ export default class userController {
             })
     }
 
+    static async deleteUsers(req: Request, res: Response) {
+        User.deleteMany({role: 'user'},{}, (err: CallbackError | null) => {
+            if (err) { return res.status(500).json(err) }
+            res.status(204).json({});
+        });
+    }
+
     static async updateLoggedInUser(req: Request, res: Response) {
         if (req.body.password) {
             req.body.password = await bcrypt.hash(req.body.password, 10);

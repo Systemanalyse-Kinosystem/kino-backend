@@ -2,6 +2,10 @@ import app from "./../app";
 import testUtils from "./testUtils";
 import chai from "chai"
 import chaiHttp from "chai-http";
+import User from "../api/models/user.model";
+import { CallbackError } from "mongoose";
+import { uniqueNamesGenerator, Config, names } from 'unique-names-generator';
+import IUser from "../api/interfaces/user.interface";
 
 chai.use(chaiHttp)
 let should = chai.should()
@@ -12,11 +16,11 @@ let adminToken: string;
 
 describe('User Lifecycle', function () {
   this.timeout(5000)
-  before('Login Admin, Login User',(done) => {
-
+  beforeEach('Login Admin, create Test-User, login Test-User', (done) => {
+    let name = uniqueNamesGenerator({ dictionaries: [names] })
+    //login admin
     chai.request(app)
       .post('/api/v1/login')
-      .set('content-type', 'application/json')
       .send({
         email: "admin",
         password: "test1234",
@@ -25,45 +29,49 @@ describe('User Lifecycle', function () {
         if (err) { return done(err) }
         res.should.have.status(200)
         adminToken = res.body.token.token;
-      });
 
-    chai.request(app)
-      .post('/api/v1/login')
-      .send({
-        email: "user",
-        password: "test1234",
-      })
-      .end((err: Error, res: ChaiHttp.Response): void => {
-        if (err) { return done(err) }
-        res.should.have.status(200)
-        userToken = res.body.token.token;
-        return done();
-      });
-  })
+        //create dummy user
+        chai.request(app)
+          .post('/api/v1/user')
+          .set('auth', adminToken)
+          .send({
+            name: name,
+            email: name + "@kinosystem.de",
+            password: "test1234"
+          })
+          .end((err: Error, res: ChaiHttp.Response): void => {
+            if (err) { return done(err) }
+            res.should.have.status(201)
+            res.body.should.be.a('object');
+            res.body.should.have.property('name').equal(name);
+            res.body.should.have.property('email').equal(name + '@kinosystem.de');
+            userID = res.body.id;
 
-  it('creates a user', function (done) {
-    chai.request(app)
-      .post('/api/v1/user')
-      .set('auth', adminToken)
-      .send({
-        name: "Supertest-User",
-        email: "supertest-user@kinosystem.de",
-        password: "test1234"
-      })
-      .end((err: Error, res: ChaiHttp.Response): void => {
-        if (err) { return done(err) }
-        res.should.have.status(201)
-        res.body.should.be.a('object')
-        res.body.should.have.property('name').equal('Supertest-User')
-        res.body.should.have.property('email').equal('supertest-user@kinosystem.de')
-        userID = res.body.id;
-        done();
-      })
+            //login dummy user
+            chai.request(app)
+              .post('/api/v1/login')
+              .send({
+                email: name + "@kinosystem.de",
+                password: "test1234",
+              })
+              .end((err: Error, res: ChaiHttp.Response): void => {
+                if (err) { return done(err) }
+                res.should.have.status(200)
+                userToken = res.body.token.token;
+                return done();
+              });
+          });
+      });
 
   });
 
-  //like this, because if the testUtils function is passed directly, 
-  //it gets evaluated when adminToken is still undefined
+  afterEach('delete the dummy user', (done) => {
+    User.deleteOne({ id: userID }, {}, (err: CallbackError) => {
+      if(err) {return done(err);}
+      done();
+    })
+  })
+
   //get the function and call it with (done)
   it('returns a list of users', (done) => {
     testUtils.getDocumentListTest('/user', adminToken)(done)
@@ -72,6 +80,38 @@ describe('User Lifecycle', function () {
   it('returns a single user', (done) => {
     testUtils.getDocumentSingleTest('/user', adminToken, userID)(done)
   })
+
+  it('creates a user', function (done) {
+    let name = uniqueNamesGenerator({ dictionaries: [names] })
+    chai.request(app)
+      .post('/api/v1/user')
+      .set('auth', adminToken)
+      .send({
+        name: name,
+        email: name + '@kinosystem.de',
+        password: "test1234"
+      })
+      .end((err: Error, res: ChaiHttp.Response): void => {
+        if (err) { return done(err) }
+        res.should.have.status(201)
+        res.body.should.be.a('object');
+        res.body.should.have.property('name').equal(name);
+        res.body.should.have.property('email').equal(name+'@kinosystem.de');
+        userID = res.body._id
+
+        //checks if user was created
+        User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
+          if(user.name != name || user.email != name+'@kinosystem.de') {return done(new Error("User was not created"))}
+          User.findOneAndDelete({ id: res.body._id }, {}, (err: CallbackError) => {
+            if (err) { return done(err); }
+            done();
+          })
+        })
+
+        //delete the created user
+        
+      });
+  });
 
   it('returns the logged in user', function (done) {
     chai.request(app)
@@ -97,7 +137,11 @@ describe('User Lifecycle', function () {
         res.should.have.status(200)
         res.body.should.be.a('object')
         res.body.should.have.property('name').equal('Supertest-User renamed')
-        return done();
+        //check if user was updated
+        User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
+          if(user.name != 'Supertest-User renamed') {return done(new Error("User was not updated"))}
+          done();
+        })
       })
   });
 
@@ -117,7 +161,6 @@ describe('User Lifecycle', function () {
       })
   });
 
-
   it('deletes a user', (done) => {
     chai.request(app)
       .delete('/api/v1/user/' + userID)
@@ -125,11 +168,15 @@ describe('User Lifecycle', function () {
       .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err); }
         res.should.have.status(204)
-        done();
-        //get document from database and check that it is deleted
+        User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
+          if(user) {return done(new Error("User was not deleted"))}
+          done();
+        })
       })
   })
 });
+
+
 
 
 
