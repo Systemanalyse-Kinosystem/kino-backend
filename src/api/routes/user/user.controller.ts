@@ -9,15 +9,17 @@ export default class userController {
     static async getUserList(req: Request, res: Response) {
         //build sortOptions and seachOptions
         let sortOptions: any = {};
-        sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
-        let searchOptions = req.query.search ? {$text: { $search: <string>req.query.search }} : {};
+        let searchOptions: any = {};
+        if(req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1||parseInt(<string>req.query.orderdir) == -1)) {
+            sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
+        }
         User.find({ role: 'user', ...searchOptions },null, {
             skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
             limit: parseInt(<string>req.query.perPage),
             sort: sortOptions
         },(err: CallbackError | null, user: IUser[] | null) => {
-            if (err) { return res.status(500).json(err) }
-            if (!user) { return res.status(500).json({ err: "An Error occured" }); }
+            if (err) { return res.status(400).json({ err: "An Error occurred" });  }
+            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             res.json(user);
         })
     };
@@ -27,7 +29,8 @@ export default class userController {
             _id: req.params.id,
             role: 'user'
         }, (err: CallbackError | null, user: IUser | null) => {
-            if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
+            if (err) { return res.status(401).json({ err: "An Error occurred" });  }
+            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             res.json(user);
         })
     };
@@ -37,7 +40,8 @@ export default class userController {
             _id: (<IRequestWithUser>req).user.id,
             role: 'user'
         }, (err: CallbackError | null, user: IUser | null) => {
-            if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
+            if (err) { return res.status(401).json({ err: "An Error occurred" });  }
+            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             res.json(user);
         })
     };
@@ -99,7 +103,8 @@ export default class userController {
             req.body,
             { new: true },
             (err: CallbackError | null, user: IUser | null) => {
-                if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
+                if (err) { return res.status(401).json({ err: "An Error occurred" });  }
+            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
                 res.json(user);
             })
     }
@@ -119,7 +124,8 @@ export default class userController {
             req.body,
             { new: true },
             (err: CallbackError | null, user: IUser | null) => {
-                if (err || !user) { return res.status(500).json({ err: "An Error occured" }); }
+                if (err) { return res.status(401).json({ err: "An Error occurred" });  }
+            if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
                 res.json(user);
             })
     }
