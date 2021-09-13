@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import IUser from "../interfaces/user.interface";
 
 const schema = new Schema<IUser>({
-  formOfAddress: { type: String, required: true },
+  formOfAddress: { type: String, required: false },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   email: { type: String, required: true },
@@ -10,7 +10,8 @@ const schema = new Schema<IUser>({
   role: {
     type: String,
     enum: ['customer', 'admin', 'user'],
-    immutable: true
+    immutable: true,
+    required: true
   },
   address: {
     street: { type: String, required: true },

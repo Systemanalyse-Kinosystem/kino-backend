@@ -6,6 +6,8 @@ import User from "../api/models/user.model";
 import { CallbackError } from "mongoose";
 import { uniqueNamesGenerator, Config, names } from 'unique-names-generator';
 import IUser from "../api/interfaces/user.interface";
+import bcrypt from "bcrypt"
+import utils from "./../api/utils/utils"
 
 chai.use(chaiHttp)
 let should = chai.should()
@@ -13,63 +15,73 @@ let should = chai.should()
 let userToken: string;
 let userID: string;
 let adminToken: string;
+let adminID: string;
 
 describe('User Lifecycle', function () {
+  let name = uniqueNamesGenerator({ dictionaries: [names] })
   this.timeout(5000)
   beforeEach('Login Admin, create Test-User, login Test-User', (done) => {
-    let name = uniqueNamesGenerator({ dictionaries: [names] })
-    //login admin
-    chai.request(app)
-      .post('/api/v1/login')
-      .send({
-        email: "admin",
-        password: "test1234",
-      })
-      .end((err: Error, res: ChaiHttp.Response): void => {
-        if (err) { return done(err) }
-        res.should.have.status(200)
-        adminToken = res.body.token.token;
+    User.create({
+      firstName: "TestAdminfromChai",
+      lastName: "chaiAdmin",
+      email: "chai@kinosystem.de",
+      password: "test1234",
+      role: "admin",
+      address: {
+        street: "Teststraße 15",
+        postalCode: "25980",
+        city: "Sylt",
+        country: "Germany"
+      }
+    }, (err: CallbackError | null, user: IUser | null) => {
+      if (err || !user) {return done(err)}
+      
+    
+    //create JWT Admintoken
+    User.findOne({ email: "chai@kinosystem.de" },"+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+      if (err) { return done(err);}
+      if (!user) { return done(new Error("No User with this email")) }
+      adminID = user._id;
+      adminToken = utils.createToken(user).token;
 
         //create dummy user
-        chai.request(app)
-          .post('/api/v1/user')
-          .set('auth', adminToken)
-          .send({
-            name: name,
-            email: name + "@kinosystem.de",
-            password: "test1234"
-          })
-          .end((err: Error, res: ChaiHttp.Response): void => {
-            if (err) { return done(err) }
-            res.should.have.status(201)
-            res.body.should.be.a('object');
-            res.body.should.have.property('name').equal(name);
-            res.body.should.have.property('email').equal(name + '@kinosystem.de');
-            userID = res.body.id;
+        User.create({
+          firstName: name,
+          lastName: name,
+          email: name + "@kinosystem.de",
+          password: "test1234",
+          role: "user",
+          address: {
+            street: "Teststraße 15",
+            postalCode: "25980",
+            city: "Sylt",
+            country: "Germany"
+          }
+        }, (err: CallbackError | null, user: IUser | null) => {
+          if (err || !user) {return done(err)}
 
-            //login dummy user
-            chai.request(app)
-              .post('/api/v1/login')
-              .send({
-                email: name + "@kinosystem.de",
-                password: "test1234",
-              })
-              .end((err: Error, res: ChaiHttp.Response): void => {
-                if (err) { return done(err) }
-                res.should.have.status(200)
-                userToken = res.body.token.token;
+            User.findOne({ email: name + "@kinosystem.de" },"+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+              if (err) { return done(err);}
+              if (!user) { return done(new Error("No User with this email")) }
+              userToken = utils.createToken(user).token;
+              userID = user._id;
                 return done();
               });
           });
       });
-
+    });
   });
 
   afterEach('delete the dummy user', (done) => {
     User.deleteOne({ id: userID }, {}, (err: CallbackError) => {
       if(err) {return done(err);}
+    
+
+    User.deleteOne({ id: adminID }, {}, (err: CallbackError) => {
+      if(err) {return done(err);}
       done();
     })
+  })
   })
 
   //get the function and call it with (done)
@@ -87,21 +99,28 @@ describe('User Lifecycle', function () {
       .post('/api/v1/user')
       .set('auth', adminToken)
       .send({
-        name: name,
-        email: name + '@kinosystem.de',
-        password: "test1234"
+        firstName: name,
+        lastName: name,
+        email: name + "@kinosystem.de",
+        password: "test1234",
+        address: {
+          street: "Teststraße 15",
+          postalCode: "25980",
+          city: "Sylt",
+          country: "Germany"
+        }
       })
       .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err) }
         res.should.have.status(201)
         res.body.should.be.a('object');
-        res.body.should.have.property('name').equal(name);
+        res.body.should.have.property('firstName').equal(name);
         res.body.should.have.property('email').equal(name+'@kinosystem.de');
         userID = res.body._id
 
         //checks if user was created
         User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
-          if(user.name != name || user.email != name+'@kinosystem.de') {return done(new Error("User was not created"))}
+          if(user.firstName != name || user.email != name+'@kinosystem.de') {return done(new Error("User was not created (correctly)"))}
           User.findOneAndDelete({ id: res.body._id }, {}, (err: CallbackError) => {
             if (err) { return done(err); }
             done();
@@ -130,16 +149,16 @@ describe('User Lifecycle', function () {
       .put('/api/v1/user/' + userID)
       .set('auth', adminToken)
       .send({
-        name: "Supertest-User renamed"
+        firstName: name + " renamed"
       })
       .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err); }
         res.should.have.status(200)
         res.body.should.be.a('object')
-        res.body.should.have.property('name').equal('Supertest-User renamed')
+        res.body.should.have.property('firstName').equal(name + ' renamed')
         //check if user was updated
         User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
-          if(user.name != 'Supertest-User renamed') {return done(new Error("User was not updated"))}
+          if(user.firstName != name + ' renamed') {return done(new Error("User was not updated (correctly)"))}
           done();
         })
       })
@@ -150,13 +169,13 @@ describe('User Lifecycle', function () {
       .put('/api/v1/user/me')
       .set('auth', userToken)
       .send({
-        name: "Test-User"
+        firstName: name + ' renamed'
       })
       .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err); }
         res.should.have.status(200)
         res.body.should.be.a('object')
-        res.body.should.have.property('name').equal('Test-User')
+        res.body.should.have.property('firstName').equal(name + ' renamed')
         return done();
       })
   });
