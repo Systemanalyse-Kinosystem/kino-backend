@@ -34,7 +34,8 @@ const schema = new Schema<IUser>({
 
 //add textIndex for full text search
 schema.index({
-  name: 'text',
+  firstName: 'text',
+  lastName: 'text',
   email: 'text'
 })
 
