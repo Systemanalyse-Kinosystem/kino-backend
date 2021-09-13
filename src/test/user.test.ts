@@ -20,7 +20,7 @@ let adminID: string;
 describe('User Lifecycle', function () {
   let name = uniqueNamesGenerator({ dictionaries: [names] })
   this.timeout(5000)
-  beforeEach('Login Admin, create Test-User, login Test-User', (done) => {
+  beforeEach('create and login admins and users', (done) => {
     User.create({
       firstName: "TestAdminfromChai",
       lastName: "chaiAdmin",
@@ -34,15 +34,15 @@ describe('User Lifecycle', function () {
         country: "Germany"
       }
     }, (err: CallbackError | null, user: IUser | null) => {
-      if (err || !user) {return done(err)}
-      
-    
-    //create JWT Admintoken
-    User.findOne({ email: "chai@kinosystem.de" },"+password", {}, async (err: CallbackError | null, user: IUser | null) => {
-      if (err) { return done(err);}
-      if (!user) { return done(new Error("No User with this email")) }
-      adminID = user._id;
-      adminToken = utils.createToken(user).token;
+      if (err || !user) { return done(err) }
+
+
+      //create JWT Admintoken
+      User.findOne({ email: "chai@kinosystem.de" }, "+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+        if (err) { return done(err); }
+        if (!user) { return done(new Error("No User with this email")) }
+        adminID = user._id;
+        adminToken = utils.createToken(user).token;
 
         //create dummy user
         User.create({
@@ -58,30 +58,28 @@ describe('User Lifecycle', function () {
             country: "Germany"
           }
         }, (err: CallbackError | null, user: IUser | null) => {
-          if (err || !user) {return done(err)}
+          if (err || !user) { return done(err) }
 
-            User.findOne({ email: name + "@kinosystem.de" },"+password", {}, async (err: CallbackError | null, user: IUser | null) => {
-              if (err) { return done(err);}
-              if (!user) { return done(new Error("No User with this email")) }
-              userToken = utils.createToken(user).token;
-              userID = user._id;
-                return done();
-              });
+          User.findOne({ email: name + "@kinosystem.de" }, "+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+            if (err) { return done(err); }
+            if (!user) { return done(new Error("No User with this email")) }
+            userToken = utils.createToken(user).token;
+            userID = user._id;
+            return done();
           });
+        });
       });
     });
   });
 
-  afterEach('delete the dummy user', (done) => {
-    User.deleteOne({ id: userID }, {}, (err: CallbackError) => {
-      if(err) {return done(err);}
-    
-
-    User.deleteOne({ id: adminID }, {}, (err: CallbackError) => {
-      if(err) {return done(err);}
-      done();
+  afterEach('delete the dummy users', (done) => {
+    User.findOneAndDelete({ _id: userID }, {}, (err: CallbackError) => {
+      User.findOneAndDelete({ _id: adminID }, {}, (err2: CallbackError) => {
+        if (err) { return done(err); }
+        if (err2) { return done(err2); }
+        done();
+      })
     })
-  })
   })
 
   //get the function and call it with (done)
@@ -115,20 +113,20 @@ describe('User Lifecycle', function () {
         res.should.have.status(201)
         res.body.should.be.a('object');
         res.body.should.have.property('firstName').equal(name);
-        res.body.should.have.property('email').equal(name+'@kinosystem.de');
-        userID = res.body._id
+        res.body.should.have.property('email').equal(name + '@kinosystem.de');
+        let createdID = res.body._id
 
         //checks if user was created
-        User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
-          if(user.firstName != name || user.email != name+'@kinosystem.de') {return done(new Error("User was not created (correctly)"))}
-          User.findOneAndDelete({ id: res.body._id }, {}, (err: CallbackError) => {
+        User.findOne({ _id: createdID }, (err: CallbackError, user: IUser) => {
+          if (user.firstName != name || user.email != name + '@kinosystem.de' || err) { return done(new Error("User was not created (correctly)")) }
+          User.findOneAndDelete({ _id: res.body._id }, {}, (err: CallbackError) => {
             if (err) { return done(err); }
             done();
           })
         })
 
         //delete the created user
-        
+
       });
   });
 
@@ -157,8 +155,8 @@ describe('User Lifecycle', function () {
         res.body.should.be.a('object')
         res.body.should.have.property('firstName').equal(name + ' renamed')
         //check if user was updated
-        User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
-          if(user.firstName != name + ' renamed') {return done(new Error("User was not updated (correctly)"))}
+        User.findOne({ _id: userID }, (err: CallbackError, user: IUser) => {
+          if (user.firstName != name + ' renamed') { return done(new Error("User was not updated (correctly)")) }
           done();
         })
       })
@@ -187,8 +185,8 @@ describe('User Lifecycle', function () {
       .end((err: Error, res: ChaiHttp.Response): void => {
         if (err) { return done(err); }
         res.should.have.status(204)
-        User.findOne({_id: userID}, (err: CallbackError, user: IUser) => {
-          if(user) {return done(new Error("User was not deleted"))}
+        User.findOne({ _id: userID }, (err: CallbackError, user: IUser) => {
+          if (user) { return done(new Error("User was not deleted")) }
           done();
         })
       })

@@ -61,28 +61,27 @@ export default class customerController {
     */
 
     static deleteCustomerById(req: Request, res: Response) {
-        User.findOneAndDelete({
-        }, {}, (err: CallbackError | null, user: IUser | null) => {
+        User.findOneAndDelete({ role: 'customer', _id: req.params.id }, {}, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.status(204).json({});
         });
     }
     static deleteCustomers(req: Request, res: Response) {
-        User.deleteMany((err: CallbackError | null, user: IUser | null) => {
+        User.deleteMany({ role: 'customer' }, {}, (err: CallbackError | null) => {
             if (err) { return res.status(500).json({ err: 'An Error occured' }) }
             res.status(204).json({});
         });
     }
 
     static updateCustomerById(req: Request, res: Response) {
-        User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
+        User.findOneAndUpdate({ role: 'customer', _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
             if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
         });
     }
 
     static updateLoggedInCustomer(req: Request, res: Response) {
-        User.findOneAndUpdate({ _id: (<IRequestWithUser>req).user.id }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
+        User.findOneAndUpdate({ _id: (<IRequestWithUser>req).user.id, role: 'customer' }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
             if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
         });
