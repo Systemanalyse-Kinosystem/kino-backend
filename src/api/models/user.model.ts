@@ -7,9 +7,16 @@ const schema = new Schema<IUser>({
   password: { type: String, required: true, select: false },
   role: {
     type: String,
-    enum: ['customer', 'admin', 'user', 'sysadmin'],
+    enum: ['customer', 'admin', 'user'],
     immutable: true
+  },
+  address: {
+    street: {type: String, required: true},
+    postalCode: {type: Number, required: true},
+    city: { type: String, required: true},
+    country: {type: String, required: false, default: 'Deutschland'}
   }
+
 },
   {
     toObject: {
