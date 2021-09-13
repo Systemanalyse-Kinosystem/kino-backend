@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import Hall from "../../models/hall.model";
 import IHall from "../../interfaces/hall.interface";
-import {IRequestWithUser} from "../../interfaces/jwt.interface"
 import { CallbackError } from "mongoose";
 
 export default class hallController {
