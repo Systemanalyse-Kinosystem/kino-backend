@@ -8,21 +8,23 @@ import { IRequestWithUser } from '../../interfaces/jwt.interface';
 export default class customerController {
 
     static async getCustomerList(req: Request, res: Response) {
-            //build sortOptions and seachOptions
-            let sortOptions: any = {};
+        //build sortOptions and seachOptions
+        let sortOptions: any = {};
+        if (req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1 || parseInt(<string>req.query.orderdir) == -1)) {
             sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
-            let searchOptions = req.query.search ? {$text: { $search: <string>req.query.search }} : {};
-    
-            User.find({role: 'customer', ...searchOptions },null, {
-                skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
-                limit: parseInt(<string>req.query.perPage),
-                sort: sortOptions
-            },(err: CallbackError | null, users: IUser[] | null) => {
-                if (err) { return res.status(500).json(err) }
-                if (!users) { return res.status(500).json({ err: "An Error occured" }); }
-                res.json(users);
-            })
-        };
+        }
+        let searchOptions = req.query.search ? { $text: { $search: <string>req.query.search } } : {};
+
+        User.find({ role: 'customer', ...searchOptions }, null, {
+            skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
+            limit: parseInt(<string>req.query.perPage),
+            sort: sortOptions
+        }, (err: CallbackError | null, users: IUser[] | null) => {
+            if (err) { return res.status(500).json(err) }
+            if (!users) { return res.status(500).json({ err: "An Error occured" }); }
+            res.json(users);
+        })
+    };
 
     static getCustomerById(req: Request, res: Response) {
         User.findOne({ role: 'customer', _id: req.params.id }, (err: CallbackError | null, user: IUser | null) => {
@@ -80,7 +82,7 @@ export default class customerController {
     }
 
     static updateLoggedInCustomer(req: Request, res: Response) {
-        User.findOneAndUpdate({ _id:  (<IRequestWithUser>req).user.id  }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
+        User.findOneAndUpdate({ _id: (<IRequestWithUser>req).user.id }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
             if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
         });

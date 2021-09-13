@@ -8,7 +8,9 @@ export default class hallController {
     static async getHallList(req: Request, res: Response) {
             //build sortOptions and seachOptions
             let sortOptions: any = {};
-            sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
+            if(req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1||parseInt(<string>req.query.orderdir) == -1)) {
+                sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
+            }
             let searchOptions = req.query.search ? {$text: { $search: <string>req.query.search }} : {};
     
             Hall.find({...searchOptions },null, {
