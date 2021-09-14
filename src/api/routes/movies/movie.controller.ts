@@ -9,7 +9,7 @@ export default class movieController {
             //build sortOptions and seachOptions
             let sortOptions: any = {};
             sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
-            let searchOptions = req.query.search ? {$text: { $search: <string>req.query.search }} : {};
+            let searchOptions = req.query.search ? {$text: { $search: "\"" + <string>req.query.search +  "\"" }} : {};
             
     
             Movie.find({...searchOptions },null, {
@@ -17,7 +17,7 @@ export default class movieController {
                 limit: parseInt(<string>req.query.perPage),
                 sort: sortOptions
             },(err: CallbackError | null, movies: any) => {
-                if (err) { return res.status(500).json(err) }
+                if (err) { return res.status(400).json(err) }
                 if (!movies) { return res.status(500).json({ err: "An Error occured" }); }
                 res.json(movies);
             })

@@ -9,7 +9,7 @@ export default class userController {
     static async getUserList(req: Request, res: Response) {
         //build sortOptions and seachOptions
         let sortOptions: any = {};
-        let searchOptions = req.query.search ? { $text: { $search: <string>req.query.search } } : {};
+        let searchOptions = req.query.search ? { $text: { $search: "\"" + <string>req.query.search +  "\"" } } : {};
         if (req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1 || parseInt(<string>req.query.orderdir) == -1)) {
             sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
         }

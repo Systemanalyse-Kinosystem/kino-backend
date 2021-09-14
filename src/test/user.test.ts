@@ -1,4 +1,4 @@
-import app from "./../app";
+import app from "../app";
 import testUtils from "./testUtils";
 import chai from "chai"
 import chaiHttp from "chai-http";
@@ -7,7 +7,7 @@ import { CallbackError } from "mongoose";
 import { uniqueNamesGenerator, Config, names } from 'unique-names-generator';
 import IUser from "../api/interfaces/user.interface";
 import bcrypt from "bcrypt"
-import utils from "./../api/utils/utils"
+import utils from "../api/utils/utils"
 
 chai.use(chaiHttp)
 let should = chai.should()
@@ -17,7 +17,7 @@ let userID: string;
 let adminToken: string;
 let adminID: string;
 
-describe('User Lifecycle', function () {
+describe('User Routes', function () {
   let name = uniqueNamesGenerator({ dictionaries: [names] })
   this.timeout(5000)
   beforeEach('create and login admins and users', (done) => {

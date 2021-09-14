@@ -4,7 +4,7 @@
   "description": "Kinoticketreservierungssystem für Systemanalyse und Entwurf",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=html --no-cache --temp-dir=./nyc_output --all --reporter=text mocha -r ts-node/register ./src/test/*.test.ts --exit",
+    "test": "nyc --reporter=html --no-cache --temp-dir=./nyc_output --all --reporter=text mocha -r ts-node/register --exit ./src/test/*.test.ts",
     "devstart": "tsc-watch --onSuccess \"node ./dist/app.js\"",
     "build": "tsc",
     "start": "node ./dist/app.js"
@@ -45,6 +45,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.7.0",
     "mongoose": "^5.13.9",
+    "mongoose-to-swagger": "^1.3.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.12",
     "nyc": "^15.1.0",

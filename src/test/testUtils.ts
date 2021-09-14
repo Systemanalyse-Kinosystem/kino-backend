@@ -8,16 +8,17 @@ let should = chai.should()
 
 
 export default class testUtils {
-    static getDocumentListTest(route: string, token: string) {
+    static getDocumentListTest(route: string, token: string, perPage: number = 10) {
         return function (done: Mocha.Done) {
             chai.request(app)
-                .get('/api/v1' + route)
+                .get('/api/v1' + route + '?perPage=' + perPage)
                 .set('auth', token)
                 .end((err: Error, res: ChaiHttp.Response): void => {
                     if(err) {return done(err)}
                     res.should.have.status(200)
                     res.body.should.be.a('array')
-                    done()
+                    res.body.should.have.lengthOf.below(perPage+1)
+                    done();
                 })
         }
     }
