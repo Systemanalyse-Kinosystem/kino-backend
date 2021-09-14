@@ -34,7 +34,7 @@ export default class hallController {
             res.json(hall);
         })
     };
-
+*/
     static createHall(req: Request, res: Response) {
         Hall.create(req.body, (err: CallbackError | null, hall: IHall | null) => {
             if (err || !hall) {
@@ -66,7 +66,7 @@ export default class hallController {
             })
         });
     }
-
+/*
     static async deleteHallById(req: Request, res: Response) {
         Hall.findOneAndDelete({ _id: req.params.id }, {}, (err: CallbackError | null, hall: IHall | null) => {
             if (err) { return res.status(500).json(err) }
