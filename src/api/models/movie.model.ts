@@ -1,7 +1,7 @@
 //replace PlaceHolderInterface, collection
 import { Schema, model } from 'mongoose';
 const schema = new Schema<any>({
-  test: { type: String},
+  title: { type: String },
 },
 {
     toObject: {
@@ -12,4 +12,9 @@ const schema = new Schema<any>({
     },
     timestamps: {createdAt: 'createdAt'}
   });
+
+  schema.index({
+    title: 'text'
+  })
+  
 export default model<any>('movies', schema);
