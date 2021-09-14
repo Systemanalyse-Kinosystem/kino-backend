@@ -24,4 +24,3 @@ jobs:
           PORT: ${{ secrets.PORT }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          ADMIN_SECRET: §{{ secrets.ADMIN_SECRET }}

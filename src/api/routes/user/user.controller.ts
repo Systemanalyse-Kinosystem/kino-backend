@@ -62,23 +62,20 @@ export default class userController {
     }
 
     static async createAdmin(req: Request, res: Response) {
-        if (req.query.secret = <string>process.env.ADMIN_SECRET) {
-            User.findOne({ email: req.body.email, role: 'admin' }, async (err: CallbackError | null, user: IUser | null) => {
-                //check if user already exists
-                if (err || user) { return res.status(500).json({ err: "An Error occured" }); }
-                req.body.password = await bcrypt.hash(req.body.password, 10);
-                req.body.role = 'admin';
-                User.create(req.body, (err: CallbackError | null, user: IUser | null) => {
-                    if (err || !user) {
-                        return res.status(500).json(err);
-                    }
-                    res.status(201).json(user);
-                });
+        User.findOne({ email: req.body.email, role: 'admin' }, async (err: CallbackError | null, user: IUser | null) => {
+            //check if user already exists
+            if (err || user) { return res.status(500).json({ err: "An Error occured" }); }
+            req.body.password = await bcrypt.hash(req.body.password, 10);
+            req.body.role = 'admin';
+            User.create(req.body, (err: CallbackError | null, user: IUser | null) => {
+                if (err || !user) {
+                    return res.status(500).json(err);
+                }
+                res.status(201).json(user);
             });
-        } else {
-            res.status(401).json({ err: "An Error occured" });
-        }
+        });
     }
+
 
     static async deleteUserById(req: Request, res: Response) {
 
