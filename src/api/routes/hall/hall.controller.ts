@@ -27,7 +27,7 @@ export default class hallController {
             res.json(halls);
         })
     };
-
+    /* DEAVTIVATED FOR MVP
     static getHallById(req: Request, res: Response) {
         Hall.findOne({ _id: req.params.id }, (err: CallbackError | null, hall: IHall | null) => {
             if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
@@ -90,5 +90,7 @@ export default class hallController {
                 res.json(hall);
             })
     }
+    */ 
+
 
 }
