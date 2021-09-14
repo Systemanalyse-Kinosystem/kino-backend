@@ -1,10 +1,13 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Mongoose } from 'mongoose';
 import IHall from "../interfaces/hall.interface";
 
 const schema = new Schema<IHall>({
-  //add autoIncrement
   number: { type: Number, required: true, unique: true},
-  capacity: { type: Number, required: true}
+  //add capacity as virtual
+  capacity: { type: Number, required: true},
+  seats: [
+    {type: Schema.Types.ObjectId, ref:'seats', required: false}
+  ]
 },
 {
     toObject: {
@@ -21,4 +24,4 @@ schema.index({
 
 })
 
-export default model<IHall>('Hall', schema);
+export default model<IHall>('halls', schema);

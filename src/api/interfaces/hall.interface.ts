@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+import ISeat from "./seat.interface";
 interface IHall extends Document {
     id: string;
     _id: string;
@@ -6,6 +7,9 @@ interface IHall extends Document {
     updatedAt: string;
     number: number;
     capacity: number;
+    seats: [
+        string | ISeat
+    ]
 }
 
 export default IHall;

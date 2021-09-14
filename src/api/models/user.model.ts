@@ -39,4 +39,4 @@ schema.index({
   email: 'text'
 })
 
-export default model<IUser>('User', schema);
+export default model<IUser>('users', schema);

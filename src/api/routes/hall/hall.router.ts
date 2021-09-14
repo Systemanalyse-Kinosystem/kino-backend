@@ -10,6 +10,6 @@ router.get('/:id', /*authenticationMiddleware.getAuthenticationMiddleware(['user
 router.post('/', /*authenticationMiddleware.getAuthenticationMiddleware(['user','admin']),*/ hallController.createHall);
 router.put('/:id', /*authenticationMiddleware.getAuthenticationMiddleware(['user','admin']),*/ hallController.updateHallById);
 router.delete('/:id', /*authenticationMiddleware.getAuthenticationMiddleware(['user','admin']),*/ hallController.deleteHallById);
-//router.delete('/',/* authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']),*/ hallController.deleteHalls);
+router.delete('/',/* authenticationMiddleware.getAuthenticationMiddleware(['sysadmin']),*/ hallController.deleteHalls);
 
 export default router;
