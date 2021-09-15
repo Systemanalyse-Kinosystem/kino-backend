@@ -13,8 +13,5 @@ const schema = new Schema<any>({
     timestamps: {createdAt: 'createdAt'}
   });
 
-  schema.index({
-    title: 'text'
-  })
-  
+  //index already defined in atlas
 export default model<any>('movies', schema);
