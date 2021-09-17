@@ -18,10 +18,10 @@ export default class screeningController {
                 limit: perPage,
                 sort: sortOptions,
                 populate: ['movie', 'hall']
-            },(err: CallbackError | null, PlaceHolderSmalls: IScreening[] | null) => {
+            },(err: CallbackError | null, screenings: IScreening[] | null) => {
                 if (err) { return res.status(500).json(err) }
-                if (!PlaceHolderSmalls) { return res.status(500).json({ err: "An Error occured" }); }
-                res.json(PlaceHolderSmalls);
+                if (!screenings) { return res.status(500).json({ err: "An Error occured" }); }
+                res.json(screenings);
             })
         };
 
