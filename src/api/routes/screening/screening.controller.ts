@@ -31,7 +31,7 @@ export default class screeningController {
             res.json(screening);
         })
     };
-
+/* DEACTIVATED FOR MVP
     static createScreening(req: Request, res: Response) {
         Screening.create(req.body, (err: CallbackError | null, screening: IScreening | null) => {
             if (err || !screening) { return res.status(400).json({ err: 'An Error occured' }); }
@@ -59,4 +59,5 @@ export default class screeningController {
             res.json(screening);
         });
     }
+    */
 }

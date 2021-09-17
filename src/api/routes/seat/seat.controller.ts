@@ -34,14 +34,14 @@ export default class seatController {
             res.status(204).json({});
         });
     }
-    */
+    
     static deleteSeats(req: Request, res: Response) {
         Seat.deleteMany((err: CallbackError | null, seat: ISeat | null) => {
             if (err) { return res.status(500).json({ err: 'An Error occured' }) }
             res.status(204).json({});
         });
     }
-/*
+
     static updateSeatById(req: Request, res: Response) {
         Seat.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, seat: ISeat | null) => {
             if (!seat || err) { return res.status(500).json({ err: 'An Error occured' }); }

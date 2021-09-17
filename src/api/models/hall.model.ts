@@ -3,8 +3,6 @@ import IHall from "../interfaces/hall.interface";
 
 const schema = new Schema<IHall>({
   number: { type: Number, required: true, unique: true},
-  //add capacity as virtual
-  capacity: { type: Number, required: true},
   seats: [
     {type: Schema.Types.ObjectId, ref:'seats', required: false}
   ]
@@ -19,9 +17,10 @@ const schema = new Schema<IHall>({
     timestamps: {createdAt: 'createdAt'}
   });
 
-//add textIndex for full text search
-schema.index({
+  schema.virtual('capacity').get(function(this: IHall) {
+    return this.seats.length;
+  })
 
-})
+
 
 export default model<IHall>('halls', schema);

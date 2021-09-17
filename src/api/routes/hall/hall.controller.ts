@@ -14,7 +14,6 @@ export default class hallController {
             sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
         }
         let searchOptions = req.query.search ? { $text: { $search: <string>req.query.search } } : {};
-
         Hall.find({ ...searchOptions }, null, {
             skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
             limit: parseInt(<string>req.query.perPage),
@@ -27,14 +26,14 @@ export default class hallController {
             res.json(halls);
         })
     };
-    /* DEAVTIVATED FOR MVP
+    /* DEACTIVATED FOR MVP
     static getHallById(req: Request, res: Response) {
         Hall.findOne({ _id: req.params.id }, (err: CallbackError | null, hall: IHall | null) => {
             if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(hall);
         })
     };
-*/
+
     static createHall(req: Request, res: Response) {
         Hall.create(req.body, (err: CallbackError | null, hall: IHall | null) => {
             if (err || !hall) {
@@ -66,7 +65,7 @@ export default class hallController {
             })
         });
     }
-/*
+
     static async deleteHallById(req: Request, res: Response) {
         Hall.findOneAndDelete({ _id: req.params.id }, {}, (err: CallbackError | null, hall: IHall | null) => {
             if (err) { return res.status(500).json(err) }

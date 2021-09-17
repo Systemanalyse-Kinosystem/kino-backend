@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.38% </span>
+                <span class="strong">6.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/32</span>
+                <span class='fraction'>2/32</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">7.41% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/27</span>
+                <span class='fraction'>2/27</span>
             </div>
         
             
@@ -152,24 +152,22 @@
 <a name='L93'></a><a href='#L93'>93</a>
 <a name='L94'></a><a href='#L94'>94</a>
 <a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a>
-<a name='L97'></a><a href='#L97'>97</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -254,7 +252,7 @@ import Hall from "../../models/hall.model";
 import IHall from "../../interfaces/hall.interface";
 import { CallbackError, InsertManyResult } from "mongoose";
 import ISeat from "../../interfaces/seat.interface";
-import Seat from "../../models/seat.model";
+<span class="cstat-no" title="statement not covered" >import Seat from "../../models/seat.model";</span>
 &nbsp;
 export default class hallController {
 &nbsp;
@@ -265,7 +263,6 @@ export default class hallController {
 <span class="cstat-no" title="statement not covered" >            sortOptions[&lt;string&gt;req.query.orderby] = &lt;string&gt;req.query.orderdir;</span>
         }
         let searchOptions = <span class="cstat-no" title="statement not covered" >req.query.search ? { $text: { $search: &lt;string&gt;req.query.search } } : {};</span>
-&nbsp;
 <span class="cstat-no" title="statement not covered" >        Hall.find({ ...searchOptions }, null, {</span>
             skip: parseInt(&lt;string&gt;req.query.page) * parseInt(&lt;string&gt;req.query.perPage),
             limit: parseInt(&lt;string&gt;req.query.perPage),
@@ -278,14 +275,14 @@ export default class hallController {
 <span class="cstat-no" title="statement not covered" >            res.json(halls);</span>
         })
     };
-    /* DEAVTIVATED FOR MVP
+    /* DEACTIVATED FOR MVP
     static getHallById(req: Request, res: Response) {
         Hall.findOne({ _id: req.params.id }, (err: CallbackError | null, hall: IHall | null) =&gt; {
             if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(hall);
         })
     };
-*/
+&nbsp;
 <span class="fstat-no" title="function not covered" >    static </span>createHall(req: Request, res: Response) {
 <span class="cstat-no" title="statement not covered" >        Hall.create(req.body, <span class="fstat-no" title="function not covered" >(e</span>rr: CallbackError | null, hall: IHall | null) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >            if (err || !hall) {</span>
@@ -317,7 +314,7 @@ export default class hallController {
             })
         });
     }
-/*
+&nbsp;
     static async deleteHallById(req: Request, res: Response) {
         Hall.findOneAndDelete({ _id: req.params.id }, {}, (err: CallbackError | null, hall: IHall | null) =&gt; {
             if (err) { return res.status(500).json(err) }
@@ -352,7 +349,7 @@ export default class hallController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Sep 14 2021 19:20:47 GMT+0200 (Mitteleuropäische Sommerzeit)
+                at Fri Sep 17 2021 14:13:51 GMT+0200 (Mitteleuropäische Sommerzeit)
             </div>
         </div>
         <script src="../../../../prettify.js"></script>

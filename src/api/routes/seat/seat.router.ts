@@ -10,9 +10,9 @@ router.get('/', seatController.getSeatById);
 router.post('/', seatController.createSeat);
 router.put('/:id', seatController.updateSeatById);
 router.delete('/:id', seatController.deleteSeatById);
-*/
+
 router.delete('/', seatController.deleteSeats);
-/*
+
 */
 
 export default router;
