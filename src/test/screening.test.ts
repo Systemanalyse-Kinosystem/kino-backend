@@ -12,7 +12,7 @@ describe('Screening Routes', function () {
   this.timeout(5000)
 
   //get the function and call it with (done)
-  it('returns a list of scrrenings', (done) => {
+  it('returns a list of screenings', (done) => {
     testUtils.getDocumentListTest('/screening', "", 10)(done)
   });
 
