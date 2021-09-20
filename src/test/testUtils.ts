@@ -8,7 +8,7 @@ let should = chai.should()
 
 
 export default class testUtils {
-    static getDocumentListTest(route: string, token: string, perPage: number = 10, ...properties: string[]) {
+    static getDocumentListTest(route: string, token: string, perPage: number = 10) {
         return function (done: Mocha.Done) {
             chai.request(app)
                 .get('/api/v1' + route + '?perPage=' + perPage)
@@ -18,16 +18,17 @@ export default class testUtils {
                     res.should.have.status(200)
                     res.body.should.be.a('array')
                     res.body.should.have.lengthOf.below(perPage+1)
-                    for(let property of properties) {
-                        res.body.should.have.property(property);
-                    }
+                   
+                        res.body[0].should.have.property('_id');
+                    
+                    
                     done();
                 })
         }
     }
 
     //TODO retrieve random docID from database
-    static getDocumentSingleTest(route: string, token: string, docID: string) {
+    static getDocumentSingleTest(route: string, token: string, docID: string, ...properties: string[]) {
         return function (done: Mocha.Done) {
             chai.request(app)
                 .get('/api/v1' + route + '/' + docID)
@@ -36,6 +37,9 @@ export default class testUtils {
                     if(err) {return done(err)}
                     res.should.have.status(200)
                     res.body.should.be.a('object')
+                    for(let property of properties) {
+                        res.body.should.have.property(property);
+                    }
                     done();
                 })
         }

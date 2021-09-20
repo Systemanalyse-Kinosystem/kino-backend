@@ -19,7 +19,7 @@ describe('Movie Routes', function () {
   it('returns a single movie', (done) => {
     Movie.findOne((err: CallbackError, movie: any) => {
       if (err) { return done(err); }
-      testUtils.getDocumentSingleTest('/movie', "", movie._id)(done)
+      testUtils.getDocumentSingleTest('/movie', "", movie._id, 'title')(done)
     })
   })
 });

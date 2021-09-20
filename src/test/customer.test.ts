@@ -84,11 +84,11 @@ describe('Customer Routes', function () {
 
   //get the function and call it with (done)
   it('returns a list of customers', (done) => {
-    testUtils.getDocumentListTest('/customer', adminToken)(done)
+    testUtils.getDocumentListTest('/customer', adminToken, 10)(done)
   });
 
   it('returns a single customer', (done) => {
-    testUtils.getDocumentSingleTest('/customer', adminToken, customerID)(done)
+    testUtils.getDocumentSingleTest('/customer', adminToken, customerID, 'role','firstName', 'lastName', 'email')(done)
   })
 
   it('registers a customer', function (done) {

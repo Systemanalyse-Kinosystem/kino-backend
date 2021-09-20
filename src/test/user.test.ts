@@ -84,11 +84,11 @@ describe('User Routes', function () {
 
   //get the function and call it with (done)
   it('returns a list of users', (done) => {
-    testUtils.getDocumentListTest('/user', adminToken)(done)
+    testUtils.getDocumentListTest('/user', adminToken, 10)(done)
   });
 
   it('returns a single user', (done) => {
-    testUtils.getDocumentSingleTest('/user', adminToken, userID)(done)
+    testUtils.getDocumentSingleTest('/user', adminToken, userID, 'role','firstName', 'lastName', 'email')(done)
   })
 
   it('creates a user', function (done) {
