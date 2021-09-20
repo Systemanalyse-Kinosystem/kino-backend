@@ -38,7 +38,7 @@ export default class AuthenticationController {
                     return res.status(500).json(err);
                 }
                 user.password = "";
-                res.json(user);
+                res.status(201).json(user);
             });
         });
     }

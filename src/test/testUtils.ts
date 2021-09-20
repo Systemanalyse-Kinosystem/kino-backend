@@ -8,7 +8,7 @@ let should = chai.should()
 
 
 export default class testUtils {
-    static getDocumentListTest(route: string, token: string, perPage: number = 10) {
+    static getDocumentListTest(route: string, token: string, perPage: number = 10, ...properties: string[]) {
         return function (done: Mocha.Done) {
             chai.request(app)
                 .get('/api/v1' + route + '?perPage=' + perPage)
@@ -18,6 +18,9 @@ export default class testUtils {
                     res.should.have.status(200)
                     res.body.should.be.a('array')
                     res.body.should.have.lengthOf.below(perPage+1)
+                    for(let property of properties) {
+                        res.body.should.have.property(property);
+                    }
                     done();
                 })
         }
