@@ -20,12 +20,12 @@ let adminID: string;
 describe('Customer Routes', function () {
   let name = uniqueNamesGenerator({ dictionaries: [names] })
   this.timeout(5000)
-  beforeEach('create and login admins and customers', (done) => {
+  beforeEach('create and login admins and customers',(done) => {
     User.create({
       firstName: "TestAdminfromChai",
       lastName: "chaiAdmin",
       email: "chai@kinosystem.de",
-      password: "test1234",
+      password: bcrypt.hashSync("test1234", 10),
       role: "admin",
       address: {
         street: "Teststraße 15",
@@ -38,7 +38,7 @@ describe('Customer Routes', function () {
 
 
       //create JWT Admintoken
-      User.findOne({ email: "chai@kinosystem.de" }, "+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+      User.findOne({ email: "chai@kinosystem.de" }, "+password", {}, (err: CallbackError | null, user: IUser | null) => {
         if (err) { return done(err); }
         if (!user) { return done(new Error("No User with this email")) }
         adminID = user._id;
@@ -49,7 +49,7 @@ describe('Customer Routes', function () {
           firstName: name,
           lastName: name,
           email: name + "@kinosystem.de",
-          password: "test1234",
+          password: bcrypt.hashSync("test1234", 10),
           role: "customer",
           address: {
             street: "Teststraße 15",
@@ -60,7 +60,7 @@ describe('Customer Routes', function () {
         }, (err: CallbackError | null, user: IUser | null) => {
           if (err || !user) { return done(err) }
 
-          User.findOne({ email: name + "@kinosystem.de" }, "+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+          User.findOne({ email: name + "@kinosystem.de" }, "+password", {}, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return done(err); }
             if (!user) { return done(new Error("No User with this email")) }
             customerToken = utils.createToken(user).token;

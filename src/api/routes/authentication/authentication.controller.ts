@@ -13,12 +13,12 @@ export default class AuthenticationController {
             if (err) { return res.status(401).json({ err: "An Error occurred" });  }
             if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             if (await bcrypt.compare(req.body.password, user.password)) {
-                res.json({
+                return res.json({
                     email: user.email,
                     token: utils.createToken(user)
                 });
-
             }
+            return res.status(401).json({err: "An Error occurred"});
         });
     }
 

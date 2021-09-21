@@ -25,7 +25,7 @@ describe('User Routes', function () {
       firstName: "TestAdminfromChai",
       lastName: "chaiAdmin",
       email: "chai@kinosystem.de",
-      password: "test1234",
+      password: bcrypt.hashSync("test1234", 10),
       role: "admin",
       address: {
         street: "Teststraße 15",
@@ -38,7 +38,7 @@ describe('User Routes', function () {
 
 
       //create JWT Admintoken
-      User.findOne({ email: "chai@kinosystem.de" }, "+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+      User.findOne({ email: "chai@kinosystem.de" }, "+password", {}, (err: CallbackError | null, user: IUser | null) => {
         if (err) { return done(err); }
         if (!user) { return done(new Error("No User with this email")) }
         adminID = user._id;
@@ -49,7 +49,7 @@ describe('User Routes', function () {
           firstName: name,
           lastName: name,
           email: name + "@kinosystem.de",
-          password: "test1234",
+          password: bcrypt.hashSync("test1234", 10),
           role: "user",
           address: {
             street: "Teststraße 15",
@@ -60,7 +60,7 @@ describe('User Routes', function () {
         }, (err: CallbackError | null, user: IUser | null) => {
           if (err || !user) { return done(err) }
 
-          User.findOne({ email: name + "@kinosystem.de" }, "+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+          User.findOne({ email: name + "@kinosystem.de" }, "+password", {}, (err: CallbackError | null, user: IUser | null) => {
             if (err) { return done(err); }
             if (!user) { return done(new Error("No User with this email")) }
             userToken = utils.createToken(user).token;
@@ -119,14 +119,11 @@ describe('User Routes', function () {
         //checks if user was created
         User.findOne({ _id: createdID }, (err: CallbackError, user: IUser) => {
           if (user.firstName != name || user.email != name + '@kinosystem.de' || err) { return done(new Error("User was not created (correctly)")) }
-          User.findOneAndDelete({ _id: res.body._id }, {}, (err: CallbackError) => {
+          User.findOneAndDelete({ _id: res.body._id, role: 'user' }, {}, (err: CallbackError) => {
             if (err) { return done(err); }
             done();
-          })
-        })
-
-        //delete the created user
-
+          });
+        });
       });
   });
 

@@ -1,0 +1,71 @@
+Date : 2021-09-20 21:44:17
+Directory : c:\Users\I538959\Documents\kinosystem\kino-backend\src
+Total : 33 files,  1025 codes, 232 comments, 173 blanks, all 1430 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| TypeScript |         33 |      1,025 |        232 |        173 |      1,430 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                          | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                             |         33 |      1,025 |        232 |        173 |      1,430 |
+| api                                                                                                           |         27 |        585 |        210 |         89 |        884 |
+| api\interfaces                                                                                                |          5 |         63 |          0 |          5 |         68 |
+| api\middlewares                                                                                               |          1 |         27 |          0 |          3 |         30 |
+| api\models                                                                                                    |          5 |        110 |          5 |         11 |        126 |
+| api\routes                                                                                                    |         15 |        369 |        205 |         67 |        641 |
+| api\routes\authentication                                                                                     |          2 |         44 |          8 |          9 |         61 |
+| api\routes\customer                                                                                           |          2 |         72 |         22 |         12 |        106 |
+| api\routes\hall                                                                                               |          2 |         31 |         72 |         10 |        113 |
+| api\routes\movies                                                                                             |          2 |         32 |          3 |         10 |         45 |
+| api\routes\screening                                                                                          |          2 |         34 |         38 |          6 |         78 |
+| api\routes\seat                                                                                               |          2 |         10 |         57 |          3 |         70 |
+| api\routes\user                                                                                               |          2 |        129 |          4 |         15 |        148 |
+| api\utils                                                                                                     |          1 |         16 |          0 |          3 |         19 |
+| test                                                                                                          |          5 |        418 |         15 |         73 |        506 |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                      | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\interfaces\hall.interface.ts                       | TypeScript |         14 |          0 |          1 |         15 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\interfaces\jwt.interface.ts                        | TypeScript |         12 |          0 |          3 |         15 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\interfaces\screening.interface.ts                  | TypeScript |         10 |          0 |          0 |         10 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\interfaces\seat.interface.ts                       | TypeScript |          6 |          0 |          0 |          6 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\interfaces\user.interface.ts                       | TypeScript |         21 |          0 |          1 |         22 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\middlewares\auth.middlewares.ts                    | TypeScript |         27 |          0 |          3 |         30 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\models\hall.model.ts                               | TypeScript |         21 |          0 |          5 |         26 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\models\movie.model.ts                              | TypeScript |         14 |          2 |          1 |         17 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\models\screening.model.ts                          | TypeScript |         22 |          2 |          0 |         24 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\models\seat.model.ts                               | TypeScript |         17 |          0 |          0 |         17 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\models\user.model.ts                               | TypeScript |         36 |          1 |          5 |         42 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\authentication\authentication.controller.ts | TypeScript |         38 |          8 |          6 |         52 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\authentication\authentication.router.ts     | TypeScript |          6 |          0 |          3 |          9 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\customer\customer.controller.ts             | TypeScript |         60 |         20 |          9 |         89 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\customer\customer.router.ts                 | TypeScript |         12 |          2 |          3 |         17 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\hall\hall.controller.ts                     | TypeScript |         25 |         65 |          6 |         96 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\hall\hall.router.ts                         | TypeScript |          6 |          7 |          4 |         17 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\movies\movie.controller.ts                  | TypeScript |         26 |          2 |          6 |         34 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\movies\movie.router.ts                      | TypeScript |          6 |          1 |          4 |         11 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\routes.ts                                   | TypeScript |         17 |          1 |          2 |         20 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\screening\screening.controller.ts           | TypeScript |         28 |         31 |          4 |         63 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\screening\screening.router.ts               | TypeScript |          6 |          7 |          2 |         15 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\seat\seat.controller.ts                     | TypeScript |          6 |         45 |          1 |         52 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\seat\seat.router.ts                         | TypeScript |          4 |         12 |          2 |         18 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\user\user.controller.ts                     | TypeScript |        115 |          3 |         12 |        130 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\routes\user\user.router.ts                         | TypeScript |         14 |          1 |          3 |         18 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\api\utils\utils.ts                                     | TypeScript |         16 |          0 |          3 |         19 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\app.ts                                                 | TypeScript |         22 |          7 |         11 |         40 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\test\customer.test.ts                                  | TypeScript |        169 |          6 |         28 |        203 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\test\movie.test.ts                                     | TypeScript |         20 |          1 |          5 |         26 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\test\screening.test.ts                                 | TypeScript |         20 |          1 |          5 |         26 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\test\testUtils.ts                                      | TypeScript |         39 |          1 |          7 |         47 |
+| c:\Users\I538959\Documents\kinosystem\kino-backend\src\test\user.test.ts                                      | TypeScript |        170 |          6 |         28 |        204 |
+| Total                                                                                                         |            |      1,025 |        232 |        173 |      1,430 |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
