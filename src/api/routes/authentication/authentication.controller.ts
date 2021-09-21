@@ -29,13 +29,10 @@ export default class AuthenticationController {
             if (err || user) { return res.status(401).json({ err: "An CallbackError occurred" }); }
 
             req.body.password = await bcrypt.hash(req.body.password, 10);
-
-            User.create({
-                ...req.body,
-                role: 'customer'
-            }, (err: CallbackError | null, user: IUser | null) => {
+            req.body.role = 'customer';
+            User.create(req.body, (err: CallbackError | null, user: IUser | null) => {
                 if (err || !user) {
-                    return res.status(500).json(err);
+                    return res.status(400).json(err);
                 }
                 user.password = "";
                 res.status(201).json(user);
