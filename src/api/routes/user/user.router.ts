@@ -9,7 +9,6 @@ router.get('/me',  authenticationMiddleware.getAuthenticationMiddleware(['user']
 router.get('/', /* authenticationMiddleware.getAuthenticationMiddleware(['admin']), */ userController.getUserList);
 router.get('/:id', /* authenticationMiddleware.getAuthenticationMiddleware(['admin', 'user']),*/ userController.getUserById);
 router.post('/', /* authenticationMiddleware.getAuthenticationMiddleware(['admin', 'user']),*/ userController.createUser);
-router.post('/admin', userController.createAdmin);
 router.put('/me',  authenticationMiddleware.getAuthenticationMiddleware(['user']), userController.updateLoggedInUser);
 router.put('/:id', /* authenticationMiddleware.getAuthenticationMiddleware(['admin']),*/ userController.updateUserById);
 router.delete('/:id', /* authenticationMiddleware.getAuthenticationMiddleware(['admin']),*/ userController.deleteUserById);
