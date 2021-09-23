@@ -3,6 +3,9 @@ import { Request, Response } from 'express';
 import { CallbackError } from 'mongoose';
 import Screening from '../../models/screening.model';
 import IScreening from '../../interfaces/screening.interface';
+import Hall from '../../models/hall.model';
+import IHall from '../../interfaces/hall.interface';
+import Ticket from '../../models/ticket.model';
 
 export default class screeningController {
 
@@ -31,14 +34,24 @@ export default class screeningController {
             res.json(screening);
         })
     };
-/* DEACTIVATED FOR MVP
+    
+
     static createScreening(req: Request, res: Response) {
         Screening.create(req.body, (err: CallbackError | null, screening: IScreening | null) => {
             if (err || !screening) { return res.status(400).json({ err: 'An Error occured' }); }
-            res.json(screening);
+            Hall.findById(screening.hall, (err: CallbackError | null, hall: IHall | null) => {
+                if (err || !hall) { return res.status(500).json({ err: 'An Error occured' }); }
+                let ticketBodies = hall.seats.map(seatId => { return { seat: seatId, screening: screening._id}})
+                Ticket.insertMany(ticketBodies, {}, (err: CallbackError, result:any) => {
+                    if(err) {
+                        return res.status(500).json({err: "An Error occurred (Seatcreation)"})
+                    }
+                    res.json(screening);
+                }); 
+            });
         });
     }
-
+/* DEACTIVATED FOR MVP
     static deleteScreeningById(req: Request, res: Response) {
         Screening.findOneAndDelete({
         }, {}, (err: CallbackError | null, screening: IScreening | null) => {

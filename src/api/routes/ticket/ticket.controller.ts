@@ -8,14 +8,25 @@ import { IRequestWithUser } from '../../interfaces/jwt.interface';
 export default class ticketController {
 
     static getTicketListForScreening(req: Request, res: Response) {
-        Ticket.find({screening: req.params.screeningId}, (err: CallbackError | null, ticket: ITicket[] | null) => {
+        Ticket.find({ screening: req.params.screeningId }, (err: CallbackError | null, ticket: ITicket[] | null) => {
             if (!ticket || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(ticket);
-        })
+        }).populate([{
+            path: 'screening',
+            populate: [{
+                path: 'movie',
+                model: 'movies'
+            }, {
+                path: 'hall',
+                model: 'halls'
+            }]
+        }, {
+            path: 'seat'
+        }]);
     };
 
     static getTicketListForLoggedInUser(req: Request, res: Response) {
-        Ticket.find({userID: (<IRequestWithUser>req).user.id}, (err: CallbackError | null, ticket: ITicket[] | null) => {
+        Ticket.find({ userID: (<IRequestWithUser>req).user.id }, (err: CallbackError | null, ticket: ITicket[] | null) => {
             if (!ticket || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(ticket);
         })
@@ -29,20 +40,6 @@ export default class ticketController {
     }
 
     static unselectTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-            if (!ticket || err) { return res.status(500).json({ err: 'An Error occured' }); }
-            res.json(ticket);
-        });
-    }
-
-    static bookTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-            if (!ticket || err) { return res.status(500).json({ err: 'An Error occured' }); }
-            res.json(ticket);
-        });
-    }
-
-    static reserveTicketById(req: Request, res: Response) {
         Ticket.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(ticket);

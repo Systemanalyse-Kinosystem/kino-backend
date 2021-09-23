@@ -8,4 +8,5 @@ export default interface ITicket {
     user: IUser;
     screening: string;
     status: string;
+    seat: string;
 }
