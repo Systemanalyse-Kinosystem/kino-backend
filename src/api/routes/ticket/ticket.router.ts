@@ -1,9 +1,10 @@
 //replace Ticket, ticket
 import express from "express";
+import authenticationMiddleware from "../../middlewares/auth.middlewares";
 import ticketController from "./ticket.controller";
 
 let router = express.Router();
-
+router.get('/me', authenticationMiddleware.getAuthenticationMiddleware(['customer']), ticketController.getTicketListForLoggedInUser)
 router.get('/:screeningId', ticketController.getTicketListForScreening );
 router.put('/select/:ticketId', ticketController.selectTicketById);
 router.put('/unselect/:ticketId', ticketController.unselectTicketById);

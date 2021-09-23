@@ -13,10 +13,8 @@ export default class screeningController {
             //build sortOptions and seachOptions
             let sortOptions: any = {};
             sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
-            let searchOptions = req.query.search ? {$text: { $search: <string>req.query.search }} : {};
             let perPage = req.query.perPage ? parseInt(<string>req.query.perPage) : 10;
-
-            Screening.find({...searchOptions },null, {
+            Screening.find({},null, {
                 skip: parseInt(<string>req.query.page) * perPage,
                 limit: perPage,
                 sort: sortOptions,
@@ -32,6 +30,13 @@ export default class screeningController {
         Screening.findOne({ _id: req.params.id }, null, {populate: ['movie', 'hall']}, (err: CallbackError | null, screening: IScreening | null) => {
             if (!screening || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(screening);
+        })
+    };
+
+    static getScreeningByMovieId(req: Request, res: Response) {
+        Screening.find({ movie: <string>req.params.movie }, null, {populate: ['movie', 'hall']}, (err: CallbackError | null, screenings: IScreening[] | null) => {
+            if (!screenings || err) { return res.status(500).json({ err: 'An Error occured' }); }
+            res.json(screenings);
         })
     };
     
