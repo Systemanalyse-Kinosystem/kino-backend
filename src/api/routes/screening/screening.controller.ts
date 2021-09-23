@@ -39,7 +39,7 @@ export default class screeningController {
             res.json(screenings);
         })
     };
-    
+    /* DEACTIVATED FOR MVP
 
     static createScreening(req: Request, res: Response) {
         Screening.create(req.body, (err: CallbackError | null, screening: IScreening | null) => {
@@ -56,7 +56,7 @@ export default class screeningController {
             });
         });
     }
-/* DEACTIVATED FOR MVP
+
     static deleteScreeningById(req: Request, res: Response) {
         Screening.findOneAndDelete({
         }, {}, (err: CallbackError | null, screening: IScreening | null) => {

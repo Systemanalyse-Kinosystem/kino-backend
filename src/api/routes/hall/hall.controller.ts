@@ -33,7 +33,7 @@ export default class hallController {
             res.json(hall);
         })
     };
-
+    /* DEACTIVATED FOR MVP
     static createHall(req: Request, res: Response) {
         Hall.create(req.body, (err: CallbackError | null, hall: IHall | null) => {
             if (err || !hall) {
@@ -65,7 +65,7 @@ export default class hallController {
             })
         });
     }
-    /* DEACTIVATED FOR MVP
+
     static async deleteHallById(req: Request, res: Response) {
         Hall.findOneAndDelete({ _id: req.params.id }, {}, (err: CallbackError | null, hall: IHall | null) => {
             if (err) { return res.status(500).json(err) }
