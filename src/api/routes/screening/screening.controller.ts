@@ -34,8 +34,18 @@ export default class screeningController {
     };
 
     static getScreeningByMovieId(req: Request, res: Response) {
-        Screening.find({ movie: <string>req.params.movie }, null, {populate: ['movie', 'hall']}, (err: CallbackError | null, screenings: IScreening[] | null) => {
-            if (!screenings || err) { return res.status(500).json({ err: 'An Error occured' }); }
+        //build sortOptions and seachOptions
+        let sortOptions: any = {};
+        sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
+        let perPage = req.query.perPage ? parseInt(<string>req.query.perPage) : 10;
+        Screening.find({movie: req.params.id},null, {
+            skip: parseInt(<string>req.query.page) * perPage,
+            limit: perPage,
+            sort: sortOptions,
+            populate: ['movie', 'hall']
+        },(err: CallbackError | null, screenings: IScreening[] | null) => {
+            if (err) { return res.status(500).json(err) }
+            if (!screenings) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(screenings);
         })
     };
