@@ -43,10 +43,9 @@ describe('Screening Routes', function () {
             res.should.have.status(200)
             res.body.should.be.a('array')
             res.body.should.have.lengthOf.below(11)
-            console.log(res.body);
             //maybe add check for right movie
             for(let screening of res.body) {
-              screening.should.have.property('movie');
+              screening.movie.should.have.property('_id').equal(movie._id.toString());
           }
             done();
           });
