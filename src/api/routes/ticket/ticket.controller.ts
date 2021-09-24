@@ -66,22 +66,48 @@ export default class ticketController {
                     }
                 });
             });
-        })
+        });
 
     }
 
     static unselectTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.ticketId }, req.body, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-            if (!ticket || err) { return res.status(500).json({ err: err }); }
-            res.json(ticket);
+       
+        Cart.findById(req.params.cartId, (err: CallbackError, cart: ICartNotPopulated) => {
+            let oldTickets = cart.tickets;
+            if (!cart || err) { return res.status(500).json({ err: err }); }
+            let newTickets = oldTickets.filter((ticketId, index, array) => {
+                return ticketId != req.params.ticketId;
+            });
+
+
+            Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: newTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
+                if (!cart || err) { return res.status(500).json({ err: err }); }
+
+                Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: 'selected'}, { status: "available" }, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+                    if (!ticket || err) { 
+                        Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: oldTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
+                        return res.status(500).json({ err: err }); 
+                        });
+                    } else {
+
+                    return res.json(ticket);
+                    }
+                });
+            });
         });
     }
+
+
 
     static payTicketById(req: Request, res: Response) {
         Ticket.findOneAndUpdate({ _id: req.params.ticketId }, req.body, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: err }); }
             res.json(ticket);
         });
+    }
+
+    static unreserveTicketById(req: Request, res: Response) {
+        //implement
     }
 
     static invalidateTicketById(req: Request, res: Response) {
