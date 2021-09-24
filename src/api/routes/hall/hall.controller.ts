@@ -6,7 +6,7 @@ import ISeat from "../../interfaces/seat.interface";
 import Seat from "../../models/seat.model";
 
 export default class hallController {
-
+ /* DEACTIVATED FOR MVP
     static async getHallList(req: Request, res: Response) {
         //build sortOptions and seachOptions
         let sortOptions: any = {};
@@ -33,7 +33,7 @@ export default class hallController {
             res.json(hall);
         })
     };
-    /* DEACTIVATED FOR MVP
+   
     static createHall(req: Request, res: Response) {
         Hall.create(req.body, (err: CallbackError | null, hall: IHall | null) => {
             if (err || !hall) {

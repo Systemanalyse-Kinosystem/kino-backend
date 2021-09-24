@@ -3,9 +3,6 @@ import { Request, Response } from 'express';
 import { CallbackError } from 'mongoose';
 import Screening from '../../models/screening.model';
 import IScreening from '../../interfaces/screening.interface';
-import Hall from '../../models/hall.model';
-import IHall from '../../interfaces/hall.interface';
-import Ticket from '../../models/ticket.model';
 
 export default class screeningController {
 

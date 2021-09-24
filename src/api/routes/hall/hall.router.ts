@@ -5,7 +5,7 @@ import authenticationMiddleware from "../../middlewares/auth.middlewares";
 let router = express.Router();
 
 // define test route
-router.get('/', /*authenticationMiddleware.getAuthenticationMiddleware(['user','admin']),*/ hallController.getHallList );
+//router.get('/', /*authenticationMiddleware.getAuthenticationMiddleware(['user','admin']),*/ hallController.getHallList );
 
 // DEACTIVATED FOR MVP
 //router.get('/:id', /*authenticationMiddleware.getAuthenticationMiddleware(['user','admin']),*/ hallController.getHallById);

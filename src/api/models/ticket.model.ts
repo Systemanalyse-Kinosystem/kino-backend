@@ -16,7 +16,7 @@ const schema = new Schema<ITicket>({
         }
     },
     screening: { type: Schema.Types.ObjectId, ref: 'screenings' },
-    status: { type: String, enum: ['available', 'selected', 'booked', 'paid', 'invalid', 'valid'], default: 'available' },
+    status: { type: String, enum: ['available', 'selected', 'reserved', 'invalid', 'valid'], default: 'available' },
     seat: { type: Schema.Types.ObjectId, ref: 'seats'}
 },
     {

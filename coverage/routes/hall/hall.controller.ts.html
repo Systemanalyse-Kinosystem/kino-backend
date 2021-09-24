@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/16</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -153,38 +153,38 @@
 <a name='L94'></a><a href='#L94'>94</a>
 <a name='L95'></a><a href='#L95'>95</a>
 <a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,34 +255,34 @@ import ISeat from "../../interfaces/seat.interface";
 import Seat from "../../models/seat.model";
 &nbsp;
 export default class hallController {
-&nbsp;
-<span class="fstat-no" title="function not covered" >    static </span>async getHallList(req: Request, res: Response) {
+ /* DEACTIVATED FOR MVP
+    static async getHallList(req: Request, res: Response) {
         //build sortOptions and seachOptions
-        let sortOptions: any = <span class="cstat-no" title="statement not covered" >{};</span>
-<span class="cstat-no" title="statement not covered" >        if (req.query.orderdir &amp;&amp; (parseInt(&lt;string&gt;req.query.orderdir) == 1 || parseInt(&lt;string&gt;req.query.orderdir) == -1)) {</span>
-<span class="cstat-no" title="statement not covered" >            sortOptions[&lt;string&gt;req.query.orderby] = &lt;string&gt;req.query.orderdir;</span>
+        let sortOptions: any = {};
+        if (req.query.orderdir &amp;&amp; (parseInt(&lt;string&gt;req.query.orderdir) == 1 || parseInt(&lt;string&gt;req.query.orderdir) == -1)) {
+            sortOptions[&lt;string&gt;req.query.orderby] = &lt;string&gt;req.query.orderdir;
         }
-        let searchOptions = <span class="cstat-no" title="statement not covered" >req.query.search ? { $text: { $search: &lt;string&gt;req.query.search } } : {};</span>
-<span class="cstat-no" title="statement not covered" >        Hall.find({ ...searchOptions }, null, {</span>
+        let searchOptions = req.query.search ? { $text: { $search: &lt;string&gt;req.query.search } } : {};
+        Hall.find({ ...searchOptions }, null, {
             skip: parseInt(&lt;string&gt;req.query.page) * parseInt(&lt;string&gt;req.query.perPage),
             limit: parseInt(&lt;string&gt;req.query.perPage),
             sort: sortOptions,
             populate: &lt;string&gt;req.query.populate
 &nbsp;
-        }, <span class="fstat-no" title="function not covered" >(e</span>rr: CallbackError | null, halls: IHall[] | null) =&gt; {
-<span class="cstat-no" title="statement not covered" >            if (err) { <span class="cstat-no" title="statement not covered" >return res.status(500).json(err) }</span></span>
-<span class="cstat-no" title="statement not covered" >            if (!halls) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: "An Error occured" }); </span>}</span>
-<span class="cstat-no" title="statement not covered" >            res.json(halls);</span>
+        }, (err: CallbackError | null, halls: IHall[] | null) =&gt; {
+            if (err) { return res.status(500).json(err) }
+            if (!halls) { return res.status(500).json({ err: "An Error occured" }); }
+            res.json(halls);
         })
     };
 &nbsp;
-<span class="fstat-no" title="function not covered" >    static </span>getHallById(req: Request, res: Response) {
-<span class="cstat-no" title="statement not covered" >        Hall.findOne({ _id: req.params.id }, <span class="fstat-no" title="function not covered" >(e</span>rr: CallbackError | null, hall: IHall | null) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            if (!hall || err) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: "An Error occured" }); </span>}</span>
-<span class="cstat-no" title="statement not covered" >            res.json(hall);</span>
+    static getHallById(req: Request, res: Response) {
+        Hall.findOne({ _id: req.params.id }, (err: CallbackError | null, hall: IHall | null) =&gt; {
+            if (!hall || err) { return res.status(500).json({ err: "An Error occured" }); }
+            res.json(hall);
         })
     };
-    /* DEACTIVATED FOR MVP
+   
     static createHall(req: Request, res: Response) {
         Hall.create(req.body, (err: CallbackError | null, hall: IHall | null) =&gt; {
             if (err || !hall) {
@@ -349,7 +349,7 @@ export default class hallController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Sep 24 2021 16:18:16 GMT+0200 (Mitteleuropäische Sommerzeit)
+                at Fri Sep 24 2021 23:17:08 GMT+0200 (Mitteleuropäische Sommerzeit)
             </div>
         </div>
         <script src="../../prettify.js"></script>

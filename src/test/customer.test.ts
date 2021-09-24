@@ -44,7 +44,7 @@ describe('Customer Routes', function () {
         adminID = user._id;
         adminToken = utils.createToken(user).token;
 
-        //create dummy user
+        //create dummy customer
         User.create({
           firstName: name,
           lastName: name,

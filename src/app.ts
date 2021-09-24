@@ -11,14 +11,16 @@ import apiRouter from "./api/routes/routes";
 //setup environment variables
 import dotenv from 'dotenv';
 import seatModel from "./api/models/seat.model";
+import hallModel from "./api/models/hall.model";
 
 dotenv.config();
 
 //setup app
 const app = express();
 
-//initalize SeatModel
+//initalize unexposed models
 seatModel.find();
+hallModel.find();
 
 //setup database connection
  mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true });
