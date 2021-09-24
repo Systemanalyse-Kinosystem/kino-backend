@@ -19,7 +19,7 @@ let adminID: string;
 
 describe('User Routes', function () {
   let name = uniqueNamesGenerator({ dictionaries: [names] })
-  this.timeout(5000)
+  this.timeout(8000)
   beforeEach('create and login admins and users', (done) => {
     User.create({
       firstName: "TestAdminfromChai",
