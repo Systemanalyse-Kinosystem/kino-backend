@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import IUser from "../interfaces/user.interface";
 
+
 const schema = new Schema<IUser>({
   formOfAddress: { type: String, required: false },
   firstName: { type: String, required: true },
