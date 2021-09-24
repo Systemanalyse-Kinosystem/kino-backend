@@ -18,14 +18,14 @@ export default class movieController {
                 sort: sortOptions
             },(err: CallbackError | null, movies: any) => {
                 if (err) { return res.status(400).json(err) }
-                if (!movies) { return res.status(500).json({ err: "An Error occured" }); }
+                if (!movies) { return res.status(500).json({ err: err?err:"Not found" }); }
                 res.json(movies);
             })
         };
 
     static getMovieById(req: Request, res: Response) {
         Movie.findOne({ _id: req.params.id }, (err: CallbackError | null, movie:any) => {
-            if (!movie || err) { return res.status(500).json({ err: 'An Error occured' }); }
+            if (!movie || err) { return res.status(500).json({ err: err?err:"Not found" }); }
             res.json(movie);
         })
     };

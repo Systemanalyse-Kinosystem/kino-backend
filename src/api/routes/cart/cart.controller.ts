@@ -8,14 +8,14 @@ export default class cartController {
 
     static getCartById(req: Request, res: Response) {
         Cart.findOne({ _id: req.params.id }, (err: CallbackError | null, cart: ICart | null) => {
-            if (!cart || err) { return res.status(500).json({ err: 'An Error occured' }); }
+            if (!cart || err) { return res.status(500).json({ err: err?err:"Not found" }); }
             res.json(cart);
         })
     };
 
     static createCart(req: Request, res: Response) {
         Cart.create({tickets: []}, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
-            if (err || !cart) { return res.status(400).json({ err: 'An Error occured' }); }
+            if (err || !cart) { return res.status(400).json({ err: err?err:"Not found" }); }
             res.json(cart);
         });
     }

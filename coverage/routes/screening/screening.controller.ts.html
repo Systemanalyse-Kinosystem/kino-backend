@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">56.25% </span>
+                <span class="strong">40.91% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/16</span>
+                <span class='fraction'>9/22</span>
             </div>
         
             
@@ -260,14 +260,14 @@ export default class screeningController {
                 populate: ['movie', 'hall']
             },(err: CallbackError | null, screenings: IScreening[] | null) =&gt; {
                 <span class="missing-if-branch" title="if path not taken" >I</span>if (err) { <span class="cstat-no" title="statement not covered" >return res.status(500).json(err) }</span>
-                <span class="missing-if-branch" title="if path not taken" >I</span>if (!screenings) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: "An Error occured" }); </span>}
+                <span class="missing-if-branch" title="if path not taken" >I</span>if (!screenings) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: err?err:"Not found" }); </span>}
                 res.json(screenings);
             })
         };
 &nbsp;
     static getScreeningById(req: Request, res: Response) {
         Screening.findOne({ _id: req.params.id }, null, {populate: ['movie', 'hall']}, (err: CallbackError | null, screening: IScreening | null) =&gt; {
-            <span class="missing-if-branch" title="if path not taken" >I</span>if (!screening || err) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: 'An Error occured' }); </span>}
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (!screening || err) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: err?err:"Not found" }); </span>}
             res.json(screening);
         })
     };
@@ -284,7 +284,7 @@ export default class screeningController {
             populate: ['movie', 'hall']
         },(err: CallbackError | null, screenings: IScreening[] | null) =&gt; {
             <span class="missing-if-branch" title="if path not taken" >I</span>if (err) { <span class="cstat-no" title="statement not covered" >return res.status(500).json(err) }</span>
-            <span class="missing-if-branch" title="if path not taken" >I</span>if (!screenings) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: "An Error occured" }); </span>}
+            <span class="missing-if-branch" title="if path not taken" >I</span>if (!screenings) { <span class="cstat-no" title="statement not covered" >return res.status(500).json({ err: err?err:"Not found" }); </span>}
             res.json(screenings);
         })
     };
@@ -292,9 +292,9 @@ export default class screeningController {
 &nbsp;
     static createScreening(req: Request, res: Response) {
         Screening.create(req.body, (err: CallbackError | null, screening: IScreening | null) =&gt; {
-            if (err || !screening) { return res.status(400).json({ err: 'An Error occured' }); }
+            if (err || !screening) { return res.status(400).json({ err: err?err:"Not found" }); }
             Hall.findById(screening.hall, (err: CallbackError | null, hall: IHall | null) =&gt; {
-                if (err || !hall) { return res.status(500).json({ err: 'An Error occured' }); }
+                if (err || !hall) { return res.status(500).json({ err: err?err:"Not found" }); }
                 let ticketBodies = hall.seats.map(seatId =&gt; { return { seat: seatId, screening: screening._id}})
                 Ticket.insertMany(ticketBodies, {}, (err: CallbackError, result:any) =&gt; {
                     if(err) {
@@ -309,20 +309,20 @@ export default class screeningController {
     static deleteScreeningById(req: Request, res: Response) {
         Screening.findOneAndDelete({
         }, {}, (err: CallbackError | null, screening: IScreening | null) =&gt; {
-            if (err) { return res.status(400).json({ err: 'An Error occured' }); }
+            if (err) { return res.status(400).json({ err: err?err:"Not found" }); }
             res.status(204).json({});
         });
     }
     static deleteScreenings(req: Request, res: Response) {
         Screening.deleteMany((err: CallbackError | null, screening: IScreening | null) =&gt; {
-            if (err) { return res.status(500).json({ err: 'An Error occured' }) }
+            if (err) { return res.status(500).json({ err: err?err:"Not found" }) }
             res.status(204).json({});
         });
     }
 &nbsp;
     static updateScreeningById(req: Request, res: Response) {
         Screening.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, screening: IScreening | null) =&gt; {
-            if (!screening || err) { return res.status(500).json({ err: 'An Error occured' }); }
+            if (!screening || err) { return res.status(500).json({ err: err?err:"Not found" }); }
             res.json(screening);
         });
     }
@@ -334,7 +334,7 @@ export default class screeningController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Sep 24 2021 14:08:05 GMT+0200 (Mitteleuropäische Sommerzeit)
+                at Fri Sep 24 2021 16:18:16 GMT+0200 (Mitteleuropäische Sommerzeit)
             </div>
         </div>
         <script src="../../prettify.js"></script>

@@ -21,14 +21,14 @@ export default class screeningController {
                 populate: ['movie', 'hall']
             },(err: CallbackError | null, screenings: IScreening[] | null) => {
                 if (err) { return res.status(500).json(err) }
-                if (!screenings) { return res.status(500).json({ err: "An Error occured" }); }
+                if (!screenings) { return res.status(500).json({ err: err?err:"Not found" }); }
                 res.json(screenings);
             })
         };
 
     static getScreeningById(req: Request, res: Response) {
         Screening.findOne({ _id: req.params.id }, null, {populate: ['movie', 'hall']}, (err: CallbackError | null, screening: IScreening | null) => {
-            if (!screening || err) { return res.status(500).json({ err: 'An Error occured' }); }
+            if (!screening || err) { return res.status(500).json({ err: err?err:"Not found" }); }
             res.json(screening);
         })
     };
@@ -45,7 +45,7 @@ export default class screeningController {
             populate: ['movie', 'hall']
         },(err: CallbackError | null, screenings: IScreening[] | null) => {
             if (err) { return res.status(500).json(err) }
-            if (!screenings) { return res.status(500).json({ err: "An Error occured" }); }
+            if (!screenings) { return res.status(500).json({ err: err?err:"Not found" }); }
             res.json(screenings);
         })
     };
@@ -53,9 +53,9 @@ export default class screeningController {
 
     static createScreening(req: Request, res: Response) {
         Screening.create(req.body, (err: CallbackError | null, screening: IScreening | null) => {
-            if (err || !screening) { return res.status(400).json({ err: 'An Error occured' }); }
+            if (err || !screening) { return res.status(400).json({ err: err?err:"Not found" }); }
             Hall.findById(screening.hall, (err: CallbackError | null, hall: IHall | null) => {
-                if (err || !hall) { return res.status(500).json({ err: 'An Error occured' }); }
+                if (err || !hall) { return res.status(500).json({ err: err?err:"Not found" }); }
                 let ticketBodies = hall.seats.map(seatId => { return { seat: seatId, screening: screening._id}})
                 Ticket.insertMany(ticketBodies, {}, (err: CallbackError, result:any) => {
                     if(err) {
@@ -70,20 +70,20 @@ export default class screeningController {
     static deleteScreeningById(req: Request, res: Response) {
         Screening.findOneAndDelete({
         }, {}, (err: CallbackError | null, screening: IScreening | null) => {
-            if (err) { return res.status(400).json({ err: 'An Error occured' }); }
+            if (err) { return res.status(400).json({ err: err?err:"Not found" }); }
             res.status(204).json({});
         });
     }
     static deleteScreenings(req: Request, res: Response) {
         Screening.deleteMany((err: CallbackError | null, screening: IScreening | null) => {
-            if (err) { return res.status(500).json({ err: 'An Error occured' }) }
+            if (err) { return res.status(500).json({ err: err?err:"Not found" }) }
             res.status(204).json({});
         });
     }
 
     static updateScreeningById(req: Request, res: Response) {
         Screening.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, screening: IScreening | null) => {
-            if (!screening || err) { return res.status(500).json({ err: 'An Error occured' }); }
+            if (!screening || err) { return res.status(500).json({ err: err?err:"Not found" }); }
             res.json(screening);
         });
     }
