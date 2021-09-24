@@ -1,7 +1,7 @@
 //replace PlaceHolderInterface, collection
 import { Schema, model } from 'mongoose';
-import ICart from '../interfaces/cart.interface';
-const schema = new Schema<ICart>({
+import ICart, { ICartNotPopulated } from '../interfaces/cart.interface';
+const schema = new Schema<ICartNotPopulated>({
   tickets: [{
       type: Schema.Types.ObjectId, ref: 'tickets'
   }]
@@ -15,4 +15,4 @@ const schema = new Schema<ICart>({
     },
     timestamps: {createdAt: 'createdAt'}
   });
-export default model<ICart>('carts', schema);
+export default model<ICartNotPopulated>('carts', schema);

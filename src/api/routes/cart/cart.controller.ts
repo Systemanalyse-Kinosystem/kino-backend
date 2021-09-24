@@ -1,7 +1,7 @@
 //replace cart, Cart, ICart
 import { Request, Response } from 'express';
 import { CallbackError } from 'mongoose';
-import ICart from '../../interfaces/cart.interface';
+import ICart, { ICartNotPopulated } from '../../interfaces/cart.interface';
 import Cart from '../../models/cart.model';
 
 export default class cartController {
@@ -14,7 +14,7 @@ export default class cartController {
     };
 
     static createCart(req: Request, res: Response) {
-        Cart.create({}, (err: CallbackError | null, cart: ICart | null) => {
+        Cart.create({tickets: []}, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
             if (err || !cart) { return res.status(400).json({ err: 'An Error occured' }); }
             res.json(cart);
         });
@@ -22,10 +22,6 @@ export default class cartController {
 
     static checkOutCartBook(req: Request, res: Response) {
         // implement
-    }
-
-    static checkOutCartReserve(req: Request, res: Response) {
-        //implement
     }
 
     static checkOutCartBookWithLogin(req: Request, res: Response) {

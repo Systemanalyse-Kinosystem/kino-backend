@@ -39,14 +39,17 @@ describe('Screening Routes', function () {
         chai.request(app)
           .get('/api/v1/screening/movie/' + movie._id)
           .end((err: Error, res: ChaiHttp.Response): void => {
-            if (err) { return done(err) }
-            res.should.have.status(200)
-            res.body.should.be.a('array')
-            res.body.should.have.lengthOf.below(11)
-            for(let screening of res.body) {
-              screening.movie.should.have.property('_id').equal(movie._id.toString());
-          }
-            done();
+            Screening.findOneAndDelete({ _id: screening._id }, {}, (err2: CallbackError | null) => {
+              if (err2) { return done(err) }
+              if (err) { return done(err) }
+              res.should.have.status(200)
+              res.body.should.be.a('array')
+              res.body.should.have.lengthOf.below(11)
+              for (let screening of res.body) {
+                screening.movie.should.have.property('_id').equal(movie._id.toString());
+              }
+              done();
+            });
           });
 
       });

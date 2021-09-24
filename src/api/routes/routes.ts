@@ -7,6 +7,7 @@ import seatRouter from "./seat/seat.router"
 import movieRouter from "./movies/movie.router"
 import screeningRouter from "./screening/screening.router";
 import ticketRouter from "./ticket/ticket.router";
+import cartRouter from "./cart/cart.router";
 let router = express.Router();
 
 // define test route
@@ -17,6 +18,7 @@ router.use('/seat', seatRouter);
 router.use('/movie', movieRouter);
 router.use('/screening', screeningRouter);
 router.use('/ticket', ticketRouter);
+router.use('/cart', cartRouter);
 router.use('/', authenticationRouter);
 
 export default router;

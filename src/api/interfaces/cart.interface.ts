@@ -7,3 +7,7 @@ export default interface ICart {
     updatedAt: Date;
     tickets: ITicket[];
 }
+
+export interface ICartNotPopulated extends Omit<ICart, 'tickets'> {
+    tickets: string[];
+}

@@ -10,11 +10,15 @@ import apiRouter from "./api/routes/routes";
 
 //setup environment variables
 import dotenv from 'dotenv';
+import seatModel from "./api/models/seat.model";
 
 dotenv.config();
 
 //setup app
 const app = express();
+
+//initalize SeatModel
+seatModel.find();
 
 //setup database connection
  mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true });
