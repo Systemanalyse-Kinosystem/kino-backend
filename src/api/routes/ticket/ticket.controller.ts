@@ -97,21 +97,22 @@ export default class ticketController {
         });
     }
 
-
-
     static payTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.ticketId }, req.body, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "valid"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: err }); }
             res.json(ticket);
         });
     }
 
     static unreserveTicketById(req: Request, res: Response) {
-        //implement
+        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "available"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+            if (!ticket || err) { return res.status(500).json({ err: err }); }
+            res.json(ticket);
+        });
     }
 
     static invalidateTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.ticketId }, req.body, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "valid" }, {status: "invalid"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: err }); }
             res.json(ticket);
         });
