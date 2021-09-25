@@ -30,6 +30,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/morgan": "^1.9.3",
     "@types/node": "^13.11.1",
+    "@types/node-cron": "^2.0.4",
     "axios": "^0.19.2",
     "bcrypt": "^5.0.1",
     "bluebird": "^3.7.2",

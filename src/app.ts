@@ -12,15 +12,13 @@ import apiRouter from "./api/routes/routes";
 import dotenv from 'dotenv';
 import seatModel from "./api/models/seat.model";
 import hallModel from "./api/models/hall.model";
+import { utils } from "mocha";
+import myUtils from "./api/utils/utils";
 
 dotenv.config();
 
 //setup app
 const app = express();
-
-//initalize unexposed models
-seatModel.find();
-hallModel.find();
 
 //setup database connection
  mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true });
@@ -39,6 +37,13 @@ app.use('/api/v1', apiRouter);
 app.use('/', (req: express.Request, res: express.Response) => {
     res.send("Hello World from CI");
 });
+
+//initalize unexposed models
+seatModel.find();
+hallModel.find();
+
+//register automatic background jobs for cleanup
+myUtils.registerBackGroundJobs();
 
 //listen
 app.listen(<string>process.env.PORT, () => console.log("Server started on Port: " + <string>process.env.PORT));
