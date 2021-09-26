@@ -33,5 +33,5 @@ jobs:
           destination-github-username: 'systemanalyse-kinosystem'
           destination-repository-name: 'coverage'
           user-email: coverage@fynn-weyrich.de
-          target-branch: coverage
+          target-branch: backend
       
