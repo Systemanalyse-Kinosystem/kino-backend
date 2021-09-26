@@ -50,7 +50,7 @@ export default class screeningController {
         })
     };
     
-
+/* DEACTIVATED FOR MVP
     static createScreening(req: Request, res: Response) {
         Screening.create(req.body, (err: CallbackError | null, screening: IScreening | null) => {
             if (err || !screening) { return res.status(400).json({ err: err?err:"Not found" }); }
@@ -66,7 +66,7 @@ export default class screeningController {
             });
         });
     }
-/* DEACTIVATED FOR MVP
+
     static deleteScreeningById(req: Request, res: Response) {
         Screening.findOneAndDelete({
         }, {}, (err: CallbackError | null, screening: IScreening | null) => {
