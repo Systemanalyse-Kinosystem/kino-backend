@@ -45,6 +45,7 @@ export default class ticketController {
         }]);
     };
 
+
     static selectTicketById(req: Request, res: Response) {
 
         Cart.findById(req.params.cartId, (err: CallbackError, cart: ICartNotPopulated) => {

@@ -26,25 +26,25 @@ export default class UtilClass {
     static registerBackGroundJobs() {
         //look for selected tickets with no activity for 10 minutes every minute
         //cron.schedule('*/1 * * * *', () => { 
-            /*
-            console.log('executing selectedTickets cleanup: ' + new Date());
-            Ticket.find({ status: 'selected' }, (err: CallbackError | null, tickets: ITicket[] | null) => {
-                if (err || !tickets) {
-                    return console.error(err);
-                } else {
-                    let ticketsToUnselect = tickets.filter((ticket) => {
-                        let ticketDate = new Date(ticket.updatedAt);
-                        return Math.abs(ticketDate.getTime() - new Date().getTime()) >= 1000 * 60 * 10;
+        /*
+        console.log('executing selectedTickets cleanup: ' + new Date());
+        Ticket.find({ status: 'selected' }, (err: CallbackError | null, tickets: ITicket[] | null) => {
+            if (err || !tickets) {
+                return console.error(err);
+            } else {
+                let ticketsToUnselect = tickets.filter((ticket) => {
+                    let ticketDate = new Date(ticket.updatedAt);
+                    return Math.abs(ticketDate.getTime() - new Date().getTime()) >= 1000 * 60 * 10;
+                });
+                for (let ticket of ticketsToUnselect) {
+                    Ticket.findOneAndUpdate({ _id: ticket._id }, { status: 'available' }, { new: true }, (err: CallbackError | null) => {
+                        if (err) { return console.error(err) }
                     });
-                    for (let ticket of ticketsToUnselect) {
-                        Ticket.findOneAndUpdate({ _id: ticket._id }, { status: 'available' }, { new: true }, (err: CallbackError | null) => {
-                            if (err) { return console.error(err) }
-                        });
-                    }
-                    console.log(`unselected ${ticketsToUnselect.length} tickets`);
                 }
-            });
+                console.log(`unselected ${ticketsToUnselect.length} tickets`);
+            }
         });
+    });
 */
         cron.schedule('*/1 * * * *', async () => {
             //mark the tickets with no activity as available
@@ -66,14 +66,24 @@ export default class UtilClass {
             //remove all tickets from carts with no acitivity (now marked as available)
             try {
                 let ticketsToUnselectIds = ticketsToUnselect.map(ticket => ticket._id);
-                let cartsToFilter = await Cart.find({tickets:{ $in: ticketsToUnselectIds}}).populate('tickets');
-                for(let cart of cartsToFilter) {
+                let cartsToFilter = await Cart.find({ tickets: { $in: ticketsToUnselectIds } }).populate('tickets');
+                for (let cart of cartsToFilter) {
                     //@ts-ignore
                     let newTickets = cart.tickets.filter(ticket => ticket.status == 'selected');
                     //@ts-ignore
-                    await Cart.findOneAndUpdate({_id: cart._id}, {tickets: newTickets}, {new:true});
+                    await Cart.findOneAndUpdate({ _id: cart._id }, { tickets: newTickets }, { new: true });
                 }
-            } catch(err) { console.error(err);}
+            } catch (err) { console.error(err); }
+        });
+
+        cron.schedule('*/15 * * * *', async () => {
+            try {
+                let cutOffTime = new Date((new Date).getTime() - 1000 * 60 * 60 * 5);
+                let cartsToDelete = await Cart.find({ updatedAt: { $lte: cutOffTime } });
+                let cartsToDeleteIds = cartsToDelete.map(cart => cart._id);
+                await Cart.deleteMany({ _id: { $in: cartsToDeleteIds }});
+                console.log(`deleted ${cartsToDelete.length} carts during cleanup`)
+            } catch (err) { console.error(); }
         });
     }
 }

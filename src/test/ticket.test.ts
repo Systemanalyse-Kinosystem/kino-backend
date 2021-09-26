@@ -146,7 +146,7 @@ describe('Ticket Routes', function () {
     it('returns tickets for a specific screening', (done) => {
         Screening.findOne({}, (err: CallbackError, screening: IScreening) => {
             chai.request(app)
-                .get(`/api/v1/ticket/${screening._id}`)
+                .get(`/api/v1/ticket/screening/${screening._id}`)
                 .end((err: Error, res: ChaiHttp.Response): void => {
                     if (err) { return done(err) }
                     res.should.have.status(200)

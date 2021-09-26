@@ -5,7 +5,7 @@ import ticketController from "./ticket.controller";
 
 let router = express.Router();
 router.get('/me', authenticationMiddleware.getAuthenticationMiddleware(['customer']), ticketController.getTicketListForLoggedInUser)
-router.get('/:screeningId', ticketController.getTicketListForScreening );
+router.get('/screening/:screeningId', ticketController.getTicketListForScreening );
 router.put('/select/:ticketId/:cartId', ticketController.selectTicketById);
 router.put('/unselect/:ticketId/:cartId', ticketController.unselectTicketById);
 router.put('/pay/:ticketId', ticketController.payTicketById);

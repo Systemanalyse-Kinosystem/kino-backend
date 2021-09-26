@@ -3,6 +3,9 @@ import { Request, Response } from 'express';
 import { CallbackError } from 'mongoose';
 import Screening from '../../models/screening.model';
 import IScreening from '../../interfaces/screening.interface';
+import Hall from '../../models/hall.model';
+import IHall from '../../interfaces/hall.interface';
+import Ticket from '../../models/ticket.model';
 
 export default class screeningController {
 
@@ -46,7 +49,7 @@ export default class screeningController {
             res.json(screenings);
         })
     };
-    /* DEACTIVATED FOR MVP
+    
 
     static createScreening(req: Request, res: Response) {
         Screening.create(req.body, (err: CallbackError | null, screening: IScreening | null) => {
@@ -63,7 +66,7 @@ export default class screeningController {
             });
         });
     }
-
+/* DEACTIVATED FOR MVP
     static deleteScreeningById(req: Request, res: Response) {
         Screening.findOneAndDelete({
         }, {}, (err: CallbackError | null, screening: IScreening | null) => {
