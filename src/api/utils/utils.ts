@@ -8,6 +8,7 @@ import { CallbackError } from "mongoose";
 import { ObjectId } from "bson";
 import Cart from "../models/cart.model";
 import ICart from "../interfaces/cart.interface";
+import nodemailer from "nodemailer";
 
 export default class UtilClass {
 
@@ -22,30 +23,17 @@ export default class UtilClass {
             token: jwt.sign(dataStoredInToken, secret, { expiresIn }),
         };
     }
+    static getNodeMailerTransporter() {
+        return nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'noreply.kinosystem@gmail.com',
+                pass: 'test_1234'
+            }
+        })
+    }
 
     static registerBackGroundJobs() {
-        //look for selected tickets with no activity for 10 minutes every minute
-        //cron.schedule('*/1 * * * *', () => { 
-        /*
-        console.log('executing selectedTickets cleanup: ' + new Date());
-        Ticket.find({ status: 'selected' }, (err: CallbackError | null, tickets: ITicket[] | null) => {
-            if (err || !tickets) {
-                return console.error(err);
-            } else {
-                let ticketsToUnselect = tickets.filter((ticket) => {
-                    let ticketDate = new Date(ticket.updatedAt);
-                    return Math.abs(ticketDate.getTime() - new Date().getTime()) >= 1000 * 60 * 10;
-                });
-                for (let ticket of ticketsToUnselect) {
-                    Ticket.findOneAndUpdate({ _id: ticket._id }, { status: 'available' }, { new: true }, (err: CallbackError | null) => {
-                        if (err) { return console.error(err) }
-                    });
-                }
-                console.log(`unselected ${ticketsToUnselect.length} tickets`);
-            }
-        });
-    });
-*/
         cron.schedule('*/1 * * * *', async () => {
             //mark the tickets with no activity as available
             let ticketsToUnselect: ITicket[] = [];

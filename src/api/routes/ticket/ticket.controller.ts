@@ -6,6 +6,7 @@ import ITicket from '../../interfaces/ticket.interface';
 import { IRequestWithUser } from '../../interfaces/jwt.interface';
 import Cart from '../../models/cart.model';
 import ICart, { ICartNotPopulated } from '../../interfaces/cart.interface';
+import utils from "../../utils/utils";
 
 export default class ticketController {
 
@@ -101,6 +102,14 @@ export default class ticketController {
     static payTicketById(req: Request, res: Response) {
         Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "valid"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: err }); }
+                    utils.getNodeMailerTransporter().sendMail({
+                        from: 'noreply.kinosystem@gmail.com',
+                        to: req.body.email,
+                        subject: 'Ihre Bestellung',
+                        text: `Sie haben das Ticket ${ticket._id} erfolgreich bezahlt.`
+                    }, (err, info) => {
+                        if(err) {console.error(err);}
+                    });
             res.json(ticket);
         });
     }
