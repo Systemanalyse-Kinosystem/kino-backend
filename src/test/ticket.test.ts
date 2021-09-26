@@ -79,11 +79,15 @@ describe('Ticket Routes', function () {
 
     after('teardown: delete tickets and other garbage', (done) => {
         Ticket.deleteMany({ _id: { $in: ticketIds } }, {}, (err: CallbackError | null) => {
-            User.findOneAndDelete({ _id: customerID }, {}, (err2: CallbackError) => {
+            User.findOneAndDelete({ _id: customerID }, {}, (err2: CallbackError | null) => {
+                Cart.findOneAndDelete({ _id: cartId}, {}, (err3: CallbackError | null) => {
+                                   
                 if (err) { return done(err); }
                 if (err2) { return done(err2); }
+                if (err3) { return done(err3); }
                 done();
               });
+            })
         });
     });
 
