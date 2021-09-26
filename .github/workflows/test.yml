@@ -24,3 +24,14 @@ jobs:
           PORT: ${{ secrets.PORT }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: push coverage
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.CR_PAT }}
+        with:
+          source-directory: 'coverage'
+          destination-github-username: 'systemanalyse-kinosystem'
+          destination-repository-name: 'coverage'
+          user-email: coverage@fynn-weyrich.de
+          target-branch: coverage
+      
