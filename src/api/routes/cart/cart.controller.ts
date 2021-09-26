@@ -21,7 +21,7 @@ export default class cartController {
     static createCart(req: Request, res: Response) {
         Cart.create({ tickets: [] }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
             if (err || !cart) { return res.status(400).json({ err: err ? err : "Not found" }); }
-            res.json(cart);
+            res.status(201).json(cart);
         });
     }
 
@@ -31,7 +31,7 @@ export default class cartController {
             if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
             Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "valid" } }, { "multi": true }, (err: CallbackError | null, writeResult: any) => {
                 if (err) { return res.status(500).json({ err: err }); }
-                Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true }, (err: CallbackError | null, cartUpdated: ICartNotPopulated | null) => {
+                Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [], user: req.body }, { new: true }, (err: CallbackError | null, cartUpdated: ICartNotPopulated | null) => {
                     if (err) { return res.status(500).json({ err: err }); }
                     if (!cartUpdated) { return res.status(400).json({ err: "Not found" }); }
                     res.json(cartUpdated);
