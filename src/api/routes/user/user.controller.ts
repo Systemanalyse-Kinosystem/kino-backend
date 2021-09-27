@@ -9,7 +9,7 @@ export default class userController {
     static async getUserList(req: Request, res: Response) {
         //build sortOptions and seachOptions
         let sortOptions: any = {};
-        let searchOptions = req.query.search ? { $text: { $search: "\"" + <string>req.query.search +  "\"" } } : {};
+        let searchOptions = req.query.search ? { $text: { $search: "\"" + <string>req.query.search + "\"" } } : {};
         if (req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1 || parseInt(<string>req.query.orderdir) == -1)) {
             sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
         }
@@ -21,7 +21,7 @@ export default class userController {
             if (err) { return res.status(400).json({ err: "An Error occurred" }); }
             if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             res.json(user);
-        })
+        });
     };
 
     static getUserById(req: Request, res: Response) {
@@ -32,7 +32,7 @@ export default class userController {
             if (err) { return res.status(401).json({ err: "An Error occurred" }); }
             if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             res.json(user);
-        })
+        });
     };
 
     static getLoggedInUser(req: Request, res: Response) {
@@ -43,7 +43,7 @@ export default class userController {
             if (err) { return res.status(401).json({ err: "An Error occurred" }); }
             if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             res.json(user);
-        })
+        });
     };
 
     static async createUser(req: Request, res: Response) {
@@ -88,7 +88,7 @@ export default class userController {
                 if (err) { return res.status(401).json({ err: "An Error occurred" }); }
                 if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
                 res.json(user);
-            })
+            });
     }
 
     static async deleteUsers(req: Request, res: Response) {
@@ -109,6 +109,6 @@ export default class userController {
                 if (err) { return res.status(401).json({ err: "An Error occurred" }); }
                 if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
                 res.json(user);
-            })
+            });
     }
 }

@@ -28,7 +28,7 @@ describe('Cart Routes', function () {
 
     before('Setup: Create demo cart, customer and tickets', async () => {
         try {
-            
+
             let ticket1 = await Ticket.create({ status: 'selected' });
             let ticket2 = await Ticket.create({ status: 'selected' });
 
@@ -88,7 +88,7 @@ describe('Cart Routes', function () {
                 if (err) { return done(err); }
                 res.body.should.be.a('object');
                 Cart.findOneAndDelete({ _id: res.body.id }, {}, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
-                    if(err || !cart) {return done(err);}
+                    if (err || !cart) { return done(err); }
                     cart.should.have.property('tickets');
                     done();
                 });
@@ -97,54 +97,54 @@ describe('Cart Routes', function () {
 
     it('checks out a cart (booking)', (done) => {
         chai.request(app)
-        .put(`/api/v1/cart/checkout/book/${cartId1}`)
-        .send({
-            firstName: name,
-            lastName: name,
-            email: name + "@kinosystem.de",
-            password: bcrypt.hashSync("test1234", 10),
-            role: "customer",
-            address: {
-                street: "Teststraße 15",
-                postalCode: "25980",
-                city: "Sylt",
-                country: "Germany"
-            }
-        })
-        .end((err: Error, res: ChaiHttp.Response): void => {
-            if(err) {return done(err);}
-            res.body.should.be.a('object');
-            res.body.should.have.property('tickets');
-            res.body.tickets.should.have.lengthOf.below(1);
+            .put(`/api/v1/cart/checkout/book/${cartId1}`)
+            .send({
+                firstName: name,
+                lastName: name,
+                email: name + "@kinosystem.de",
+                password: bcrypt.hashSync("test1234", 10),
+                role: "customer",
+                address: {
+                    street: "Teststraße 15",
+                    postalCode: "25980",
+                    city: "Sylt",
+                    country: "Germany"
+                }
+            })
+            .end((err: Error, res: ChaiHttp.Response): void => {
+                if (err) { return done(err); }
+                res.body.should.be.a('object');
+                res.body.should.have.property('tickets');
+                res.body.tickets.should.have.lengthOf.below(1);
 
-            Ticket.findById(ticketId1, (err: CallbackError | null, ticket: ITicket | null) => {
-                if(err || !ticket) {return done(err);}
-                ticket.should.have.property('status').equal('valid');
-                ticket.user.should.have.property('firstName').equal(name);
-                done();
+                Ticket.findById(ticketId1, (err: CallbackError | null, ticket: ITicket | null) => {
+                    if (err || !ticket) { return done(err); }
+                    ticket.should.have.property('status').equal('valid');
+                    ticket.user.should.have.property('firstName').equal(name);
+                    done();
+                });
             });
-        });
     });
 
     it('checks out a cart (reservation)', (done) => {
         chai.request(app)
-        .put(`/api/v1/cart/checkout/reserve/${cartId2}`)
-        .set('auth', customerToken)
-        .send({
-            email: "th9titanmain@gmail.com"
-        })
-        .end((err: Error, res: ChaiHttp.Response): void => {
-            if(err) {return done(err);}
-            res.body.should.be.a('object');
-            res.body.should.have.property('tickets');
-            res.body.tickets.should.have.lengthOf.below(1);
+            .put(`/api/v1/cart/checkout/reserve/${cartId2}`)
+            .set('auth', customerToken)
+            .send({
+                email: "th9titanmain@gmail.com"
+            })
+            .end((err: Error, res: ChaiHttp.Response): void => {
+                if (err) { return done(err); }
+                res.body.should.be.a('object');
+                res.body.should.have.property('tickets');
+                res.body.tickets.should.have.lengthOf.below(1);
 
-            Ticket.findById(ticketId2, (err: CallbackError | null, ticket: ITicket | null) => {
-                if(err || !ticket) {return done(err);}
-                ticket.should.have.property('status').equal('reserved');
-                ticket.userID.toString().should.be.equal(customerId.toString());
-                done();
+                Ticket.findById(ticketId2, (err: CallbackError | null, ticket: ITicket | null) => {
+                    if (err || !ticket) { return done(err); }
+                    ticket.should.have.property('status').equal('reserved');
+                    ticket.userID.toString().should.be.equal(customerId.toString());
+                    done();
+                });
             });
-        });
     });
 });

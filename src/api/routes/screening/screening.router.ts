@@ -4,7 +4,7 @@ import screeningController from "./screening.controller"
 
 let screeningRouter = express.Router();
 
-screeningRouter.get('/', screeningController.getScreeningList );
+screeningRouter.get('/', screeningController.getScreeningList);
 screeningRouter.get('/movie/:id', screeningController.getScreeningByMovieId);
 screeningRouter.get('/:id', screeningController.getScreeningById);
 /* DEACTIVATED FOR MVP 

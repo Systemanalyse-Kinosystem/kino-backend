@@ -23,21 +23,21 @@ export default class customerController {
             if (err) { return res.status(500).json(err) }
             if (!users) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(users);
-        })
+        });
     };
 
     static getCustomerById(req: Request, res: Response) {
         User.findOne({ role: 'customer', _id: req.params.id }, (err: CallbackError | null, user: IUser | null) => {
             if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
-        })
+        });
     };
 
     static getLoggedInCustomer(req: Request, res: Response) {
         User.findOne({ role: 'customer', _id: (<IRequestWithUser>req).user.id }, (err: CallbackError | null, user: IUser | null) => {
             if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
-        })
+        });
     }
 
     /* see /register in authentication module
@@ -68,7 +68,7 @@ export default class customerController {
     }
     static deleteCustomers(req: Request, res: Response) {
         User.deleteMany({ role: 'customer' }, {}, (err: CallbackError | null) => {
-            if (err) { return res.status(500).json({ err: 'An Error occured' }) }
+            if (err) { return res.status(500).json({ err: 'An Error occured' }); }
             res.status(204).json({});
         });
     }

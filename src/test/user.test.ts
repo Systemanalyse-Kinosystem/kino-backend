@@ -88,7 +88,7 @@ describe('User Routes', function () {
   });
 
   it('returns a single user', (done) => {
-    testUtils.getDocumentSingleTest('/user', adminToken, userID, 'role','firstName', 'lastName', 'email')(done)
+    testUtils.getDocumentSingleTest('/user', adminToken, userID, 'role', 'firstName', 'lastName', 'email')(done)
   })
 
   it('creates a user', function (done) {

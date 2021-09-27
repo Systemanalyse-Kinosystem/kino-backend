@@ -20,7 +20,7 @@ let adminID: string;
 describe('Customer Routes', function () {
   let name = uniqueNamesGenerator({ dictionaries: [names] })
   this.timeout(5000)
-  beforeEach('create and login admins and customers',(done) => {
+  beforeEach('create and login admins and customers', (done) => {
     User.create({
       firstName: "TestAdminfromChai",
       lastName: "chaiAdmin",
@@ -88,7 +88,7 @@ describe('Customer Routes', function () {
   });
 
   it('returns a single customer', (done) => {
-    testUtils.getDocumentSingleTest('/customer', adminToken, customerID, 'role','firstName', 'lastName', 'email')(done)
+    testUtils.getDocumentSingleTest('/customer', adminToken, customerID, 'role', 'firstName', 'lastName', 'email')(done)
   })
 
   it('registers a customer', function (done) {

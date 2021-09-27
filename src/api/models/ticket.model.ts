@@ -12,12 +12,12 @@ const schema = new Schema<ITicket>({
             street: { type: String },
             postalCode: { type: Number },
             city: { type: String },
-            country: { type: String}
+            country: { type: String }
         }
     },
     screening: { type: Schema.Types.ObjectId, ref: 'screenings' },
     status: { type: String, enum: ['available', 'selected', 'reserved', 'invalid', 'valid'], default: 'available' },
-    seat: { type: Schema.Types.ObjectId, ref: 'seats'}
+    seat: { type: Schema.Types.ObjectId, ref: 'seats' }
 },
     {
         toObject: {

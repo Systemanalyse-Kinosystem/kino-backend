@@ -2,15 +2,13 @@ import { Request, Response } from "express";
 import User from "../../models/user.model";
 import IUser from "../../interfaces/user.interface";
 import bcrypt from "bcrypt";
-import { IDataStoredInToken, ITokenData, IRequestWithUser } from "../../interfaces/jwt.interface";
-import jwt from "jsonwebtoken";
 import utils from "../../utils/utils"
 import { CallbackError } from "mongoose";
 
 export default class AuthenticationController {
     static async login(req: Request, res: Response) {
-        User.findOne({ email: req.body.email },"+password", {}, async (err: CallbackError | null, user: IUser | null) => {
-            if (err) { return res.status(401).json({ err: "An Error occurred" });  }
+        User.findOne({ email: req.body.email }, "+password", {}, async (err: CallbackError | null, user: IUser | null) => {
+            if (err) { return res.status(401).json({ err: "An Error occurred" }); }
             if (!user) { return res.status(500).json({ err: "An Error occurred" }); }
             if (await bcrypt.compare(req.body.password, user.password)) {
                 return res.json({
@@ -18,7 +16,7 @@ export default class AuthenticationController {
                     token: utils.createToken(user)
                 });
             }
-            return res.status(401).json({err: "An Error occurred"});
+            return res.status(401).json({ err: "An Error occurred" });
         });
     }
 

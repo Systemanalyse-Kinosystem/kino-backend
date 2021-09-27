@@ -1,4 +1,3 @@
-import { ExecOptionsWithStringEncoding } from "child_process";
 import { Document } from "mongoose";
 interface IUser extends Document {
   id: string;

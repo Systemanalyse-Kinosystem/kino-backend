@@ -38,7 +38,7 @@ describe('Authentication Routes', function () {
         User.findOneAndDelete({ _id: userID }, {}, (err: CallbackError) => {
             if (err) { return done(err); }
             done();
-        })
+        });
     });
 
 

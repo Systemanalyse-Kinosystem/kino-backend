@@ -15,7 +15,7 @@ export default class cartController {
         Cart.findOne({ _id: req.params.id }, (err: CallbackError | null, cart: ICart | null) => {
             if (!cart || err) { return res.status(500).json({ err: err ? err : "Not found" }); }
             res.json(cart);
-        })
+        });
     };
 
     static createCart(req: Request, res: Response) {
@@ -39,7 +39,7 @@ export default class cartController {
                     res.json(cartUpdated);
                     //send Mail
                     let mailText = "Sie haben folgende Tickets bestellt: "
-                    for(let ticket of cart.tickets) {
+                    for (let ticket of cart.tickets) {
                         mailText += `TicketID: ${ticket} `
                     }
                     utils.getNodeMailerTransporter().sendMail({
@@ -48,7 +48,7 @@ export default class cartController {
                         subject: 'Ihre Bestellung',
                         text: mailText
                     }, (err, info) => {
-                        if(err) {console.error(err);}
+                        if (err) { console.error(err); }
                     });
 
                 });
@@ -68,7 +68,7 @@ export default class cartController {
 
             Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "reserved", userID: (<IRequestWithUser>req).user.id } }, { "multi": true }, (err: CallbackError | null, writeResult: any) => {
                 if (err) { return res.status(500).json({ err: err }); }
-                
+
                 Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
                     if (err) { return res.status(500).json({ err: err }); }
                     if (!cart) { return res.status(400).json({ err: "Not found" }); }

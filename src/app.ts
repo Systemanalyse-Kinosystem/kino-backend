@@ -21,9 +21,9 @@ dotenv.config();
 const app = express();
 
 //setup database connection
- mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true });
+mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true });
 
- 
+
 //setup app config
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
@@ -48,4 +48,4 @@ myUtils.registerBackGroundJobs();
 //listen
 app.listen(<string>process.env.PORT, () => console.log("Server started on Port: " + <string>process.env.PORT));
 
-export default app; 
+export default app;

@@ -130,7 +130,7 @@ export default class ticketController {
 
     static deleteTickets(req: Request, res: Response) {
         Ticket.deleteMany((err: CallbackError | null, ticket: ITicket | null) => {
-            if (err) { return res.status(500).json({ err: err }) }
+            if (err) { return res.status(500).json({ err: err }); }
             res.status(204).json({});
         });
     }

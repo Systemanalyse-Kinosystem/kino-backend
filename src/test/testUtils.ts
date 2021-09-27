@@ -14,16 +14,16 @@ export default class testUtils {
                 .get('/api/v1' + route + '?perPage=' + perPage)
                 .set('auth', token)
                 .end((err: Error, res: ChaiHttp.Response): void => {
-                    if(err) {return done(err)}
+                    if (err) { return done(err) }
                     res.should.have.status(200)
                     res.body.should.be.a('array')
-                    res.body.should.have.lengthOf.below(perPage+1)
-                   
-                        res.body[0].should.have.property('_id');
-                    
-                    
+                    res.body.should.have.lengthOf.below(perPage + 1)
+
+                    res.body[0].should.have.property('_id');
+
+
                     done();
-                })
+                });
         }
     }
 
@@ -34,14 +34,14 @@ export default class testUtils {
                 .get('/api/v1' + route + '/' + docID)
                 .set('auth', token)
                 .end((err: Error, res: ChaiHttp.Response): void => {
-                    if(err) {return done(err)}
+                    if (err) { return done(err) }
                     res.should.have.status(200)
                     res.body.should.be.a('object')
-                    for(let property of properties) {
+                    for (let property of properties) {
                         res.body.should.have.property(property);
                     }
                     done();
-                })
+                });
         }
     }
 }

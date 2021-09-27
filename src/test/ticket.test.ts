@@ -80,13 +80,13 @@ describe('Ticket Routes', function () {
     after('teardown: delete tickets and other garbage', (done) => {
         Ticket.deleteMany({ _id: { $in: ticketIds } }, {}, (err: CallbackError | null) => {
             User.findOneAndDelete({ _id: customerID }, {}, (err2: CallbackError | null) => {
-                Cart.findOneAndDelete({ _id: cartId}, {}, (err3: CallbackError | null) => {
-                                   
-                if (err) { return done(err); }
-                if (err2) { return done(err2); }
-                if (err3) { return done(err3); }
-                done();
-              });
+                Cart.findOneAndDelete({ _id: cartId }, {}, (err3: CallbackError | null) => {
+
+                    if (err) { return done(err); }
+                    if (err2) { return done(err2); }
+                    if (err3) { return done(err3); }
+                    done();
+                });
             })
         });
     });
@@ -162,70 +162,70 @@ describe('Ticket Routes', function () {
     //ticketIds: 2
     it('returns tickets for the logged in user', (done) => {
         chai.request(app)
-        .get('/api/v1/ticket/me')
-        .set('auth', customerToken)
-        .end((err: Error, res: ChaiHttp.Response): void => {
-            if (err) { return done(err) }
-            res.should.have.status(200);
-            res.body.should.be.a('array');
-            res.body.should.have.lengthOf.above(0);
-            for(let ticket of res.body) {
-                ticket.should.have.property('userID').equal(customerID.toString());
-            }
-            return done();
-        });
+            .get('/api/v1/ticket/me')
+            .set('auth', customerToken)
+            .end((err: Error, res: ChaiHttp.Response): void => {
+                if (err) { return done(err) }
+                res.should.have.status(200);
+                res.body.should.be.a('array');
+                res.body.should.have.lengthOf.above(0);
+                for (let ticket of res.body) {
+                    ticket.should.have.property('userID').equal(customerID.toString());
+                }
+                return done();
+            });
     })
     //ticketIds: 3
     it('pays a ticket', (done) => {
         chai.request(app)
-        .put(`/api/v1/ticket/pay/${ticketIds[3]}`)
-        .send({email: 'th9titanmail@gmail.com'})
-        .end((err: Error, res: ChaiHttp.Response): void => {
-            if(err)  {return done(err);}
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('status').equal('valid');
-            Ticket.findOne({ _id: ticketIds[3]}, (err: CallbackError | null, ticket: ITicket) => {
-                if(err || !ticket) {return done(err);}
-                ticket.should.have.property('status').equal('valid');
-                return done();
+            .put(`/api/v1/ticket/pay/${ticketIds[3]}`)
+            .send({ email: 'th9titanmail@gmail.com' })
+            .end((err: Error, res: ChaiHttp.Response): void => {
+                if (err) { return done(err); }
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').equal('valid');
+                Ticket.findOne({ _id: ticketIds[3] }, (err: CallbackError | null, ticket: ITicket) => {
+                    if (err || !ticket) { return done(err); }
+                    ticket.should.have.property('status').equal('valid');
+                    return done();
+                });
             });
-        });
     });
 
     //ticketIds: 4
     it('unreserves a ticket', (done) => {
         chai.request(app)
-        .put(`/api/v1/ticket/unreserve/${ticketIds[4]}`)
-        .set('auth', customerToken)
-        .end((err: Error, res: ChaiHttp.Response): void => {
-            if(err)  {return done(err);}
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('status').equal('available');
-            Ticket.findOne({ _id: ticketIds[4]}, (err: CallbackError | null, ticket: ITicket) => {
-                if(err || !ticket) {return done(err);}
-                ticket.should.have.property('status').equal('available');
-                ticket.should.have.property('userID').equal(null);
-                return done();
+            .put(`/api/v1/ticket/unreserve/${ticketIds[4]}`)
+            .set('auth', customerToken)
+            .end((err: Error, res: ChaiHttp.Response): void => {
+                if (err) { return done(err); }
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').equal('available');
+                Ticket.findOne({ _id: ticketIds[4] }, (err: CallbackError | null, ticket: ITicket) => {
+                    if (err || !ticket) { return done(err); }
+                    ticket.should.have.property('status').equal('available');
+                    ticket.should.have.property('userID').equal(null);
+                    return done();
+                });
             });
-        });
     });
 
     //ticketIds: 5
     it('invalidates a ticket', (done) => {
         chai.request(app)
-        .put(`/api/v1/ticket/invalidate/${ticketIds[5]}`)
-        .end((err: Error, res: ChaiHttp.Response): void => {
-            if(err)  {return done(err);}
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('status').equal('invalid');
-            Ticket.findOne({ _id: ticketIds[5]}, (err: CallbackError | null, ticket: ITicket) => {
-                if(err || !ticket) {return done(err);}
-                ticket.should.have.property('status').equal('invalid');
-                return done();
+            .put(`/api/v1/ticket/invalidate/${ticketIds[5]}`)
+            .end((err: Error, res: ChaiHttp.Response): void => {
+                if (err) { return done(err); }
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('status').equal('invalid');
+                Ticket.findOne({ _id: ticketIds[5] }, (err: CallbackError | null, ticket: ITicket) => {
+                    if (err || !ticket) { return done(err); }
+                    ticket.should.have.property('status').equal('invalid');
+                    return done();
+                });
             });
-        });
     });
 });

@@ -4,6 +4,6 @@ import authenticationController from "./../authentication/authentication.control
 let router = express.Router();
 
 router.post('/login', authenticationController.login);
-router.post('/register', authenticationController.registerCustomer)
+router.post('/register', authenticationController.registerCustomer);
 
 export default router;

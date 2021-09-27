@@ -1,4 +1,4 @@
-import {Request} from "express";
+import { Request } from "express";
 import IUser from "./user.interface";
 
 export interface ITokenData {
@@ -11,5 +11,5 @@ export interface IDataStoredInToken {
 }
 
 export interface IRequestWithUser extends Request {
-    user: IUser; 
+    user: IUser;
 }
