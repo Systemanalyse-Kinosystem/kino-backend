@@ -206,7 +206,6 @@ describe('Ticket Routes', function () {
             Ticket.findOne({ _id: ticketIds[4]}, (err: CallbackError | null, ticket: ITicket) => {
                 if(err || !ticket) {return done(err);}
                 ticket.should.have.property('status').equal('available');
-                console.log(ticket)
                 ticket.should.have.property('userID').equal(null);
                 return done();
             });

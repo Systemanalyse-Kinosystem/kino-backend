@@ -29,8 +29,10 @@ export default class cartController {
         Cart.findById(req.params.id, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
             if (err) { return res.status(500).json({ err: err }); }
             if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
-            Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "valid" } }, { "multi": true }, (err: CallbackError | null, writeResult: any) => {
+
+            Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "valid", user: req.body } }, { "multi": true }, (err: CallbackError | null, writeResult: any) => {
                 if (err) { return res.status(500).json({ err: err }); }
+
                 Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [], user: req.body }, { new: true }, (err: CallbackError | null, cartUpdated: ICartNotPopulated | null) => {
                     if (err) { return res.status(500).json({ err: err }); }
                     if (!cartUpdated) { return res.status(400).json({ err: "Not found" }); }
@@ -63,8 +65,10 @@ export default class cartController {
         Cart.findById(req.params.id, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
             if (err) { return res.status(500).json({ err: err }); }
             if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
+
             Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "reserved", userID: (<IRequestWithUser>req).user.id } }, { "multi": true }, (err: CallbackError | null, writeResult: any) => {
                 if (err) { return res.status(500).json({ err: err }); }
+                
                 Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
                     if (err) { return res.status(500).json({ err: err }); }
                     if (!cart) { return res.status(400).json({ err: "Not found" }); }
