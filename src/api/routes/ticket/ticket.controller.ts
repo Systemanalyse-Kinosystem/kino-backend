@@ -115,7 +115,7 @@ export default class ticketController {
     }
 
     static unreserveTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "available"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "available", userID: undefined}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: err }); }
             res.json(ticket);
         });
