@@ -1,3 +1,4 @@
+import IScreening from "./screening.interface";
 import IUser from "./user.interface";
 export default interface ITicket {
     id: string;
@@ -6,7 +7,7 @@ export default interface ITicket {
     updatedAt: string;
     userID: string;
     user: IUser;
-    screening: string;
+    screening: string | IScreening;
     status: string;
     seat: string;
 }

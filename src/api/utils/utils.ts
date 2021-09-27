@@ -9,6 +9,7 @@ import { ObjectId } from "bson";
 import Cart from "../models/cart.model";
 import ICart from "../interfaces/cart.interface";
 import nodemailer from "nodemailer";
+import IScreening from "../interfaces/screening.interface";
 
 export default class UtilClass {
 
@@ -71,6 +72,16 @@ export default class UtilClass {
                 let cartsToDeleteIds = cartsToDelete.map(cart => cart._id);
                 await Cart.deleteMany({ _id: { $in: cartsToDeleteIds }});
                 console.log(`deleted ${cartsToDelete.length} carts during cleanup`)
+            } catch (err) { console.error(); }
+        });
+
+        cron.schedule('*/15 * * * *', async () => {
+            try {
+                let cutOffTime = new Date((new Date).getTime() + 1000 * 60 * 60 * 5);
+                let ticketCandidates = await Ticket.find({ status: 'reserved' }).populate('screening');
+                let ticketsToUnreserve = ticketCandidates.filter(ticket => (<IScreening>ticket.screening).startDate.getTime() < cutOffTime.getTime());
+
+                
             } catch (err) { console.error(); }
         });
     }
