@@ -11,7 +11,7 @@ export default class movieController {
             sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
             let searchOptions = req.query.search ? {$text: { $search: "\"" + <string>req.query.search +  "\"" }} : {};
             let perPage = req.query.perPage ? parseInt(<string>req.query.perPage) : 10;
-    
+
             Movie.find({...searchOptions },null, {
                 skip: parseInt(<string>req.query.page) * perPage,
                 limit: perPage,
@@ -19,7 +19,9 @@ export default class movieController {
             },(err: CallbackError | null, movies: any) => {
                 if (err) { return res.status(400).json(err) }
                 if (!movies) { return res.status(500).json({ err: err?err:"Not found" }); }
-                res.json(movies);
+                Movie.count(searchOptions, (err: CallbackError | null, count: number | null) => {
+                    res.json({ movies: movies, count: count});
+                })
             })
         };
 

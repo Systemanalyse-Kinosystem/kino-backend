@@ -12,9 +12,23 @@ describe('Movie Routes', function () {
   this.timeout(5000)
 
   //get the function and call it with (done)
-  it('returns a list of movies', (done) => {
-    testUtils.getDocumentListTest('/movie', "", 10)(done)
-  });
+  it('returns a list of movies with count', (done) => {
+    chai.request(app)
+    .get('/api/v1/movie' + '?perPage=10')
+    .end((err: Error, res: ChaiHttp.Response): void => {
+        if(err) {return done(err)}
+        res.should.have.status(200)
+        res.body.should.be.a('object')
+        res.body.movies.should.have.lengthOf.below(11)
+       
+            res.body.should.have.property('movies');
+            res.body.should.have.property('count');
+        
+        
+        done();
+    })
+});
+
 
   it('returns a single movie', (done) => {
     Movie.findOne((err: CallbackError, movie: any) => {
