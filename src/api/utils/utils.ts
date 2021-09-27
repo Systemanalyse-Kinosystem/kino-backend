@@ -75,14 +75,16 @@ export default class UtilClass {
             } catch (err) { console.error(); }
         });
 
-        cron.schedule('*/15 * * * *', async () => {
+        //cron.schedule('*/15 * * * *', async () => {
+    /* deactivated until real screenings are in 
             try {
                 let cutOffTime = new Date((new Date).getTime() + 1000 * 60 * 60 * 5);
                 let ticketCandidates = await Ticket.find({ status: 'reserved' }).populate('screening');
                 let ticketsToUnreserve = ticketCandidates.filter(ticket => (<IScreening>ticket.screening).startDate.getTime() < cutOffTime.getTime());
-
-                
+                let ticketsToUnreserveIds = ticketsToUnreserve.map(ticket => ticket._id);
+                Ticket.updateMany({_id: {$in: ticketsToUnreserveIds}}, {status: 'available'}, null);                
             } catch (err) { console.error(); }
         });
-    }
+        */
+    }    
 }
