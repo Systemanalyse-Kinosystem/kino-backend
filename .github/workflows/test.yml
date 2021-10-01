@@ -24,6 +24,10 @@ jobs:
           PORT: ${{ secrets.PORT }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NODEMAILER_HOST: ${{ secrets.NODEMAILER_HOST }}
+          NODEMAILER_PORT: ${{ secrets.NODEMAILER_PORT }}
+          NODEMAILER_EMAIL: ${{ secrets.NODEMAILER_EMAIL }}
+          NODEMAILER_PASSWORD: ${{ secrets.NODEMAILER_PASSWORD }}
       - name: push coverage
         uses: cpina/github-action-push-to-another-repository@main
         env:

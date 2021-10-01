@@ -103,7 +103,6 @@ export default class ticketController {
         Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "valid"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: err }); }
                     utils.getNodeMailerTransporter().sendMail({
-                        from: 'noreply.kinosystem@gmail.com',
                         to: req.body.email,
                         subject: 'Ihre Bestellung',
                         text: `Sie haben das Ticket ${ticket._id} erfolgreich bezahlt.`

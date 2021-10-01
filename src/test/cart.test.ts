@@ -131,7 +131,7 @@ describe('Cart Routes', function () {
             .put(`/api/v1/cart/checkout/reserve/${cartId2}`)
             .set('auth', customerToken)
             .send({
-                email: "th9titanmain@gmail.com"
+                email: "noreply.kinosystem@gmail.com"
             })
             .end((err: Error, res: ChaiHttp.Response): void => {
                 if (err) { return done(err); }

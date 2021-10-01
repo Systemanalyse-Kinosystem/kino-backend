@@ -45,7 +45,6 @@ export default class cartController {
             }
 
             await utils.getNodeMailerTransporter().sendMail({
-                from: 'noreply.kinosystem@gmail.com',
                 to: req.body.email,
                 subject: 'Ihre Bestellung',
                 text: mailText

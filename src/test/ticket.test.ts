@@ -179,7 +179,7 @@ describe('Ticket Routes', function () {
     it('pays a ticket', (done) => {
         chai.request(app)
             .put(`/api/v1/ticket/pay/${ticketIds[3]}`)
-            .send({ email: 'th9titanmail@gmail.com' })
+            .send({ email: "noreply.kinosystem@gmail.com" })
             .end((err: Error, res: ChaiHttp.Response): void => {
                 if (err) { return done(err); }
                 res.should.have.status(200);

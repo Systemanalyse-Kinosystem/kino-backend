@@ -26,11 +26,14 @@ export default class UtilClass {
     }
     static getNodeMailerTransporter() {
         return nodemailer.createTransport({
-            service: 'gmail',
+            host: <string>process.env.NODEMAILER_HOST,
+            port: parseInt(<string>process.env.NODEMAILER_PORT),
+            secure: false,
             auth: {
-                user: 'noreply.kinosystem@gmail.com',
-                pass: 'test_1234'
-            }
+                user: <string>process.env.NODEMAILER_EMAIL,
+                pass: <string>process.env.NODEMAILER_PASSWORD
+            },
+            from: 'Cinemy Reservierungsassistent'
         })
     }
 
