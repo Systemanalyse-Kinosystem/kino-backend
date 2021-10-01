@@ -32,10 +32,10 @@ jobs:
             --restart always --env PORT=${{ secrets.PORT }} \
             --env DATABASE_URL="${{ secrets.DATABASE_URL }}" \
             --env JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-            --env NODEMAILER_HOST= "${{ secrets.NODEMAILER_HOST }}" \
-            --env NODEMAILER_PORT= "${{ secrets.NODEMAILER_PORT }}" \
-            --env NODEMAILER_EMAIL= "${{ secrets.NODEMAILER_EMAIL }}" \
-            --env NODEMAILER_PASSWORD= "${{ secrets.NODEMAILER_PASSWORD }}" \
+            --env NODEMAILER_HOST="${{ secrets.NODEMAILER_HOST }}" \
+            --env NODEMAILER_PORT="${{ secrets.NODEMAILER_PORT }}" \
+            --env NODEMAILER_EMAIL="${{ secrets.NODEMAILER_EMAIL }}" \
+            --env NODEMAILER_PASSWORD="${{ secrets.NODEMAILER_PASSWORD }}" \
             --label 'traefik.enable=true' \
             --label 'traefik.frontend.rule=Host:api.kino.fynn-weyrich.de' \
             --label 'traefik.docker.network=web' \
