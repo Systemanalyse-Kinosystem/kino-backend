@@ -1,6 +1,6 @@
 //replace screening, Screening, IScreening
 import { Request, Response } from 'express';
-import { CallbackError } from 'mongoose';
+import { CallbackError} from 'mongoose';
 import Screening from '../../models/screening.model';
 import IScreening from '../../interfaces/screening.interface';
 import Hall from '../../models/hall.model';
@@ -10,11 +10,14 @@ import Ticket from '../../models/ticket.model';
 export default class screeningController {
 
     static async getScreeningList(req: Request, res: Response) {
-        //build sortOptions and seachOptions
+        //build queryOptions
         let sortOptions: any = {};
         sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
         let perPage = req.query.perPage ? parseInt(<string>req.query.perPage) : 10;
-        Screening.find({}, null, {
+        let dateOptions = req.query.dateBegin && req.query.dateEnd ? {startDate: {$gte : new Date(<string>req.query.dateBegin), $lt : new Date(<string>req.query.dateEnd)}}: {};
+        let movieOptions = req.query.movie ? {_id: <string>req.query.movie}: {};
+
+        Screening.find({...movieOptions, ...dateOptions}, null, {
             skip: parseInt(<string>req.query.page) * perPage,
             limit: perPage,
             sort: sortOptions,
