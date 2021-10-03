@@ -54,12 +54,13 @@ describe('Ticket Routes', function () {
                 Cart.create({}, (err: CallbackError, cart: ICartNotPopulated) => {
                     if (err) { return done(err); }
                     cartId = cart._id;
-
+                    Screening.findOne({}, (err: CallbackError | null, testScreening: IScreening) => {
+                        if (err || !testScreening) { return done(err); }
                     let ticketBodies = [
                         { status: 'available' },
                         { status: 'selected' },
                         { status: 'valid', userID: customerID },
-                        { status: 'reserved' },
+                        { status: 'reserved', screening: testScreening },
                         { status: 'reserved' },
                         { status: 'valid' }
                     ];
@@ -72,6 +73,7 @@ describe('Ticket Routes', function () {
                         return done();
                     });
                 });
+            });
             });
         });
 

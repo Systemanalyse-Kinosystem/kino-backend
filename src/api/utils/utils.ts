@@ -13,6 +13,16 @@ import IScreening from "../interfaces/screening.interface";
 
 export default class UtilClass {
 
+    static nodemailerConfig = {
+        host: <string>process.env.NODEMAILER_HOST,
+        port: parseInt(<string>process.env.NODEMAILER_PORT),
+        secure: false,
+        auth: {
+            user: <string>process.env.NODEMAILER_EMAIL,
+            pass: <string>process.env.NODEMAILER_PASSWORD
+        }
+    }
+
     static createToken(user: IUser): ITokenData {
         const expiresIn = 60 * 60 * 4;
         const secret = <string>process.env.JWT_SECRET;
@@ -35,6 +45,88 @@ export default class UtilClass {
             },
             from: 'Cinemy Reservierungsassistent'
         })
+    }
+
+    static async sendPaymentEmail(recipient: string, ticketId: string) {
+        try {
+        let ticket = await Ticket.findById(ticketId).populate({
+            path: 'screening',
+            populate: {
+                path: 'movie',
+                model: 'movies'
+            }
+        });
+        if(!ticket) {
+            console.log("ticket not found for email");
+            return
+        }
+        console.log(ticket)
+        this.getNodeMailerTransporter().sendMail({
+            to: recipient,
+            subject: 'Ihre Bezahlung',
+            text: `Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} bezahlt.
+            Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
+            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}`
+        }, (err, info) => {
+            console.log(err, info)
+        });
+    } catch (err) {console.error(err)}
+    }
+
+    static async sendReservationEmail(recipient: string, ticketIds: string[]) {
+        try {
+        let tickets = await Ticket.find({_id: {$in: ticketIds}}).populate({
+            path: 'screening',
+            populate: {
+                path: 'movie',
+                model: 'movies'
+            }
+        });
+        if(!tickets) {
+            console.log("ticket not found for email");
+            return
+        }
+        let mailText: string = ``
+        for(let ticket of tickets) {
+            mailText += `Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} reserviert.
+            Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
+            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}
+            `
+        }
+        await this.getNodeMailerTransporter().sendMail({
+            to: recipient,
+            subject: 'Ihre Reservierung',
+            text: mailText
+        });
+    } catch (err) {console.error(err)}
+    }
+
+    static async sendBookingEmail(recipient: string, ticketIds: string[]) {
+        try {
+        let tickets = await Ticket.find({_id: {$in: ticketIds}}).populate({
+            path: 'screening',
+            populate: {
+                path: 'movie',
+                model: 'movies'
+            }
+        });
+        if(!tickets) {
+            console.log("ticket not found for email");
+            return
+        }
+        let mailText: string = ``
+        for(let ticket of tickets) {
+            mailText += `Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} gebucht.
+            Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
+            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}
+            `
+        }
+        await this.getNodeMailerTransporter().sendMail({
+            to: recipient,
+            subject: 'Ihre Bestellung',
+            text: mailText
+        });
+    } catch (err) {console.error(err)}
     }
 
     static registerBackGroundJobs() {

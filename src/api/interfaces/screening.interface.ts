@@ -1,7 +1,7 @@
 export default interface IScreening {
     id: string;
     _id: string;
-    movie: string;
+    movie: any;
     startDate: Date;
     endDate: Date;
     hall: string;

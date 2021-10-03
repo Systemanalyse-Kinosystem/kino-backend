@@ -102,13 +102,7 @@ export default class ticketController {
     static payTicketById(req: Request, res: Response) {
         Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "valid"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
             if (!ticket || err) { return res.status(500).json({ err: err }); }
-                    utils.getNodeMailerTransporter().sendMail({
-                        to: req.body.email,
-                        subject: 'Ihre Bestellung',
-                        text: `Sie haben das Ticket ${ticket._id} erfolgreich bezahlt.`
-                    }, (err, info) => {
-                        if(err) {console.error(err);}
-                    });
+                    utils.sendPaymentEmail(req.body.email, ticket._id);
             res.json(ticket);
         });
     }

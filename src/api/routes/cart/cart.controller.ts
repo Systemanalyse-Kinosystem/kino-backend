@@ -39,16 +39,7 @@ export default class cartController {
             res.json(cartUpdated);
 
             //send Mail
-            let mailText = "Sie haben folgende Tickets bestellt: "
-            for (let ticket of cart.tickets) {
-                mailText += `TicketID: ${ticket} `
-            }
-
-            await utils.getNodeMailerTransporter().sendMail({
-                to: req.body.email,
-                subject: 'Ihre Bestellung',
-                text: mailText
-            });
+            utils.sendBookingEmail(req.body.email, cart.tickets)
         } catch (e) { res.status(500).json(e); }
     }
 
@@ -67,7 +58,7 @@ export default class cartController {
 
         let updatedCart = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
         if (!updatedCart) { return res.status(400).json({ err: "Not found" }); }
-        //sendMail
+        utils.sendReservationEmail(req.body.email, cart.tickets);
         res.json(updatedCart);
     }
 }

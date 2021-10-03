@@ -12,6 +12,7 @@ import ITicket from "../api/interfaces/ticket.interface";
 import { uniqueNamesGenerator, Config, names } from 'unique-names-generator';
 import bcrypt from "bcrypt";
 import utils from "../api/utils/utils";
+import Screening from "../api/models/screening.model";
 
 chai.use(chaiHttp)
 let should = chai.should()
@@ -28,9 +29,9 @@ describe('Cart Routes', function () {
 
     before('Setup: Create demo cart, customer and tickets', async () => {
         try {
-
-            let ticket1 = await Ticket.create({ status: 'selected' });
-            let ticket2 = await Ticket.create({ status: 'selected' });
+            let testScreening = await Screening.findOne({});
+            let ticket1 = await Ticket.create({ status: 'selected', screening: testScreening });
+            let ticket2 = await Ticket.create({ status: 'selected', screening: testScreening });
 
             ticketId1 = ticket1._id;
             ticketId2 = ticket2._id;
