@@ -102,7 +102,7 @@ describe('Cart Routes', function () {
             .send({
                 firstName: name,
                 lastName: name,
-                email: name + "@kinosystem.de",
+                email: "noreply.kinosystem@gmail.com",
                 password: bcrypt.hashSync("test1234", 10),
                 role: "customer",
                 address: {

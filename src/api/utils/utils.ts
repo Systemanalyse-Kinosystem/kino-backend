@@ -60,11 +60,15 @@ export default class UtilClass {
             console.log("ticket not found for email");
             return
         }
-        console.log(ticket)
+
+    
         this.getNodeMailerTransporter().sendMail({
             to: recipient,
             subject: 'Ihre Bezahlung',
-            text: `Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} bezahlt.
+            text: 
+            `
+            Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!
+            Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} bezahlt.
             Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
             Vorstellungsende: ${(<IScreening>ticket.screening).endDate}`
         }, (err, info) => {
@@ -86,9 +90,10 @@ export default class UtilClass {
             console.log("ticket not found for email");
             return
         }
-        let mailText: string = ``
+        let mailText: string = `Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!`
         for(let ticket of tickets) {
-            mailText += `Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} reserviert.
+            mailText += `
+            Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} reserviert.
             Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
             Vorstellungsende: ${(<IScreening>ticket.screening).endDate}
             `
@@ -114,9 +119,10 @@ export default class UtilClass {
             console.log("ticket not found for email");
             return
         }
-        let mailText: string = ``
+        let mailText: string = `<h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!<h1>`
         for(let ticket of tickets) {
-            mailText += `Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} gebucht.
+            mailText += `
+            Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} gebucht.
             Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
             Vorstellungsende: ${(<IScreening>ticket.screening).endDate}
             `
@@ -124,7 +130,7 @@ export default class UtilClass {
         await this.getNodeMailerTransporter().sendMail({
             to: recipient,
             subject: 'Ihre Bestellung',
-            text: mailText
+            html: mailText
         });
     } catch (err) {console.error(err)}
     }
