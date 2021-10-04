@@ -65,14 +65,17 @@ export default class UtilClass {
         this.getNodeMailerTransporter().sendMail({
             to: recipient,
             subject: 'Ihre Bezahlung',
-            text: 
+            html: 
             `
-            Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!
-            Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} bezahlt.
+            <h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!</h1>
+            <br>
+            Sie haben ein Ticket für den Film <b>${(<IScreening>ticket.screening).movie.title}</b> bezahlt.
+            <br>
             Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
-            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}`
+            <br>
+            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}` 
         }, (err, info) => {
-            console.log(err, info)
+            console.log(err)
         });
     } catch (err) {console.error(err)}
     }
@@ -90,18 +93,21 @@ export default class UtilClass {
             console.log("ticket not found for email");
             return
         }
-        let mailText: string = `Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!`
+        let mailText: string = `<h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!</h1>`
         for(let ticket of tickets) {
             mailText += `
-            Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} reserviert.
+            <br>
+            Sie haben ein Ticket für den Film <b>${(<IScreening>ticket.screening).movie.title}</b> bezahlt.
+            <br>
             Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
-            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}
-            `
+            <br>
+            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}` 
+            
         }
         await this.getNodeMailerTransporter().sendMail({
             to: recipient,
             subject: 'Ihre Reservierung',
-            text: mailText
+            html: mailText
         });
     } catch (err) {console.error(err)}
     }
@@ -119,13 +125,15 @@ export default class UtilClass {
             console.log("ticket not found for email");
             return
         }
-        let mailText: string = `<h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!<h1>`
+        let mailText: string = `<h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!</h1>`
         for(let ticket of tickets) {
             mailText += `
-            Sie haben ein Ticket für den Film ${(<IScreening>ticket.screening).movie.title} gebucht.
+            <br>
+            Sie haben ein Ticket für den Film <b>${(<IScreening>ticket.screening).movie.title}</b> bezahlt.
+            <br>
             Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
-            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}
-            `
+            <br>
+            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}` 
         }
         await this.getNodeMailerTransporter().sendMail({
             to: recipient,
@@ -173,7 +181,7 @@ export default class UtilClass {
                 let cartsToDeleteIds = cartsToDelete.map(cart => cart._id);
                 await Cart.deleteMany({ _id: { $in: cartsToDeleteIds }});
                 console.log(`deleted ${cartsToDelete.length} carts during cleanup`)
-            } catch (err) { console.error(); }
+            } catch (err) { console.error(err); }
         });
 
         //cron.schedule('*/15 * * * *', async () => {
