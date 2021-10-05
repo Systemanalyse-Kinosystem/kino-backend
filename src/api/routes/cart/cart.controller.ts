@@ -13,7 +13,7 @@ export default class cartController {
 
     static async getCartById(req: Request, res: Response) {
         try {
-            let cart = await Cart.findOne({ _id: req.params.id });
+            let cart = await Cart.findOne({ _id: req.params.id }).populate("tickets");
             if (!cart) { return res.status(400).json({ err: "Not found" }); }
             res.json(cart);
         } catch (e) { res.status(500).json(e); }
