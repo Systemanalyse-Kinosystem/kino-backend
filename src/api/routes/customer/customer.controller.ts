@@ -9,35 +9,40 @@ export default class customerController {
 
     static async getCustomerList(req: Request, res: Response) {
         //build sortOptions and seachOptions
-        let sortOptions: any = {};
-        if (req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1 || parseInt(<string>req.query.orderdir) == -1)) {
-            sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
-        }
-        let searchOptions = req.query.search ? { $text: { $search: <string>req.query.search } } : {};
+        try {
+            let sortOptions: any = {};
+            if (req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1 || parseInt(<string>req.query.orderdir) == -1)) {
+                sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
+            }
+            let queryOptions: any = req.query.search ? { $text: { $search: <string>req.query.search } } : {};
+            queryOptions.role = "customer";
 
-        User.find({ role: 'customer', ...searchOptions }, null, {
-            skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
-            limit: parseInt(<string>req.query.perPage),
-            sort: sortOptions
-        }, (err: CallbackError | null, users: IUser[] | null) => {
-            if (err) { return res.status(500).json(err) }
+            let users = await User.find(queryOptions, null, {
+                skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
+                limit: parseInt(<string>req.query.perPage),
+                sort: sortOptions
+            });
+
             if (!users) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(users);
-        });
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
+
     };
 
-    static getCustomerById(req: Request, res: Response) {
-        User.findOne({ role: 'customer', _id: req.params.id }, (err: CallbackError | null, user: IUser | null) => {
-            if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
+    static async getCustomerById(req: Request, res: Response) {
+        try {
+            let user = await User.findOne({ role: 'customer', _id: req.params.id });
+            if (!user) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
-        });
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
     };
 
-    static getLoggedInCustomer(req: Request, res: Response) {
-        User.findOne({ role: 'customer', _id: (<IRequestWithUser>req).user.id }, (err: CallbackError | null, user: IUser | null) => {
-            if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
+    static async getLoggedInCustomer(req: Request, res: Response) {
+        try {
+            let user = await User.findOne({ role: 'customer', _id: (<IRequestWithUser>req).user.id });
+            if (!user) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
-        });
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
     }
 
     /* see /register in authentication module
@@ -60,30 +65,33 @@ export default class customerController {
     }
     */
 
-    static deleteCustomerById(req: Request, res: Response) {
-        User.findOneAndDelete({ role: 'customer', _id: req.params.id }, {}, (err: CallbackError | null, user: IUser | null) => {
-            if (err) { return res.status(500).json({ err: 'An Error occured' }); }
+    static async deleteCustomerById(req: Request, res: Response) {
+        try {
+            await User.findOneAndDelete({ role: 'customer', _id: req.params.id });
             res.status(204).json({});
-        });
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
+
     }
-    static deleteCustomers(req: Request, res: Response) {
-        User.deleteMany({ role: 'customer' }, {}, (err: CallbackError | null) => {
-            if (err) { return res.status(500).json({ err: 'An Error occured' }); }
+    static async deleteCustomers(req: Request, res: Response) {
+        try {
+            await User.deleteMany({ role: 'customer' });
             res.status(204).json({});
-        });
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
     }
 
-    static updateCustomerById(req: Request, res: Response) {
-        User.findOneAndUpdate({ role: 'customer', _id: req.params.id }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
-            if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
+    static async updateCustomerById(req: Request, res: Response) {
+        try {
+            let user = await User.findOneAndUpdate({ role: 'customer', _id: req.params.id }, req.body, { new: true });
+            if (!user) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
-        });
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
     }
 
-    static updateLoggedInCustomer(req: Request, res: Response) {
-        User.findOneAndUpdate({ _id: (<IRequestWithUser>req).user.id, role: 'customer' }, req.body, { new: true }, (err: CallbackError | null, user: IUser | null) => {
-            if (!user || err) { return res.status(500).json({ err: 'An Error occured' }); }
+    static async updateLoggedInCustomer(req: Request, res: Response) {
+        try {
+            let user = await User.findOneAndUpdate({ _id: (<IRequestWithUser>req).user.id, role: 'customer' }, req.body, { new: true });
+            if (!user) { return res.status(500).json({ err: 'An Error occured' }); }
             res.json(user);
-        });
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
     }
 }

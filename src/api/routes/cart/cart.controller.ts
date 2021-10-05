@@ -36,6 +36,7 @@ export default class cartController {
 
             let cartUpdated = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
             if (!cartUpdated) { return res.status(400).json({ err: "Not found" }); }
+
             res.json(cartUpdated);
 
             //send Mail
@@ -51,14 +52,18 @@ export default class cartController {
     */
 
     static async checkOutCartReserveWithLogin(req: Request, res: Response) {
-        let cart = await Cart.findById(req.params.id);
-        if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
+        try {
+            let cart = await Cart.findById(req.params.id);
+            if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
 
-        await Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "reserved", userID: (<IRequestWithUser>req).user.id } }, { "multi": true });
+            await Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "reserved", userID: (<IRequestWithUser>req).user.id } }, { "multi": true });
 
-        let updatedCart = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
-        if (!updatedCart) { return res.status(400).json({ err: "Not found" }); }
-        utils.sendReservationEmail(req.body.email, cart.tickets);
-        res.json(updatedCart);
+            let updatedCart = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
+            if (!updatedCart) { return res.status(400).json({ err: "Not found" }); }
+
+            utils.sendReservationEmail(req.body.email, cart.tickets);
+
+            res.json(updatedCart);
+        } catch (e) { res.status(500).json(e); }
     }
 }
