@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
-import { CallbackError } from 'mongoose';
 import User from "../../models/user.model";
-import IUser from "../../interfaces/user.interface";
-import bcrypt from 'bcrypt';
 import { IRequestWithUser } from '../../interfaces/jwt.interface';
 
 export default class customerController {

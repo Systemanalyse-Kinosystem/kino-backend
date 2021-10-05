@@ -1,12 +1,8 @@
 //replace cart, Cart, ICart
 import { Request, Response } from 'express';
-import { CallbackError } from 'mongoose';
-import ICart, { ICartNotPopulated } from '../../interfaces/cart.interface';
 import Cart from '../../models/cart.model';
 import Ticket from '../../models/ticket.model';
-import ITicket from '../../interfaces/ticket.interface';
 import { IRequestWithUser } from '../../interfaces/jwt.interface';
-import nodemailer from "nodemailer";
 import utils from "../../utils/utils";
 
 export default class cartController {
