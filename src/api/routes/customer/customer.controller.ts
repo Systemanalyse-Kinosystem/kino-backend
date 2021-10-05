@@ -11,14 +11,14 @@ export default class customerController {
             if (req.query.orderdir && (parseInt(<string>req.query.orderdir) == 1 || parseInt(<string>req.query.orderdir) == -1)) {
                 sortOptions[<string>req.query.orderby] = <string>req.query.orderdir;
             }
-            let queryOptions: any = req.query.search ? { $text: { $search: <string>req.query.search } } : {};
-            queryOptions.role = "customer";
-
-            let users = await User.find(queryOptions, null, {
+            let filterOptions: any = req.query.search ? { $text: { $search: <string>req.query.search } } : {};
+            filterOptions.role = "customer";
+            let queryOptions = {
                 skip: parseInt(<string>req.query.page) * parseInt(<string>req.query.perPage),
                 limit: parseInt(<string>req.query.perPage),
                 sort: sortOptions
-            });
+            };
+            let users = await User.find(filterOptions, null, queryOptions);
 
             if (!users) { return res.status(500).json({ err: "An Error occured" }); }
             res.json(users);
