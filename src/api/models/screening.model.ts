@@ -5,7 +5,6 @@ import Movie from './movie.model';
 const schema = new Schema<IScreening>({
   movie: { type: Schema.Types.ObjectId, ref: 'movies', required: true },
   startDate: { type: Date, required: true },
-  endDate: { type: Date, required: true },
   hall: { type: Schema.Types.ObjectId, ref: 'halls', required: true }
 },
   {
