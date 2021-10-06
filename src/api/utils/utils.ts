@@ -176,7 +176,7 @@ export default class UtilClass {
 
         cron.schedule('*/15 * * * *', async () => {
             try {
-                let cutOffTime = new Date((new Date).getTime() - 1000 * 60 * 60 * 5);
+                let cutOffTime = new Date((new Date).getTime() - 1000 * 60 * 60 * 24 * 10);
                 let cartsToDelete = await Cart.find({ updatedAt: { $lte: cutOffTime } });
                 let cartsToDeleteIds = cartsToDelete.map(cart => cart._id);
                 await Cart.deleteMany({ _id: { $in: cartsToDeleteIds }});
