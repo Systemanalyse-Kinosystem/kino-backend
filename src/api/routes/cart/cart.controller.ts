@@ -9,7 +9,21 @@ export default class cartController {
 
     static async getCartById(req: Request, res: Response) {
         try {
-            let cart = await Cart.findOne({ _id: req.params.id }).populate("tickets");
+            let cart = await Cart.findOne({ _id: req.params.id }).populate([{
+                path: 'ticket',
+                populate: {
+                    path: 'screening',
+                    populate: [{
+                        path: 'movie',
+                        model: 'movies'
+                    }, {
+                        path: 'hall',
+                        model: 'halls'
+                    }]
+                }
+            }, {
+                path: 'seat'
+            }]);
             if (!cart) { return res.status(400).json({ err: "Not found" }); }
             res.json(cart);
         } catch (e) { res.status(500).json(e); }
