@@ -13,6 +13,7 @@ export default class cartController {
                 path: 'ticket',
                 populate: {
                     path: 'screening',
+                    model: 'screenings',
                     populate: [{
                         path: 'movie',
                         model: 'movies'
