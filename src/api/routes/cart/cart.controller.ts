@@ -10,7 +10,7 @@ export default class cartController {
     static async getCartById(req: Request, res: Response) {
         try {
             let cart = await Cart.findOne({ _id: req.params.id }).populate([{
-                path: 'ticket',
+                path: 'tickets',
                 populate: {
                     path: 'screening',
                     model: 'screenings',
