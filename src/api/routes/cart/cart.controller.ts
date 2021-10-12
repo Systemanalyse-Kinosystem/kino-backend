@@ -50,11 +50,23 @@ export default class cartController {
     }
 
 
-    /* NOT NEEDED FOR MVP
-        static checkOutCartBookWithLogin(req: Request, res: Response) {
-            //implement
+        static async checkOutCartBookWithLogin(req: Request, res: Response) {
+            try {
+                let cart = await Cart.findById(req.params.id);
+                if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
+    
+                await Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "valid", userID: (<IRequestWithUser>req).user.id } }, { "multi": true });
+    
+                let cartUpdated = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
+                if (!cartUpdated) { return res.status(400).json({ err: "Not found" }); }
+    
+                res.json(cartUpdated);
+    
+                //send Mail
+                utils.sendBookingEmail(req.body.email, cart.tickets)
+            } catch (e) { res.status(500).json(e); }
         }
-    */
+    
 
     static async checkOutCartReserveWithLogin(req: Request, res: Response) {
         try {
