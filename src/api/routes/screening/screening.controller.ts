@@ -26,15 +26,27 @@ export default class screeningController {
 
             let screenings = await Screening.find({ ...movieFilter, ...dateFilter }, null, queryOptions);
             if (!screenings) { return res.status(500).json({ err: "Not found" }); }
-            res.json(screenings);
-        } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
+
+            //add free Seat Count
+            let screeningsWithCount: any = []
+            for (let i = 0; i < screenings.length; i++) {
+                let freeSeats = await Ticket.countDocuments({ screening: screenings[i]._id, status: "available" });
+                screeningsWithCount.push({ ...screenings[i].toObject(), freeSeats });
+            }
+
+            res.json(screeningsWithCount);
+        } catch (e) { res.status(500).json({ err: 'An Error occured' }); console.log(e) }
     };
 
     static async getScreeningById(req: Request, res: Response) {
         try {
             let screening = await Screening.findOne({ _id: req.params.id }, null, { populate: ['movie', 'hall'] });
             if (!screening) { return res.status(500).json({ err: "Not found" }); }
-            res.json(screening);
+
+            let freeSeats = await Ticket.countDocuments({ screening: screening._id, status: "available" });
+            let screeningWithCount = {...screening.toObject(), freeSeats};
+
+            res.json(screeningWithCount);
         } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
 
     };
@@ -54,7 +66,14 @@ export default class screeningController {
             let screenings = await Screening.find({ movie: req.params.id }, null, queryOptions);
 
             if (!screenings) { return res.status(500).json({ err: "Not found" }); }
-            res.json(screenings);
+
+            //add free Seat Count
+            let screeningsWithCount: any = []
+            for (let i = 0; i < screenings.length; i++) {
+                let freeSeats = await Ticket.countDocuments({ screening: screenings[i]._id, status: "available" });
+                screeningsWithCount.push({ ...screenings[i].toObject(), freeSeats });
+            }
+            res.json(screeningsWithCount);
         } catch (e) { res.status(500).json({ err: 'An Error occured' }); }
     };
 
