@@ -34,8 +34,12 @@ export default class cartController {
 
     static async checkOutCartBookWithCartId(req: Request, res: Response) {
         try {
+            if(!(req.body.firstName && req.body.lastName && req.body.email)) {
+                return res.status(400).json({err: "firstName, lastName or email missing"});
+            }
             let cart = await Cart.findById(req.params.id);
             if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
+            
 
             await Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "valid", user: req.body } }, { "multi": true });
 
