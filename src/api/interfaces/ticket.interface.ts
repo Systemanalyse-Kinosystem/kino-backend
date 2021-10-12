@@ -1,4 +1,5 @@
 import IScreening from "./screening.interface";
+import ISeat from "./seat.interface";
 import IUser from "./user.interface";
 export default interface ITicket {
     id: string;
@@ -9,5 +10,5 @@ export default interface ITicket {
     user: IUser;
     screening: string | IScreening;
     status: string;
-    seat: string;
+    seat: ISeat
 }

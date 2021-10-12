@@ -30,7 +30,11 @@ describe('Screening Routes', function () {
       if (err) { return done(err); }
       Screening.create({
         movie: movie._id,
-        hall: "61409762e10a26011c57d669",
+        hall: {
+          number: 1,
+          rows: 10,
+          seatsPerRow: 10
+        },
         startDate: "1631722770000",
         endDate: "1631723770000"
       }, (err: CallbackError, screening: IScreening) => {

@@ -56,27 +56,36 @@ describe('Ticket Routes', function () {
                     cartId = cart._id;
                     Screening.findOne({}, (err: CallbackError | null, testScreening: IScreening) => {
                         if (err || !testScreening) { return done(err); }
-                    let ticketBodies = [
-                        { status: 'available' },
-                        { status: 'selected' },
-                        { status: 'valid', userID: customerID },
-                        { status: 'reserved', screening: testScreening },
-                        { status: 'reserved' },
-                        { status: 'valid' }
-                    ];
-                    //create dummy Tickets
-                    Ticket.insertMany(ticketBodies, {}, (err: CallbackError | null, res: any) => {
-                        if (err) { return done(err); }
-                        for (let ticket of res) {
-                            ticketIds.push(ticket._id);
-                        }
-                        return done();
+                        let ticketBodies: any = [
+                            { status: 'available' },
+                            { status: 'selected' },
+                            { status: 'valid', userID: customerID },
+                            { status: 'reserved', screening: testScreening },
+                            { status: 'reserved' },
+                            { status: 'valid' }
+                        ];
+                        //add 
+                        ticketBodies = ticketBodies.map((ticketBody: any) => {
+                            return {
+                                ...ticketBody, seat: {
+                                    rowNumber: 1,
+                                    colNumber: 1,
+                                    type: "parquet"
+                                }
+                            }
+                        });
+                        //create dummy Tickets
+                        Ticket.insertMany(ticketBodies, {}, (err: CallbackError | null, res: any) => {
+                            if (err) { return done(err); }
+                            for (let ticket of res) {
+                                ticketIds.push(ticket._id);
+                            }
+                            return done();
+                        });
                     });
                 });
             });
-            });
         });
-
     });
 
     after('teardown: delete tickets and other garbage', (done) => {

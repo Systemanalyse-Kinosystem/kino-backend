@@ -10,8 +10,6 @@ import apiRouter from "./api/routes/routes";
 
 //setup environment variables
 import dotenv from 'dotenv';
-import seatModel from "./api/models/seat.model";
-import hallModel from "./api/models/hall.model";
 import { utils } from "mocha";
 import myUtils from "./api/utils/utils";
 
@@ -38,9 +36,6 @@ app.use('/', (req: express.Request, res: express.Response) => {
     res.send("Hello World from CI");
 });
 
-//initalize unexposed models
-seatModel.find();
-hallModel.find();
 
 //register automatic background jobs for cleanup
 myUtils.registerBackGroundJobs();
