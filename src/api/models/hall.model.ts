@@ -1,3 +1,4 @@
+/*
 import { Schema, model, Mongoose } from 'mongoose';
 import IHall from "../interfaces/hall.interface";
 
@@ -24,3 +25,4 @@ schema.virtual('capacity').get(function (this: IHall) {
 
 
 export default model<IHall>('halls', schema);
+*/

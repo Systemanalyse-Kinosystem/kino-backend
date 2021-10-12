@@ -1,10 +1,12 @@
+import IHall from "./hall.interface";
+
 export default interface IScreening {
     id: string;
     _id: string;
     movie: any;
     startDate: Date;
     endDate: Date;
-    hall: string;
+    hall: IHall;
     createdAt: Date;
     updatedAt: Date;
 }

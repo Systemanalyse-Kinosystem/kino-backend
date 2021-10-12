@@ -30,8 +30,13 @@ describe('Cart Routes', function () {
     before('Setup: Create demo cart, customer and tickets', async () => {
         try {
             let testScreening = await Screening.findOne({});
-            let ticket1 = await Ticket.create({ status: 'selected', screening: testScreening });
-            let ticket2 = await Ticket.create({ status: 'selected', screening: testScreening });
+            let seat = {
+                rowNumber: 1,
+                colNumber: 1,
+                type: "parquet"
+            };
+            let ticket1 = await Ticket.create({ status: 'selected', screening: testScreening, seat: seat });
+            let ticket2 = await Ticket.create({ status: 'selected', screening: testScreening, seat: seat });
 
             ticketId1 = ticket1._id;
             ticketId2 = ticket2._id;

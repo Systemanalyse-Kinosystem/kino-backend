@@ -1,3 +1,4 @@
+/*
 import ISeat from "./../interfaces/seat.interface"
 import { Schema, model } from 'mongoose';
 const schema = new Schema<ISeat>({
@@ -15,3 +16,4 @@ const schema = new Schema<ISeat>({
     timestamps: { createdAt: 'createdAt' }
   });
 export default model<ISeat>('seats', schema);
+*/
