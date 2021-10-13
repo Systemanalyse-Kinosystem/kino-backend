@@ -21,6 +21,10 @@ const app = express();
 //setup database connection
 mongoose.connect(<string>process.env.DATABASE_URL, { useNewUrlParser: true });
 
+//setup ejs
+app.set('views', __dirname + '/src/api/email_template');
+app.engine('html', require('ejs').renderFile);
+
 
 //setup app config
 app.use(bodyParser.json({ limit: '50mb' }));

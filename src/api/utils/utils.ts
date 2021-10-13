@@ -10,6 +10,9 @@ import Cart from "../models/cart.model";
 import ICart from "../interfaces/cart.interface";
 import nodemailer from "nodemailer";
 import IScreening from "../interfaces/screening.interface";
+import fs from "fs";
+import ejs from "ejs";
+import path from "path";
 
 export default class UtilClass {
 
@@ -49,98 +52,216 @@ export default class UtilClass {
 
     static async sendPaymentEmail(recipient: string, ticketId: string) {
         try {
-        let ticket = await Ticket.findById(ticketId).populate({
-            path: 'screening',
-            populate: {
-                path: 'movie',
-                model: 'movies'
+            let ticket = await Ticket.findById(ticketId).populate({
+                path: 'screening',
+                populate: {
+                    path: 'movie',
+                    model: 'movies'
+                }
+            });
+            if (!ticket) {
+                console.log("ticket not found for email");
+                return
             }
-        });
-        if(!ticket) {
-            console.log("ticket not found for email");
-            return
-        }
+            let tickets = [ticket];
 
-    
-        this.getNodeMailerTransporter().sendMail({
-            to: recipient,
-            subject: 'Ihre Bezahlung',
-            html: 
-            `
-            <h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!</h1>
-            <br>
-            Sie haben ein Ticket für den Film <b>${(<IScreening>ticket.screening).movie.title}</b> bezahlt.
-            <br>
-            Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
-            <br>
-            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}` 
-        }, (err, info) => {
-            console.log(err)
-        });
-    } catch (err) {console.error(err)}
+            let ticketsWithPrice = tickets.map((ticket: any) => {
+                ticket = ticket.toObject();
+                ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
+                return ticket;
+            });
+            console.log(ticketsWithPrice);
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Bezahlte Tickets" }, async (err, htmlText) => {
+                if (err) { return console.error(err) }
+                await this.getNodeMailerTransporter().sendMail({
+                    to: recipient,
+                    subject: 'CineMy - Du hast erfolgreich ein Ticket bezahlt',
+                    html: htmlText,
+                    attachments: [{
+                        filename: 'image-1.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-1.jpeg"),
+                        cid: 'image-1'
+                    },
+                    {
+                        filename: 'image-2.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-2.png"),
+                        cid: 'image-2'
+                    },
+                    {
+                        filename: 'image-3.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-3.png"),
+                        cid: 'image-3'
+                    },
+                    {
+                        filename: 'image-4.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-4.jpeg"),
+                        cid: 'image-4'
+                    },
+                    {
+                        filename: 'image-5.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-5.png"),
+                        cid: 'image-5'
+                    },
+                    {
+                        filename: 'image-6.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-6.jpeg"),
+                        cid: 'image-6'
+                    },
+                    {
+                        filename: 'image-7.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-7.jpeg"),
+                        cid: 'image-7'
+                    },
+                    {
+                        filename: 'image-8.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-8.jpeg"),
+                        cid: 'image-8'
+                    }]
+                });
+            });
+        } catch (err) { console.error(err) }
     }
 
     static async sendReservationEmail(recipient: string, ticketIds: string[]) {
         try {
-        let tickets = await Ticket.find({_id: {$in: ticketIds}}).populate({
-            path: 'screening',
-            populate: {
-                path: 'movie',
-                model: 'movies'
+            let tickets = await Ticket.find({ _id: { $in: ticketIds } }).populate({
+                path: 'screening',
+                populate: {
+                    path: 'movie',
+                    model: 'movies'
+                }
+            });
+            if (!tickets) {
+                console.log("ticket not found for email");
+                return
             }
-        });
-        if(!tickets) {
-            console.log("ticket not found for email");
-            return
-        }
-        let mailText: string = `<h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!</h1>`
-        for(let ticket of tickets) {
-            mailText += `
-            <br>
-            Sie haben ein Ticket für den Film <b>${(<IScreening>ticket.screening).movie.title}</b> bezahlt.
-            <br>
-            Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
-            <br>
-            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}` 
-            
-        }
-        await this.getNodeMailerTransporter().sendMail({
-            to: recipient,
-            subject: 'Ihre Reservierung',
-            html: mailText
-        });
-    } catch (err) {console.error(err)}
+
+            let ticketsWithPrice = tickets.map((ticket: any) => {
+                ticket = ticket.toObject();
+                ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
+                return ticket;
+            });
+            console.log(ticketsWithPrice);
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Details zu deiner Reservierung" }, async (err, htmlText) => {
+                if (err) { return console.error(err) }
+                await this.getNodeMailerTransporter().sendMail({
+                    to: recipient,
+                    subject: 'CineMy - Du hast erfolgreich Tickets reserviert',
+                    html: htmlText,
+                    attachments: [{
+                        filename: 'image-1.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-1.jpeg"),
+                        cid: 'image-1'
+                    },
+                    {
+                        filename: 'image-2.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-2.png"),
+                        cid: 'image-2'
+                    },
+                    {
+                        filename: 'image-3.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-3.png"),
+                        cid: 'image-3'
+                    },
+                    {
+                        filename: 'image-4.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-4.jpeg"),
+                        cid: 'image-4'
+                    },
+                    {
+                        filename: 'image-5.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-5.png"),
+                        cid: 'image-5'
+                    },
+                    {
+                        filename: 'image-6.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-6.jpeg"),
+                        cid: 'image-6'
+                    },
+                    {
+                        filename: 'image-7.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-7.jpeg"),
+                        cid: 'image-7'
+                    },
+                    {
+                        filename: 'image-8.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-8.jpeg"),
+                        cid: 'image-8'
+                    }]
+                });
+            });
+        } catch (err) { console.error(err) }
     }
 
     static async sendBookingEmail(recipient: string, ticketIds: string[]) {
         try {
-        let tickets = await Ticket.find({_id: {$in: ticketIds}}).populate({
-            path: 'screening',
-            populate: {
-                path: 'movie',
-                model: 'movies'
+            let tickets = await Ticket.find({ _id: { $in: ticketIds } }).populate({
+                path: 'screening',
+                populate: {
+                    path: 'movie',
+                    model: 'movies'
+                }
+            });
+            if (!tickets) {
+                console.log("ticket not found for email");
+                return
             }
-        });
-        if(!tickets) {
-            console.log("ticket not found for email");
-            return
-        }
-        let mailText: string = `<h1>Vielen Dank für Ihr Vertrauen in den Cinemy Reservierungsassistenten!</h1>`
-        for(let ticket of tickets) {
-            mailText += `
-            <br>
-            Sie haben ein Ticket für den Film <b>${(<IScreening>ticket.screening).movie.title}</b> bezahlt.
-            <br>
-            Vorstellungsstart: ${(<IScreening>ticket.screening).startDate}
-            <br>
-            Vorstellungsende: ${(<IScreening>ticket.screening).endDate}` 
-        }
-        await this.getNodeMailerTransporter().sendMail({
-            to: recipient,
-            subject: 'Ihre Bestellung',
-            html: mailText
-        });
-    } catch (err) {console.error(err)}
+            let ticketsWithPrice = tickets.map((ticket: any) => {
+                ticket = ticket.toObject();
+                ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
+                return ticket;
+            });
+
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Details zu deiner Buchung" }, async (err, htmlText) => {
+                if (err) { return console.error(err) }
+                await this.getNodeMailerTransporter().sendMail({
+                    to: recipient,
+                    subject: 'CineMy - Du hast erfolgreich Tickets gebucht!',
+                    html: htmlText,
+                    attachments: [{
+                        filename: 'image-1.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-1.jpeg"),
+                        cid: 'image-1'
+                    },
+                    {
+                        filename: 'image-2.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-2.png"),
+                        cid: 'image-2'
+                    },
+                    {
+                        filename: 'image-3.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-3.png"),
+                        cid: 'image-3'
+                    },
+                    {
+                        filename: 'image-4.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-4.jpeg"),
+                        cid: 'image-4'
+                    },
+                    {
+                        filename: 'image-5.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-5.png"),
+                        cid: 'image-5'
+                    },
+                    {
+                        filename: 'image-6.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-6.jpeg"),
+                        cid: 'image-6'
+                    },
+                    {
+                        filename: 'image-7.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-7.jpeg"),
+                        cid: 'image-7'
+                    },
+                    {
+                        filename: 'image-8.jpeg',
+                        path: path.join(__dirname, "../mail_template/images/image-8.jpeg"),
+                        cid: 'image-8'
+                    }]
+                });
+            });
+
+        } catch (err) { console.error(err) }
     }
 
     static registerBackGroundJobs() {
@@ -179,21 +300,21 @@ export default class UtilClass {
                 let cutOffTime = new Date((new Date).getTime() - 1000 * 60 * 60 * 24 * 10);
                 let cartsToDelete = await Cart.find({ updatedAt: { $lte: cutOffTime } });
                 let cartsToDeleteIds = cartsToDelete.map(cart => cart._id);
-                await Cart.deleteMany({ _id: { $in: cartsToDeleteIds }});
+                await Cart.deleteMany({ _id: { $in: cartsToDeleteIds } });
                 console.log(`deleted ${cartsToDelete.length} carts during cleanup`)
             } catch (err) { console.error(err); }
         });
 
         //cron.schedule('*/15 * * * *', async () => {
-    /* deactivated until real screenings are in 
-            try {
-                let cutOffTime = new Date((new Date).getTime() + 1000 * 60 * 60 * 5);
-                let ticketCandidates = await Ticket.find({ status: 'reserved' }).populate('screening');
-                let ticketsToUnreserve = ticketCandidates.filter(ticket => (<IScreening>ticket.screening).startDate.getTime() < cutOffTime.getTime());
-                let ticketsToUnreserveIds = ticketsToUnreserve.map(ticket => ticket._id);
-                Ticket.updateMany({_id: {$in: ticketsToUnreserveIds}}, {status: 'available'}, null);                
-            } catch (err) { console.error(); }
-        });
-        */
-    }    
+        /* deactivated until real screenings are in 
+                try {
+                    let cutOffTime = new Date((new Date).getTime() + 1000 * 60 * 60 * 5);
+                    let ticketCandidates = await Ticket.find({ status: 'reserved' }).populate('screening');
+                    let ticketsToUnreserve = ticketCandidates.filter(ticket => (<IScreening>ticket.screening).startDate.getTime() < cutOffTime.getTime());
+                    let ticketsToUnreserveIds = ticketsToUnreserve.map(ticket => ticket._id);
+                    Ticket.updateMany({_id: {$in: ticketsToUnreserveIds}}, {status: 'available'}, null);                
+                } catch (err) { console.error(); }
+            });
+            */
+    }
 }

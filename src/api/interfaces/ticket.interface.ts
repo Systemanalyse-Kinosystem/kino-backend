@@ -6,7 +6,7 @@ export default interface ITicket {
     _id: string;
     createdAt: string;
     updatedAt: string;
-    userID: string;
+    userID: string | IUser;
     user: IUser;
     screening: string | IScreening;
     status: string;
