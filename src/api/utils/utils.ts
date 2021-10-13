@@ -70,7 +70,6 @@ export default class UtilClass {
                 ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
                 return ticket;
             });
-            console.log(ticketsWithPrice);
             ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Bezahlte Tickets" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
@@ -141,7 +140,7 @@ export default class UtilClass {
                 ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
                 return ticket;
             });
-            console.log(ticketsWithPrice);
+            
             ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Details zu deiner Reservierung" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
