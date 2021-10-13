@@ -7,6 +7,8 @@
     "test": "nyc mocha -r ts-node/register --exit ./src/test/*.test.ts",
     "devstart": "tsc-watch --onSuccess \"node ./dist/app.js\"",
     "build": "tsc",
+    "copy-template" : "cp -r ./src/api/mail_template ./dist/api/mail_template",
+    "copy-check": "ls /usr/src/app/dist/api/mail_template",
     "start": "node ./dist/app.js"
   },
   "repository": {
