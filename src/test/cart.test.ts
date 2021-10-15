@@ -143,9 +143,6 @@ describe('Cart Routes', function () {
         chai.request(app)
             .put(`/api/v1/cart/checkout/book/me/${cartId2}`)
             .set('auth', customerToken)
-            .send({
-                email: "noreply.kinosystem@gmail.com"
-            })
             .end((err: Error, res: ChaiHttp.Response): void => {
                 if (err) { return done(err); }
                 res.should.have.status(200);
@@ -167,9 +164,6 @@ describe('Cart Routes', function () {
         chai.request(app)
             .put(`/api/v1/cart/checkout/reserve/${cartId3}`)
             .set('auth', customerToken)
-            .send({
-                email: "noreply.kinosystem@gmail.com"
-            })
             .end((err: Error, res: ChaiHttp.Response): void => {
                 if (err) { return done(err); }
                 res.body.should.be.a('object');

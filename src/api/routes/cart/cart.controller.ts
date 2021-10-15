@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import Cart from '../../models/cart.model';
 import Ticket from '../../models/ticket.model';
 import { IRequestWithUser } from '../../interfaces/jwt.interface';
+import User from "../../models/user.model";
 import utils from "../../utils/utils";
 
 export default class cartController {
@@ -63,11 +64,16 @@ export default class cartController {
     
                 let cartUpdated = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
                 if (!cartUpdated) { return res.status(400).json({ err: "Not found" }); }
-    
+                
+                let user = await User.findOne({_id:  (<IRequestWithUser>req).user.id});
+                if(!user) {
+                    return res.status(500).json({err: "An error ocurreddd"});
+                }
+
                 res.json(cartUpdated);
     
                 //send Mail
-                utils.sendBookingEmail(req.body.email, cart.tickets)
+                utils.sendBookingEmail(user.email, cart.tickets)
             } catch (e) { res.status(500).json(e); }
         }
     
@@ -82,8 +88,13 @@ export default class cartController {
             let updatedCart = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
             if (!updatedCart) { return res.status(400).json({ err: "Not found" }); }
 
-            utils.sendReservationEmail(req.body.email, cart.tickets);
+            let user = await User.findOne({_id:  (<IRequestWithUser>req).user.id});
+                if(!user) {
+                    return res.status(500).json({err: "An error ocurreddd"});
+                }
 
+            utils.sendReservationEmail(user.email, cart.tickets);
+            
             res.json(updatedCart);
         } catch (e) { res.status(500).json(e); }
     }
