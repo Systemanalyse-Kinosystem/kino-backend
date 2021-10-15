@@ -68,6 +68,7 @@ describe('Cart Routes', function () {
             });
             customerToken = utils.createToken(user).token;
             customerId = user._id;
+            //redundant - refactor
         } catch (e) {
             console.error(e);
             "1".should.equal("2");

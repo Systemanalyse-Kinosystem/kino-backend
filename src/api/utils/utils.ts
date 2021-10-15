@@ -51,6 +51,7 @@ export default class UtilClass {
     }
 
     static async sendPaymentEmail(recipient: string, ticketId: string) {
+        //add ticket.seat.formatted and seat.type
         try {
             let ticket = await Ticket.findById(ticketId).populate({
                 path: 'screening',
@@ -70,7 +71,13 @@ export default class UtilClass {
                 ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
                 return ticket;
             });
-            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Bezahlte Tickets" }, async (err, htmlText) => {
+
+            let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
+                ticket.seat.formatted = `${String.fromCharCode(97 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
+                return ticket;
+            });
+
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithFormattedSeats, mailtype: "Bezahlte Tickets" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
                     to: recipient,
@@ -140,8 +147,13 @@ export default class UtilClass {
                 ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
                 return ticket;
             });
+
+            let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
+                ticket.seat.formatted = `${String.fromCharCode(97 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
+                return ticket;
+            });
             
-            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Details zu deiner Reservierung" }, async (err, htmlText) => {
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithFormattedSeats, mailtype: "Details zu deiner Reservierung" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
                     to: recipient,
@@ -211,7 +223,12 @@ export default class UtilClass {
                 return ticket;
             });
 
-            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithPrice, mailtype: "Details zu deiner Buchung" }, async (err, htmlText) => {
+            let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
+                ticket.seat.formatted = `${String.fromCharCode(97 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
+                return ticket;
+            });
+
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithFormattedSeats, mailtype: "Details zu deiner Buchung" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
                     to: recipient,

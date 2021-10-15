@@ -9,4 +9,5 @@ export default interface IScreening {
     hall: IHall;
     createdAt: Date;
     updatedAt: Date;
+    freeSeats: Number;
 }
