@@ -66,18 +66,15 @@ export default class UtilClass {
             }
             let tickets = [ticket];
 
-            let ticketsWithPrice = tickets.map((ticket: any) => {
+            let ticketsFormatted = tickets.map((ticket: any) => {
                 ticket = ticket.toObject();
                 ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
-                return ticket;
-            });
-
-            let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
                 ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.colNumber}`;
                 return ticket;
             });
-
-            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithFormattedSeats, mailtype: "Bezahlte Tickets" }, async (err, htmlText) => {
+            
+            
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsFormatted, mailtype: "Bezahlte Tickets" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
                     to: recipient,
@@ -127,7 +124,7 @@ export default class UtilClass {
             });
         } catch (err) { console.error(err) }
     }
-
+    
     static async sendReservationEmail(recipient: string, ticketIds: string[]) {
         try {
             let tickets = await Ticket.find({ _id: { $in: ticketIds } }).populate({
@@ -141,19 +138,16 @@ export default class UtilClass {
                 console.log("ticket not found for email");
                 return
             }
-
-            let ticketsWithPrice = tickets.map((ticket: any) => {
+            
+            
+            let ticketsFormatted = tickets.map((ticket: any) => {
                 ticket = ticket.toObject();
                 ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
+                ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.colNumber}`;
                 return ticket;
             });
 
-            let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
-                ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
-                return ticket;
-            });
-            
-            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithFormattedSeats, mailtype: "Details zu deiner Reservierung" }, async (err, htmlText) => {
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsFormatted, mailtype: "Details zu deiner Reservierung" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
                     to: recipient,
@@ -217,18 +211,14 @@ export default class UtilClass {
                 console.log("ticket not found for email");
                 return
             }
-            let ticketsWithPrice = tickets.map((ticket: any) => {
+            let ticketsFormatted = tickets.map((ticket: any) => {
                 ticket = ticket.toObject();
                 ticket.price = ticket.seat.type == "parquet" ? "10 €" : "12 €";
+                ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.colNumber}`;
                 return ticket;
             });
 
-            let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
-                ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
-                return ticket;
-            });
-
-            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsWithFormattedSeats, mailtype: "Details zu deiner Buchung" }, async (err, htmlText) => {
+            ejs.renderFile(path.join(__dirname, "../mail_template/index.html"), { tickets: ticketsFormatted, mailtype: "Details zu deiner Buchung" }, async (err, htmlText) => {
                 if (err) { return console.error(err) }
                 await this.getNodeMailerTransporter().sendMail({
                     to: recipient,
