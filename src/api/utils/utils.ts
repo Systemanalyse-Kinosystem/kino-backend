@@ -73,7 +73,7 @@ export default class UtilClass {
             });
 
             let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
-                ticket.seat.formatted = `${String.fromCharCode(97 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
+                ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.colNumber}`;
                 return ticket;
             });
 
@@ -149,7 +149,7 @@ export default class UtilClass {
             });
 
             let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
-                ticket.seat.formatted = `${String.fromCharCode(97 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
+                ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
                 return ticket;
             });
             
@@ -224,7 +224,7 @@ export default class UtilClass {
             });
 
             let ticketsWithFormattedSeats = ticketsWithPrice.map((ticket: any) => {
-                ticket.seat.formatted = `${String.fromCharCode(97 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
+                ticket.seat.formatted = `${String.fromCharCode(65 + ticket.seat.rowNumber)}${ticket.seat.columnNumber}`;
                 return ticket;
             });
 
