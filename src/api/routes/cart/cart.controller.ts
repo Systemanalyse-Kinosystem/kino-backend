@@ -80,6 +80,7 @@ export default class cartController {
 
     static async checkOutCartReserveWithLogin(req: Request, res: Response) {
         try {
+
             let cart = await Cart.findById(req.params.id);
             if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
 
@@ -95,7 +96,30 @@ export default class cartController {
 
             utils.sendReservationEmail(user.email, cart.tickets);
             
+            
             res.json(updatedCart);
+            
+        } catch (e) { res.status(500).json(e); }
+    }
+
+      static async checkOutCartReserveWithoutLogin(req: Request, res: Response) {
+        try {
+            if(!(req.body.firstName && req.body.lastName && req.body.email)) {
+                return res.status(400).json({err: "firstName, lastName or email missing"});
+            }
+            let cart = await Cart.findById(req.params.id);
+            if (!cart) { return res.status(400).json({ err: "Cart not found" }); }
+            
+            //tickets get mapped to the predefined user for paying in the cinema
+            await Ticket.updateMany({ _id: { $in: cart.tickets } }, { "$set": { status: "reserved", user: req.body, userID: '617e82ba6f9ea500136f0976' } }, { "multi": true });
+
+            let cartUpdated = await Cart.findOneAndUpdate({ _id: req.params.id }, { tickets: [] }, { new: true });
+            if (!cartUpdated) { return res.status(400).json({ err: "Not found" }); }
+
+            res.json(cartUpdated);
+
+            //send Mail
+            utils.sendReservationEmail(req.body.email, cart.tickets)
         } catch (e) { res.status(500).json(e); }
     }
 }

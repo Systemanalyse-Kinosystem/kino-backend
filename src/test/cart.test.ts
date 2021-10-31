@@ -22,11 +22,13 @@ describe('Cart Routes', function () {
     let cartId1: string;
     let cartId2: string;
     let cartId3: string;
+    let cartId4: string;
     let customerToken: string;
     let customerId: string;
     let ticketId1: string;
     let ticketId2: string;
     let ticketId3: string;
+    let ticketId4: string;
     let name = uniqueNamesGenerator({ dictionaries: [names] });
 
     before('Setup: Create demo cart, customer and tickets', async () => {
@@ -40,18 +42,22 @@ describe('Cart Routes', function () {
             let ticket1 = await Ticket.create({ status: 'selected', screening: testScreening, seat: seat });
             let ticket2 = await Ticket.create({ status: 'selected', screening: testScreening, seat: seat });
             let ticket3 = await Ticket.create({ status: 'selected', screening: testScreening, seat: seat });
-
+            let ticket4 = await Ticket.create({ status: 'selected', screening: testScreening, seat: seat });
+            
             ticketId1 = ticket1._id;
             ticketId2 = ticket2._id;
             ticketId3 = ticket3._id;
+            ticketId4 = ticket4._id;
 
             let cart1 = await Cart.create({ tickets: [ticketId1] });
             let cart2 = await Cart.create({ tickets: [ticketId2] });
             let cart3 = await Cart.create({ tickets: [ticketId3] });
-
+            let cart4 = await Cart.create({ tickets: [ticketId4] });
+            
             cartId1 = cart1._id;
             cartId2 = cart2._id;
             cartId3 = cart3._id;
+            cartId4 = cart4._id;
 
             let user = await User.create({
                 firstName: name,
@@ -165,6 +171,8 @@ describe('Cart Routes', function () {
             .put(`/api/v1/cart/checkout/reserve/${cartId3}`)
             .set('auth', customerToken)
             .end((err: Error, res: ChaiHttp.Response): void => {
+                console.log(res.body);
+                console.log(err);
                 if (err) { return done(err); }
                 res.body.should.be.a('object');
                 res.body.should.have.property('tickets');
@@ -178,4 +186,37 @@ describe('Cart Routes', function () {
                 });
             });
     });
+
+    it('checks out a cart (reservation) without login', (done) => {
+        chai.request(app)
+            .put(`/api/v1/cart/checkout/reserve/nologin/${cartId4}`)
+            .send({
+                firstName: name,
+                lastName: name,
+                email: "noreply.kinosystem@gmail.com",
+                password: bcrypt.hashSync("test1234", 10),
+                role: "customer",
+                address: {
+                    street: "Teststraße 15",
+                    postalCode: "25980",
+                    city: "Sylt",
+                    country: "Germany"
+                }
+            })
+            .end((err: Error, res: ChaiHttp.Response): void => {
+                console.log(res.body);
+                if (err) { return done(err); }
+                res.body.should.be.a('object');
+                res.body.should.have.property('tickets');
+                res.body.tickets.should.have.lengthOf.below(1);
+
+                Ticket.findById(ticketId4, (err: CallbackError | null, ticket: ITicket | null) => {
+                    if (err || !ticket) { return done(err); }
+                    ticket.should.have.property('status').equal('reserved');
+                    ticket.user.should.have.property('firstName').equal(name);
+                    done();
+                });
+            });
+    });
+
 });
