@@ -277,10 +277,10 @@ export default class UtilClass {
             try {
                 console.log('executing selectedTickets cleanup: ' + new Date());
                 let tickets = await Ticket.find({ status: 'selected' });
-                //filter tickets, that haven't been modified for 10 minutes or longer
+                //filter tickets, that haven't been modified for 15 minutes or longer
                 ticketsToUnselect = tickets.filter((ticket) => {
                     let ticketDate = new Date(ticket.updatedAt);
-                    return Math.abs(ticketDate.getTime() - new Date().getTime()) >= 1000 * 60 * 10;
+                    return Math.abs(ticketDate.getTime() - new Date().getTime()) >= 1000 * 60 * 15;
                 });
                 for (let ticket of ticketsToUnselect) {
                     await Ticket.findOneAndUpdate({ _id: ticket._id }, { status: 'available' }, { new: true });

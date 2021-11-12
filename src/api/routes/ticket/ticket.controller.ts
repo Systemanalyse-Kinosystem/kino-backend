@@ -10,111 +10,112 @@ import utils from "../../utils/utils";
 
 export default class ticketController {
 
-    static getTicketListForScreening(req: Request, res: Response) {
-        Ticket.find({ screening: req.params.screeningId }, (err: CallbackError | null, tickets: ITicket[] | null) => {
-            if (!tickets || err) { return res.status(500).json({ err: err }); }
-            res.json(tickets);
-        }).populate({
-            path: 'screening',
-            populate: {
-                path: 'movie',
-                model: 'movies'
-            }
-        });
-    };
+  static getTicketListForScreening(req: Request, res: Response) {
+    Ticket.find({ screening: req.params.screeningId }, (err: CallbackError | null, tickets: ITicket[] | null) => {
+      if (!tickets || err) { return res.status(500).json({ err: err }); }
+      res.json(tickets);
+    }).populate({
+      path: 'screening',
+      populate: {
+        path: 'movie',
+        model: 'movies'
+      }
+    });
+  };
 
-    static getTicketListForLoggedInUser(req: Request, res: Response) {
-        Ticket.find({ userID: (<IRequestWithUser>req).user.id }, (err: CallbackError | null, ticket: ITicket[] | null) => {
-            if (!ticket || err) { return res.status(500).json({ err: err }); }
-            res.json(ticket);
-        }).populate({
-            path: 'screening',
-            populate: {
-                path: 'movie',
-                model: 'movies'
-            }
-        });
-    };
+  static getTicketListForLoggedInUser(req: Request, res: Response) {
+    Ticket.find({ userID: (<IRequestWithUser>req).user.id }, (err: CallbackError | null, ticket: ITicket[] | null) => {
+      if (!ticket || err) { return res.status(500).json({ err: err }); }
+      res.json(ticket);
+    }).populate({
+      path: 'screening',
+      populate: {
+        path: 'movie',
+        model: 'movies'
+      }
+    });
+  };
 
 
-    static selectTicketById(req: Request, res: Response) {
+  static selectTicketById(req: Request, res: Response) {
+    Cart.findById(req.params.cartId, (err: CallbackError, cart: ICartNotPopulated) => {
+      let oldTickets = cart.tickets;
+      if (!cart || err) { return res.status(500).json({ err: err }); }
+      let newTickets = [...oldTickets, req.params.ticketId];
 
-        Cart.findById(req.params.cartId, (err: CallbackError, cart: ICartNotPopulated) => {
-            let oldTickets = cart.tickets;
-            if (!cart || err) { return res.status(500).json({ err: err }); }
-            let newTickets = [...oldTickets, req.params.ticketId];
+      Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: newTickets }, { new: true },
+        (err: CallbackError | null, cart: ICartNotPopulated | null) => {
+          if (!cart || err) { return res.status(500).json({ err: err }); }
 
-            Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: newTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
-                if (!cart || err) { return res.status(500).json({ err: err }); }
+          Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "available" }, { status: "selected" }, { new: true },
+            (err: CallbackError | null, ticket: ITicket | null) => {
+              if (!ticket || err) {
+                Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: oldTickets }, { new: true },
+                  (err: CallbackError | null, cart: ICartNotPopulated | null) => {
+                    return res.status(500).json({ err: err });
+                  });
+              } else {
 
-                Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "available" }, { status: "selected" }, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-                    if (!ticket || err) { 
-                        Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: oldTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
-                        return res.status(500).json({ err: err }); 
-                        });
-                    } else {
-
-                    return res.json(ticket);
-                    }
-                });
+                return res.json(ticket);
+              }
             });
         });
+    });
+  }
 
-    }
+  static unselectTicketById(req: Request, res: Response) {
 
-    static unselectTicketById(req: Request, res: Response) {
-       
-        Cart.findById(req.params.cartId, (err: CallbackError, cart: ICartNotPopulated) => {
-            let oldTickets = cart.tickets;
-            if (!cart || err) { return res.status(500).json({ err: err }); }
-            let newTickets = oldTickets.filter((ticketId, index, array) => {
-                return ticketId != req.params.ticketId;
+    Cart.findById(req.params.cartId, (err: CallbackError, cart: ICartNotPopulated) => {
+      let oldTickets = cart.tickets;
+      if (!cart || err) { return res.status(500).json({ err: err }); }
+      let newTickets = oldTickets.filter((ticketId, index, array) => {
+        return ticketId != req.params.ticketId;
+      });
+
+
+      Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: newTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
+        if (!cart || err) { return res.status(500).json({ err: err }); }
+
+        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: 'selected' }, { status: "available" }, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+          if (!ticket || err) {
+            Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: oldTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
+              return res.status(500).json({ err: err });
             });
+          } else {
 
-
-            Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: newTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
-                if (!cart || err) { return res.status(500).json({ err: err }); }
-
-                Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: 'selected'}, { status: "available" }, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-                    if (!ticket || err) { 
-                        Cart.findOneAndUpdate({ _id: req.params.cartId }, { tickets: oldTickets }, { new: true }, (err: CallbackError | null, cart: ICartNotPopulated | null) => {
-                        return res.status(500).json({ err: err }); 
-                        });
-                    } else {
-
-                    return res.json(ticket);
-                    }
-                });
-            });
+            return res.json(ticket);
+          }
         });
-    }
+      });
+    });
+  }
 
-    static payTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "valid"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-            if (!ticket || err) { return res.status(500).json({ err: err }); }
-                    utils.sendPaymentEmail(req.body.email, ticket._id);
-            res.json(ticket);
-        });
-    }
+  static payTicketById(req: Request, res: Response) {
+    Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, { status: "valid" }, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+      if (!ticket || err) { return res.status(500).json({ err: err }); }
+      utils.sendPaymentEmail(req.body.email, ticket._id);
+      res.json(ticket);
+    });
+  }
 
-    static unreserveTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, {status: "available", userID: undefined}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-            if (!ticket || err) { return res.status(500).json({ err: err }); }
-            res.json(ticket);
-        });
-    }
+  static unreserveTicketById(req: Request, res: Response) {
+    Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "reserved" }, { status: "available", userID: undefined }, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+      if (!ticket || err) { return res.status(500).json({ err: err }); }
+      res.json(ticket);
+    });
+  }
 
-    static invalidateTicketById(req: Request, res: Response) {
-        Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "valid" }, {status: "invalid"}, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
-            if (!ticket || err) { return res.status(500).json({ err: err }); }
-            res.json(ticket);
-        });
-    }
+  static invalidateTicketById(req: Request, res: Response) {
+    Ticket.findOneAndUpdate({ _id: req.params.ticketId, status: "valid" }, { status: "invalid" }, { new: true }, (err: CallbackError | null, ticket: ITicket | null) => {
+      if (!ticket || err) { return res.status(500).json({ err: err }); }
+      res.json(ticket);
+    });
+  }
 
-    static deleteTickets(req: Request, res: Response) {
-        Ticket.deleteMany((err: CallbackError | null, ticket: ITicket | null) => {
-            if (err) { return res.status(500).json({ err: err }); }
-            res.status(204).json({});
-        });
-    }
+  static deleteTickets(req: Request, res: Response) {
+    Ticket.deleteMany((err: CallbackError | null, ticket: ITicket | null) => {
+      if (err) { return res.status(500).json({ err: err }); }
+      res.status(204).json({});
+    });
+  }
 }
